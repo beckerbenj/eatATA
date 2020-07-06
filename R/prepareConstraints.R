@@ -8,7 +8,7 @@
 #'
 #' tbd
 #'
-#'@param allConstraints Number of forms to be created.
+#'@param allConstraints List of constraints.
 #'@param M tbd
 #'@param n_items tbd
 #'@param f tbd

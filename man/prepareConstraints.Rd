@@ -7,7 +7,7 @@
 prepareConstraints(allConstraints, M, n_items, f)
 }
 \arguments{
-\item{allConstraints}{Number of forms to be created.}
+\item{allConstraints}{List of constraints.}
 
 \item{M}{tbd}
 
