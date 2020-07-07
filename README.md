@@ -15,7 +15,7 @@
 
 ```R
 # Install eatATA from GitHub via
-devtools::install_github("beckerbenj/eatATA")
+devtools::install_github("beckerbenj/eatATA", build_vignettes = TRUE)
 ```
 
 ## Usage

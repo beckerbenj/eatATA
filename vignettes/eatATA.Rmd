@@ -1,0 +1,130 @@
+---
+title: "eatATA"
+author: "Benjamin Becker"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{eatATA}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Setup
+The package can be installed from GitHub. Note that older R versions had issues with installations from online repositories like GitHub. `R` version `> 3.6.0` should work without any issues. 
+
+```{r installation, eval = FALSE}
+devtools::install_github("beckerbenj/eatATA")
+```
+
+To use `eatATA`, we need to install the `Gurobi` solver and its corresponding `R` package. An extensive vignette can be found [here](https://cran.r-project.org/web/packages/prioritizr/vignettes/gurobi_installation.html). 
+
+```{r library, message = FALSE}
+# loading all necessary packages
+library(eatATA)
+library(tidyr)
+library(gurobi)
+```
+
+
+## Prepare item pool information
+First we import the item pool information into `R`. For this purpose we recommend using the package `readxl`. As this package imports the data as a `tibble`, we transform it to a `data.frame`. `R` requires a rectangular data set. The `skip` argument can be used to skip unnecessary rows in the `excel` file.
+
+```{r import items, message = FALSE}
+items <- as.data.frame(readxl::read_excel(path = "T:/Pauline Kohrt/ATA in VERA3/V3_Pilot19_ZO_Blockbesetzungstabelle_190325.xlsm",
+                                          skip = 13), stringsAsFactors = FALSE)
+
+
+```
+
+Next we clean the imported data and set up some fixed variables we want to use later.
+
+```{r prep, message = FALSE}
+# clean data set
+items$MC <- ifelse(is.na(items$MC), yes = 0, no = 1)
+
+# set up fixed variables
+n_items <- nrow(items)  # number of items
+f <- 14                 # number of blocks
+M <- n_items*f+1        # decision variable
+```
+
+
+## Set up constraints
+`eatATA` offers a variety of constraints we can set. Usually we want the following constraints
+
+* no item overlap between test blocks
+* complete item pool depletion
+* equal distribution of item formats across test blocks
+* equal difficulty distribution across test blocks
+
+```{r constraints}
+ItemOverlap <- noItemOverlapConstraint(f, nItems = n_items, sign =0) ## 0 means complete item pool usage
+mcItems <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = items$MC, targetValues = 1, tolerance = 1)
+
+# item exclusions
+items2 <- tidyr::separate(items, col = "Aufgabe", into = c("ID", "name"), sep = "_")
+exclusionTuples <- itemExclusionTuples(items2, idCol = "ID", exclusions = "Unverträglichkeiten")
+excl_constraints <- itemExclusionConstraint(nForms = 14, exclusionTuples = exclusionTuples, itemIDs = items2$ID)
+
+# optimize average time
+av_time <- targetConstraint(f, nItems = n_items, itemValues = matrix(items$`Zeit Aufg.`, nrow = 1), targetValues = 10,
+                            thetaPoints = matrix(c(0)))
+
+
+```
+
+
+## Prepare constraints and run solver
+No we cann call `Gurobis` `gurobi()` function, which will solve the optimization problem for us. If the problem is feasible, it will return... If it is infeasible, it will return...
+
+```{r solver, eval = FALSE}
+# Prepare constraints
+gurobi_constr <- list(ItemOverlap = ItemOverlap, mcItems = mcItems, excl_constraints = excl_constraints,
+                      av_time = av_time)
+gurobi_rdy <- prepareConstraints(gurobi_constr, M = M, n_items = n_items, f = f)
+
+
+# Optimization
+solver_raw <- gurobi(gurobi_rdy, params = list(TimeLimit = 30))
+
+```
+
+## Inspect Solution
+
+```{r inspect, eval = FALSE}
+block_ind <- 0:13
+names(block_ind) <- paste("Block", block_ind + 1, sep = "_")
+block_df <- as.data.frame(lapply(block_ind, function(x) {
+  ind <- x*80 + 1:80
+  solver_raw$x[ind]
+}))
+## create block data.frame
+new_items <- cbind(items[, c("Aufgabe", "Zeit Aufg.", "MC")], block_df)
+
+
+## Print out solution for first 3 blocks
+lapply(names(block_ind), function(nam) {
+  df <- new_items[new_items[, nam] == 1, 1:3]
+  list(df, c(time = sum(df[, 2]), Aufgaben = nrow(df)))
+})[1:3]
+
+```
+
+
+
+
+## Save as Excel
+Finally, it is often desirable to export the solution as an `Excel` file (`.xlsx`). This can, for example, be achieved via the `eatAnalysis` package, which has to be installed from Github.
+
+```{r export solution to excel, eval = FALSE}
+devtools::install_github("beckerbenj/eatAnalysis")
+eatAnalysis::write_xlsx(new_items, filePath = "example_excel.xlsx",
+                        row.names = FALSE)
+```

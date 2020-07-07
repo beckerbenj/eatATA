@@ -4,7 +4,7 @@
 \alias{noItemOverlapConstraint}
 \title{Create no item overlap constraints.}
 \usage{
-noItemOverlapConstraint(nForms, nItems, sign)
+noItemOverlapConstraint(nForms, nItems, sign = -1)
 }
 \arguments{
 \item{nForms}{Number of forms to be created.}
@@ -17,7 +17,7 @@ noItemOverlapConstraint(nForms, nItems, sign)
 A sparse matrix.
 }
 \description{
-tbd
+Creates constraints to assure no item overlap. If \code{sign} is set to \code{0}, complete item pool depletion is also assured.
 }
 \examples{
 #tbd

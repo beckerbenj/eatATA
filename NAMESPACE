@@ -2,6 +2,7 @@
 
 export(itemExclusionConstraint)
 export(itemExclusionTuples)
+export(itemPoolConstraint)
 export(noItemOverlapConstraint)
 export(nrItInFormConstraint)
 export(prepareConstraints)

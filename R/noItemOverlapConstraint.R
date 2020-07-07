@@ -18,7 +18,7 @@
 #############################################################################
 #' Create no item overlap constraints.
 #'
-#' tbd
+#' Creates constraints to assure no item overlap. If \code{sign} is set to \code{0}, complete item pool depletion is also assured.
 #'
 #'@param nForms Number of forms to be created.
 #'@param nItems Number of items in the item pool.
@@ -30,7 +30,7 @@
 #' #tbd
 #'
 #'@export
-noItemOverlapConstraint <- function(nForms, nItems, sign){
+noItemOverlapConstraint <- function(nForms, nItems, sign = -1){
   M <- nForms*nItems
   Matrix::sparseMatrix(i = c(rep(1:nItems, times = nForms), 1:nItems           , 1:nItems),
                j = c(1:(M)                        , rep(M+2, nItems)   , rep(M+3, nItems)),
