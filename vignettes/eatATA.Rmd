@@ -29,7 +29,6 @@ To use `eatATA`, we need to install the `Gurobi` solver and its corresponding `R
 # loading all necessary packages
 library(eatATA)
 library(tidyr)
-library(gurobi)
 ```
 
 
@@ -85,6 +84,7 @@ av_time <- targetConstraint(f, nItems = n_items, itemValues = matrix(items$`Zeit
 No we cann call `Gurobis` `gurobi()` function, which will solve the optimization problem for us. If the problem is feasible, it will return... If it is infeasible, it will return...
 
 ```{r solver, eval = FALSE}
+library(gurobi)
 # Prepare constraints
 gurobi_constr <- list(ItemOverlap = ItemOverlap, mcItems = mcItems, excl_constraints = excl_constraints,
                       av_time = av_time)

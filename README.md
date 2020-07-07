@@ -22,5 +22,5 @@ devtools::install_github("beckerbenj/eatATA", build_vignettes = TRUE)
 
 ```R
 library(eatATA)
-
+vignette("eatATA")
 ```
