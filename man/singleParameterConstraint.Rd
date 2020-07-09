@@ -4,7 +4,13 @@
 \alias{singleParameterConstraint}
 \title{Create single value constraints with a tolerance.}
 \usage{
-singleParameterConstraint(nForms, nItems, itemValues, targetValues, tolerance)
+singleParameterConstraint(
+  nForms,
+  nItems,
+  itemValues,
+  targetValues = NULL,
+  tolerance
+)
 }
 \arguments{
 \item{nForms}{Number of forms to be created.}
