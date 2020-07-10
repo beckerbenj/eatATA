@@ -38,14 +38,12 @@ cmcItems <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues =
 kaItems <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = items$KA2, tolerance = 0.5)
 offenItems <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = items$offen, tolerance = 0.5)
 
+# difficulty categories
 Items1 <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = items$`1`, tolerance = 0.5)
 Items2 <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = items$`2`, tolerance = 0.5)
 Items3 <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = items$`3`, tolerance = 0.5)
 Items4 <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = items$`4`, tolerance = 0.5)
 Items5 <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = items$`5`, tolerance = 0.5)
-
-# difficulty categories
-mcItems <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = items$MC, targetValues = 1.5, tolerance = 0.5)
 
 # number of items per test form
 noItems <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = rep(1, nrow(items)), tolerance = 0.5)

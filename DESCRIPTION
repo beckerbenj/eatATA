@@ -1,9 +1,9 @@
 Package: eatATA
 Type: Package
 Title: User interface for small test assembly problems using 'Gurobi'
-Version: 0.3.1
+Version: 0.3.2
 Authors@R: c(
-    person("Benjamin", "Becker", email = "b.becker@iqb.hu.berlin.de", role = c("aut", "cre")),
+    person("Benjamin", "Becker", email = "b.becker@iqb.hu-berlin.de", role = c("aut", "cre")),
     person("Dries", "Debeer", email = "dries.debeer@kuleuven.be", role = c("ctb")))
 Description: User interface for utilizing 'Gurobi' to solve small test assembly problems via a pure R interface.
 License: GPL
