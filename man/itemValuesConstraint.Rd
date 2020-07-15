@@ -24,8 +24,6 @@ constraints, with three possible values: \code{"<="}, \code{"="},
 or \code{">="}. See details for more information.}
 
 \item{targetValue}{the target test form value}
-
-\item{tolerance}{tbd}
 }
 \value{
 A sparse matrix.
@@ -41,7 +39,7 @@ the chosen \code{targetValue}.
 ## constraints to make sure that the sum of the item values (1:10) is between
 ## 4 and 6
 rbind(
-  singleParameterConstraint(2, 10, 1:10, operator = "<=", targetValue = 4),
-  singleParameterConstraint(2, 10, 1:10, operator = ">=", targetValue = 6))
+  itemValuesConstraint(2, 10, 1:10, operator = ">=", targetValue = 4),
+  itemValuesConstraint(2, 10, 1:10, operator = "<=", targetValue = 6))
 
 }
