@@ -19,6 +19,6 @@ Creates constraints that assure that every item in the item pool is used
 (at least) once. Essentially a wrapper around itemUsageConstraint.
 }
 \examples{
-depletePoolConstraint(1, 10)
+depletePoolConstraint(2, 10)
 
 }

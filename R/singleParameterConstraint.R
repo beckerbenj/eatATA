@@ -28,12 +28,15 @@ singleParameterConstraint <- function(nForms, nItems, itemValues, targetValues =
 
   M <- nForms*nItems
   rbind(
-    Matrix::sparseMatrix(i = c(rep(1:nForms, each = nItems), 1:nForms, 1:nForms, 1:nForms),
-                 j = c(1:M, rep(M+1, nForms), rep(M+2, nForms), rep(M+3, nForms)),
-                 x = c(rep(itemValues, times = nForms), rep(0, nForms), rep(c(-1), each = nForms), rep(targetValues + tolerance, nForms))),
-    Matrix::sparseMatrix(i = c(rep(1:nForms, each = nItems), 1:nForms, 1:nForms, 1:nForms),
-                 j = c(1:M, rep(M+1, nForms), rep(M+2, nForms), rep(M+3, nForms)),
-                 x = c(rep(itemValues, times = nForms), rep(0, nForms), rep(c(+1), each = nForms), rep(targetValues - tolerance, nForms)))
+    Matrix::sparseMatrix(
+      i = c(rep(1:nForms, each = nItems),     1:nForms,          1:nForms,                  1:nForms),
+      j = c(1:M,                              rep(M+1, nForms),  rep(M+2, nForms),          rep(M+3, nForms)),
+      x = c(rep(itemValues, times = nForms),  rep(0, nForms),    rep(c(-1), each = nForms), rep(targetValues + tolerance, nForms))),
+
+    Matrix::sparseMatrix(
+      i = c(rep(1:nForms, each = nItems),     1:nForms,          1:nForms,                  1:nForms),
+      j = c(1:M,                              rep(M+1, nForms),  rep(M+2, nForms),          rep(M+3, nForms)),
+      x = c(rep(itemValues, times = nForms),  rep(0, nForms),    rep(c(+1), each = nForms), rep(targetValues - tolerance, nForms)))
   )}
 
 
