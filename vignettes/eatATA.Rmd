@@ -68,7 +68,7 @@ M <- n_items*f+1        # decision variable
 
 ```{r constraints}
 # no item overlap,
-ItemOverlap <- noItemOverlapConstraint(f, nItems = n_items, sign =0) ## 0 means complete item pool usage
+ItemOverlap <- itemUsageConstraint(f, nItems = n_items, operator = "=") ## 0 means complete item pool usage
 
 # item types
 mcItems <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = items$MC, tolerance = 0.5)
@@ -84,7 +84,9 @@ Items4 <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = i
 Items5 <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = items$diff_5, tolerance = 0.5)
 
 # number of items per test form
-noItems <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = rep(1, nrow(items)), tolerance = 0.5)
+min_Nitems <- floor(n_items / f) - 3
+noItems <- itemsPerFormConstraint(nForms = f, nItems = n_items, 
+                                  operator = ">=", min_Nitems)
 
 # item exclusions
 exclusionTuples <- itemExclusionTuples(items, idCol = "Item_ID", exclusions = "exclusions")
