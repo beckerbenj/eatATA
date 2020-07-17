@@ -17,5 +17,7 @@ test_that("Item Usage Constraint returns errors", {
                "The following arguments should have length 1: 'nForms', 'nItems', 'operator', 'targetValue'.")
   expect_error(itemValuesConstraint(2, 10, 1:5, "=", 3),
                "The lenght of 'itemValues' should be equal to 'nItems'.")
+  expect_error(itemValuesConstraint(2, 5, 1:5, "=", 20),
+               "The 'targetValue' should be smaller than the sum of the 'itemValues'.")
 })
 

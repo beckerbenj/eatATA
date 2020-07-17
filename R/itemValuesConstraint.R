@@ -36,6 +36,10 @@ itemValuesConstraint <- function(nForms, nItems, itemValues, operator = c("<=", 
   # itemValues should have length equal to nItems
   if(length(itemValues) != nItems) stop("The lenght of 'itemValues' should be equal to 'nItems'.")
 
+
+  # the targetValue should be smaller than or equal to the sum of the itemValues
+  if(targetValue > sum(itemValues)) stop("The 'targetValue' should be smaller than the sum of the 'itemValues'.")
+
   # change operator to sign (numeric and character vectors cannot be combined in Matrix)
   sign <- switch(operator,
                  "<=" = -1,

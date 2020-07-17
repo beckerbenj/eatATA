@@ -30,39 +30,24 @@
 #'@param operator a character indicating which operator should be used in the
 #'  constraints, with three possible values: \code{"<="}, \code{"="},
 #'  or \code{">="}. See details for more information.
-#'@param value The value to be used in the constraints
+#'@param value The target value to be used in the constraints. That is,
+#'  the number of items per form.
 #'
 #'@return A sparse matrix.
 #'
 #'
 #'@examples
 #' ## Constrain the test forms to have exactly five items
-#' itemsPerFormConstraint(3, 20, operator = "=", value = 5)
+#' itemsPerFormConstraint(3, 20, operator = "=", targetValue = 5)
 #'
 #'@export
-itemsPerFormConstraint <- function(nForms, nItems, operator = c("<=", "=", ">="), value){
+itemsPerFormConstraint <- function(nForms, nItems, operator = c("<=", "=", ">="), targetValue){
 
   operator <- match.arg(operator)
 
-  # all arguments should be of lenght 1
-  check <- sapply(list(nForms, nItems, operator, value), length) == 1
-  if(any(!check)) stop("All arguments should have length 1.")
-
   # value cannot be greater than nForms
-  if(value > nItems) stop("'value' should be smaller than or equal to 'nItems'.")
+  if(targetValue > nItems) stop("'targetValue' should be smaller than or equal to 'nItems'.")
 
-  # change operator to sign (numeric and character vectors cannot be combined in Matrix)
-  sign <- switch(operator,
-                 "<=" = -1,
-                 "=" = 0,
-                 ">=" = 1)
+  itemValuesConstraint(nForms, nItems, itemValues = rep(1, nItems), operator, targetValue)
 
-  # number of binary decision variables
-  M <- nForms*nItems
-
-  M <- nForms*nItems
-  Matrix::sparseMatrix(
-    i = c(rep(1:nForms, each = nItems), 1:nForms           , 1:nForms),
-    j = c(1:(M)                       , rep(M+2, nForms)   , rep(M+3, nForms)),
-    x = c(rep(1, M)                   , rep(sign, nForms)  , rep(value, nForms)))
 }

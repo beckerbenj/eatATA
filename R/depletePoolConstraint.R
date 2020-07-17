@@ -13,5 +13,5 @@
 #'
 #'@export
 depletePoolConstraint <- function(nForms, nItems){
-  itemUsageConstraint(nForms, nItems, operator = ">=")
+  itemUsageConstraint(nForms, nItems, operator = ">=", value = 1)
 }
