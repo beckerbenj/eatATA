@@ -2,26 +2,30 @@
 % Please edit documentation in R/prepareConstraints.R
 \name{prepareConstraints}
 \alias{prepareConstraints}
-\title{Prepare a list of constraints for \code{Gurobi}.}
+\title{Prepare a list of constraints for \code{Gurobi}}
 \usage{
-prepareConstraints(allConstraints, M, n_items, f)
+prepareConstraints(allConstraints, nForms, nItems)
 }
 \arguments{
 \item{allConstraints}{List of constraints.}
 
-\item{M}{tbd}
+\item{nForms}{Number of forms to be created.}
 
-\item{n_items}{tbd}
-
-\item{f}{tbd}
+\item{nItems}{Number of items in the item pool.}
 }
 \value{
-tbd
+A \code{gurobi} model list.
 }
 \description{
-tbd
+Transform a list of constraints set up via \code{eatATA} as input to the \code{gurobi} function.
 }
 \examples{
-#tbd
+## setup some example constraints
+usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 1)
+perForm <- itemsPerFormConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 5)
+target <- targetConstraint(nForms = 2, nItems = 10, itemValues = 1:10, targetValue = 5, thetaPoints = matrix(c(0)))
+
+## Prepare Constraints
+prepareConstraints(usage, perForm, target)
 
 }

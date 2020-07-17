@@ -4,7 +4,12 @@
 \alias{itemUsageConstraint}
 \title{Create item usage constraints.}
 \usage{
-itemUsageConstraint(nForms, nItems, operator = c("<=", "=", ">="), value = 1)
+itemUsageConstraint(
+  nForms,
+  nItems,
+  operator = c("<=", "=", ">="),
+  targetValue = 1
+)
 }
 \arguments{
 \item{nForms}{Number of forms to be created.}
@@ -15,7 +20,7 @@ itemUsageConstraint(nForms, nItems, operator = c("<=", "=", ">="), value = 1)
 constraints, with three possible values: \code{"<="}, \code{"="},
 or \code{">="}. See details for more information.}
 
-\item{value}{The value to be used in the constraints}
+\item{targetValue}{The value to be used in the constraints}
 }
 \value{
 A sparse matrix.
@@ -36,6 +41,6 @@ complete item pool depletion.
 \examples{
 ## create no-item overlap constraints with item pool depletion
 ##  for 2 test forms with an item pool of 20 items
-itemUsageConstraint(2, 20, operator = "=", value = 1)
+itemUsageConstraint(2, 20, operator = "=", targetValue = 1)
 
 }

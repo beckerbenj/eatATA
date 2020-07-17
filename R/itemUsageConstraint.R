@@ -16,26 +16,26 @@
 #'@param operator a character indicating which operator should be used in the
 #'  constraints, with three possible values: \code{"<="}, \code{"="},
 #'  or \code{">="}. See details for more information.
-#'@param value The value to be used in the constraints
+#'@param targetValue The value to be used in the constraints
 #'
 #'@return A sparse matrix.
 #'
 #'@examples
 #' ## create no-item overlap constraints with item pool depletion
 #' ##  for 2 test forms with an item pool of 20 items
-#' itemUsageConstraint(2, 20, operator = "=", value = 1)
+#' itemUsageConstraint(2, 20, operator = "=", targetValue = 1)
 #'
 #'@export
-itemUsageConstraint <- function(nForms, nItems, operator = c("<=", "=", ">="), value = 1){
+itemUsageConstraint <- function(nForms, nItems, operator = c("<=", "=", ">="), targetValue = 1){
 
   operator <- match.arg(operator)
 
-  # all arguments should be of lenght 1
-  check <- sapply(list(nForms, nItems, operator, value), length) == 1
+  # all arguments should be of length 1
+  check <- sapply(list(nForms, nItems, operator, targetValue), length) == 1
   if(any(!check)) stop("All arguments should have length 1.")
 
   # value cannot be greater than nForms
-  if(value > nForms) stop("'value' should be smaller than or equal to 'nForms'.")
+  if(targetValue > nForms) stop("'value' should be smaller than or equal to 'nForms'.")
 
   # change operator to sign (numeric and character vectors cannot be combined in Matrix)
   sign <- switch(operator,
@@ -52,5 +52,5 @@ itemUsageConstraint <- function(nForms, nItems, operator = c("<=", "=", ">="), v
     # A matrix in constraints           operator-indicator    d vector
     i = c(rep(1:nItems, times = nForms), 1:nItems           , 1:nItems),
     j = c(1:(M)                        , rep(M+2, nItems)   , rep(M+3, nItems)),
-    x = c(rep(1, M)                    , rep(sign, nItems)  , rep(value, nItems)))
+    x = c(rep(1, M)                    , rep(sign, nItems)  , rep(targetValue, nItems)))
 }

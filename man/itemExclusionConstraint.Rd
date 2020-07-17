@@ -11,15 +11,40 @@ itemExclusionConstraint(nForms, exclusionTuples, itemIDs)
 
 \item{exclusionTuples}{\code{data.frame} with two columns, containing tuples with item IDs which should be in test forms exclusively.}
 
-\item{itemIDs}{Character vector of item IDs in correct order.}
+\item{itemIDs}{Character vector of item IDs in correct ordering.}
 }
 \value{
 A sparse matrix.
 }
 \description{
-tbd
+Create constraints that prohibit that item pairs occur in the same test forms.
+}
+\details{
+Item exclusion pairs can, for example, be created by the function \code{\link{itemExclusionTuples}}.
 }
 \examples{
-#tbd
+## item-IDs
+IDs <- c("item1", "item2", "item3", "item4")
+
+## tuples: Item 1 can not be in the test form as item 2 and 3
+exTuples <- data.frame(v1 = c("item1", "item1"), v2 = c("item2", "item3"),
+                       stringsAsFactors = FALSE)
+
+## Create constraints
+itemExclusionConstraint(nForms = 2, exclusionTuples = exTuples, itemIDs = IDs)
+
+
+########
+## Full workflow using itemExclusionTuples
+# Example data.frame
+items <- data.frame(ID = c("items1", "items2", "items3", "items4"),
+                     exclusions = c("items2, items3", NA, NA, NA))
+
+# Create tuples
+exTuples2 <- itemExclusionTuples(items = items, idCol = "ID", exclusions = "exclusions",
+                    sepPattern = ",")
+
+#' ## Create constraints
+itemExclusionConstraint(nForms = 2, exclusionTuples = exTuples2, itemIDs = IDs)
 
 }

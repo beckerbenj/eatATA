@@ -13,7 +13,7 @@ itemCategoryMin(nForms, nItems, itemCategories, min)
 
 itemCategoryMax(nForms, nItems, itemCategories, max)
 
-itemCategoryThreshold(nForms, nItems, itemCategories, targetValues, threshold)
+itemCategoryThreshold(nForms, nItems, itemCategories, targetValues, thresholds)
 }
 \arguments{
 \item{nForms}{Number of forms to be created.}
@@ -30,7 +30,9 @@ itemCategoryThreshold(nForms, nItems, itemCategories, targetValues, threshold)
 The order of the target values should correspond with the order of the levels
 of the factor in \code{itemCategory}.}
 
-\item{threshold}{the maximum allowed difference from the \code{targetValue}}
+\item{thresholds}{an integer vector representing the thresholds per category.
+The order of the thresholds should correspond with the order of the levels
+of the factor in \code{itemCategories}.}
 }
 \value{
 A sparse matrix.

@@ -1,26 +1,36 @@
 
 ####
 #############################################################################
-#' Create item exclusion tuples from Item DB output.
+#' Create item exclusion tuples.
 #'
-#' tbd
+#' If item exclusions are stored as a character vector, \code{itemExclusionTuples} separates this vector and creates item pairs ('tuples').
 #'
-#'@param items \code{data.frame} as exported by \code{Item DB}.
+#' Exclusion tuples can be used by \code{\link{itemExclusionConstraint}} to set up exclusion constraints.
+#'
+#'@param items A \code{data.frame} with information on an item pool.
 #'@param idCol Name of the item ID column.
 #'@param exclusions Name of the exclusion column.
+#'@param sepPattern String which should be used for separating item IDs in the \code{exclusions} column..
 #'
 #'@return A sparse matrix.
 #'
 #'@examples
-#' #tbd
+#' # Example data.frame
+#' items <- data.frame(ID = c("items1", "items2", "items3", "items4"),
+#'                      exclusions = c("items2, items3", NA, NA, NA))
+#'
+#' # Create tuples
+#' itemExclusionTuples(items = items, idCol = "ID", exclusions = "exclusions",
+#'                     sepPattern = ",")
+#'
 #'
 #'@export
-itemExclusionTuples <- function(items, idCol = "ID", exclusions) {
+itemExclusionTuples <- function(items, idCol = "ID", exclusions, sepPattern = ",") {
   # count maximum number of exclusion per item
-  max_excl <- max(stringr::str_count(items[, exclusions], pattern = ","), na.rm = TRUE) + 1
+  max_excl <- max(stringr::str_count(items[, exclusions], pattern = sepPattern), na.rm = TRUE) + 1
 
   ## transform exclusions into tuples
-  items2 <- tidyr::separate(items, col = exclusions, into = paste("excl_", 1:max_excl))
+  items2 <- tidyr::separate(items, col = exclusions, into = paste("excl_", 1:max_excl), pattern = sepPattern)
 
   excl_df <- items2[, c(idCol, paste("excl_", 1:max_excl))]
 

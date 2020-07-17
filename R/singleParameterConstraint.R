@@ -5,7 +5,7 @@
 #'@param nForms Number of forms to be created.
 #'@param nItems Number of items in the item pool.
 #'@param itemValues item parameter/values for which the sum per test form should be constrained
-#'@param targetValue the target test form value
+#'@param targetValues the target test form value
 #'@param tolerance tbd
 #'
 #'@return A sparse matrix.

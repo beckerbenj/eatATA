@@ -21,7 +21,7 @@
 #' itemValuesMinMax (2, 10, 1:10, min = 4, max = 6)
 #'
 #' ## or alternatively
-#' itemValuesMinMax (2, 10, 1:10, targetValue = 5, threshold = 1)
+#' itemValuesThreshold (2, 10, 1:10, targetValue = 5, threshold = 1)
 #'
 #' @export
 itemValuesMinMax <- function(nForms, nItems, itemValues, min, max){

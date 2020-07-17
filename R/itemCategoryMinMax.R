@@ -14,6 +14,9 @@
 #' @inheritParams itemValuesConstraint
 #' @inheritParams itemCategoryConstraint
 #' @inheritParams itemValuesMinMax
+#' @param thresholds an integer vector representing the thresholds per category.
+#'  The order of the thresholds should correspond with the order of the levels
+#'  of the factor in \code{itemCategories}.
 #'
 #' @return A sparse matrix.
 #'
@@ -55,7 +58,7 @@ itemCategoryMax <- function(nForms, nItems, itemCategories, max){
 
 #' @describeIn itemCategoryMinMax constrain the distance form the targetValues
 #' @export
-itemCategoryThreshold <- function(nForms, nItems, itemCategories, targetValues, threshold){
-  itemCategoryMinMax(nForms, nItems, itemCategories, min = targetValues - threshold,
-                   max = targetValues + threshold)
+itemCategoryThreshold <- function(nForms, nItems, itemCategories, targetValues, thresholds){
+  itemCategoryMinMax(nForms, nItems, itemCategories, min = targetValues - thresholds,
+                   max = targetValues + thresholds)
 }

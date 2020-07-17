@@ -19,9 +19,9 @@ singleParameterConstraint(
 
 \item{itemValues}{item parameter/values for which the sum per test form should be constrained}
 
-\item{tolerance}{tbd}
+\item{targetValues}{the target test form value}
 
-\item{targetValue}{the target test form value}
+\item{tolerance}{tbd}
 }
 \value{
 A sparse matrix.

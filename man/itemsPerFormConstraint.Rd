@@ -20,7 +20,7 @@ itemsPerFormConstraint(
 constraints, with three possible values: \code{"<="}, \code{"="},
 or \code{">="}. See details for more information.}
 
-\item{value}{The target value to be used in the constraints. That is,
+\item{targetValue}{The target value to be used in the constraints. That is,
 the number of items per form.}
 }
 \value{
@@ -28,7 +28,9 @@ A sparse matrix.
 }
 \description{
 Creates constraints related to the number of items in each test form.
-That is, the number of items per test form is constrained to be either
+}
+\details{
+The number of items per test form is constrained to be either
 (a) smaller or equal than (\code{operator = "<="}), (b) equal to
 (\code{operator = "="}), or (c) greater or equal than
 (\code{operator = ">="}) the chosen \code{value}.

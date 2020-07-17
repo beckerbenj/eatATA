@@ -2,28 +2,42 @@
 % Please edit documentation in R/processGurobiOutput.R
 \name{processGurobiOutput}
 \alias{processGurobiOutput}
-\title{Process gurobi output for readability.}
+\title{Process \code{gurobi} output}
 \usage{
-processGurobiOutput(gurobiObj, items, nForms, nItems, output = "data.frame")
+processGurobiOutput(gurobiObj, items, nForms, output = "data.frame")
 }
 \arguments{
-\item{gurobiObj}{Object created by \code{Gurobi} solver.}
+\item{gurobiObj}{Object created by \code{gurobi} solver.}
 
 \item{items}{Original \code{data.frame} containing information on item level.}
 
-\item{nForms}{Number of forms to be created.}
+\item{nForms}{Number of forms that have been created.}
 
-\item{nItems}{Number of items in the item pool.}
-
-\item{output}{Should the output be returned as a \code{data.frame} or a \code{list}.}
+\item{output}{Should the output be returned as a \code{data.frame} or a \code{list}?}
 }
 \value{
 a \code{data.frame} or a \code{list}.
 }
 \description{
-tbd
+Process a \code{gurobi} output of a successfully solved optimization problem so it becomes humanly readable.
+}
+\details{
+The output can either be transformed to a \code{data.frame} (optimal for writing to disk and re-importing into other programs) or to
+a \code{list} (optimal for quick visual inspection.)
 }
 \examples{
-#tbd
+\dontrun{
+items <- data.frame(paste0("item", 1:10), stringsAsFactors = FALSE)
+
+## setup constraints
+# ...
+
+gurobi_model <- prepareConstraints(list(constraint1, constraint2, constraint3),
+                                   nForms = 2, nItems = 10)
+
+gurobi_out <- gurobi(gurobi_model, params = list(TimeLimit = 30))
+
+processGurobiOutput(gurobi_out, items = items, nForms = 2, output = "list")
+}
 
 }

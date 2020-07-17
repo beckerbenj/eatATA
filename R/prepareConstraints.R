@@ -1,33 +1,33 @@
-
-
-###
-# ---------------------------------------------------------------------------------------------------
 ####
 #############################################################################
-#' Prepare a list of constraints for \code{Gurobi}.
+#' Prepare a list of constraints for \code{Gurobi}
 #'
-#' tbd
+#' Transform a list of constraints set up via \code{eatATA} as input to the \code{gurobi} function.
 #'
 #'@param allConstraints List of constraints.
-#'@param M tbd
-#'@param n_items tbd
-#'@param f tbd
+#'@param nForms Number of forms to be created.
+#'@param nItems Number of items in the item pool.
 #'
-#'@return tbd
+#'@return A \code{gurobi} model list.
 #'
 #'@examples
-#' #tbd
+#' ## setup some example constraints
+#' usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 1)
+#' perForm <- itemsPerFormConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 5)
+#' target <- targetConstraint(nForms = 2, nItems = 10, itemValues = 1:10, targetValue = 5, thetaPoints = matrix(c(0)))
+#'
+#' ## Prepare Constraints
+#' prepareConstraints(usage, perForm, target)
 #'
 #'@export
-prepareConstraints <- function(allConstraints, M, n_items, f) {
-  stopifnot(is.list(allConstraints))
-  #if(!identical(names(allConstraints), c("nrItems", "ItemOverlap", "tif", "speed"))) {
-  #  stopifnot(identical(names(allConstraints), c("nrItems", "ItemOverlap", "tif")))
-  #  warning("Speed constraints are missing!")
-  #}
-  #allConstraints <- list(...)
+prepareConstraints <- function(allConstraints, nForms, nItems) {
+  if(!is.list(allConstraints)) stop("allConstraints needs to be a list.")
+  if(!all(sapply(allConstraints, is.matrix))) stop("All elements in allConstraints need to be matrices.")
+
+  ## Further tests: identical ncols... optimzitation via M test?
+
   Ad <- do.call(rbind, allConstraints)
-  dim(Ad)
+  M <- nItems*nForms+1        # decision variable
 
   # sense of the constraints
   sense <- as.vector(Ad[,(M+1)])
@@ -41,9 +41,9 @@ prepareConstraints <- function(allConstraints, M, n_items, f) {
   MILP <- list(A = A,
                rhs = as.vector(Ad[,(M+2)]),
                sense = sense,
-               obj = c(rep(0, n_items*f), 1),
+               obj = c(rep(0, nItems*nForms), 1),
                modelsense = "min",
-               vtype = c(rep("B", n_items*f), "C"))
+               vtype = c(rep("B", nItems*nForms), "C"))
   MILP
 }
 

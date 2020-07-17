@@ -2,24 +2,36 @@
 % Please edit documentation in R/itemExclusionTransform.R
 \name{itemExclusionTuples}
 \alias{itemExclusionTuples}
-\title{Create item exclusion tuples from Item DB output.}
+\title{Create item exclusion tuples.}
 \usage{
-itemExclusionTuples(items, idCol = "ID", exclusions)
+itemExclusionTuples(items, idCol = "ID", exclusions, sepPattern = ",")
 }
 \arguments{
-\item{items}{\code{data.frame} as exported by \code{Item DB}.}
+\item{items}{A \code{data.frame} with information on an item pool.}
 
 \item{idCol}{Name of the item ID column.}
 
 \item{exclusions}{Name of the exclusion column.}
+
+\item{sepPattern}{String which should be used for separating item IDs in the \code{exclusions} column..}
 }
 \value{
 A sparse matrix.
 }
 \description{
-tbd
+If item exclusions are stored as a character vector, \code{itemExclusionTuples} separates this vector and creates item pairs ('tuples').
+}
+\details{
+Exclusion tuples can be used by \code{\link{itemExclusionConstraint}} to set up exclusion constraints.
 }
 \examples{
-#tbd
+# Example data.frame
+items <- data.frame(ID = c("items1", "items2", "items3", "items4"),
+                     exclusions = c("items2, items3", NA, NA, NA))
+
+# Create tuples
+itemExclusionTuples(items = items, idCol = "ID", exclusions = "exclusions",
+                    sepPattern = ",")
+
 
 }
