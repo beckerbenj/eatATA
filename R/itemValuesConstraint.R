@@ -8,8 +8,8 @@
 #'
 #'@param nForms Number of forms to be created.
 #'@param nItems Number of items in the item pool.
-#'@param itemValues item parameter/values for which the sum per test form should be constrained
-#'@param operator a character indicating which operator should be used in the
+#'@param itemValues Item parameter/values for which the sum per test form should be constrained.
+#'@param operator A character indicating which operator should be used in the
 #'  constraints, with three possible values: \code{"<="}, \code{"="},
 #'  or \code{">="}. See details for more information.
 #'@param targetValue the target test form value

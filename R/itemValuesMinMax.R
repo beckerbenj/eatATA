@@ -27,7 +27,7 @@
 itemValuesMinMax <- function(nForms, nItems, itemValues, min, max){
 
   # min should be smaller than max
-  if(max <= min) stop("'min' should be smaller than 'max'.")
+  if(max < min) stop("'min' should be smaller than 'max'.")
 
   rbind(
     itemValuesConstraint(nForms, nItems, itemValues, operator = ">=", targetValue = min),

@@ -52,8 +52,8 @@ for(ty in c(paste0("diff_", 1:5), "MC", "CMC", "short_answer", "open")){
 }
 
 # set up fixed variables
-n_items <- nrow(items)  # number of items
-f <- 14                 # number of blocks
+nItems <- nrow(items)  # number of items
+nForms <- 14                 # number of blocks
 ```
 
 
@@ -67,33 +67,32 @@ f <- 14                 # number of blocks
 
 ```{r constraints}
 # no item overlap,
-ItemOverlap <- itemUsageConstraint(f, nItems = n_items, operator = "=") ## 0 means complete item pool usage
+ItemOverlap <- itemUsageConstraint(nForms, nItems = nItems, operator = "=") 
 
 # item types
-mcItems <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = items$MC, tolerance = 0.5)
-cmcItems <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = items$CMC, tolerance = 0.5)
-kaItems <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = items$short_answer, tolerance = 0.5)
-offenItems <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = items$open, tolerance = 0.5)
+mcItems <- autoItemValuesMinMax(nForms = nForms, nItems = nItems, itemValues = items$MC, threshold = 0)
+cmcItems <- autoItemValuesMinMax(nForms = nForms, nItems = nItems, itemValues = items$CMC, threshold = 0)
+kaItems <- autoItemValuesMinMax(nForms = nForms, nItems = nItems, itemValues = items$short_answer, threshold = 0)
+offenItems <- autoItemValuesMinMax(nForms = nForms, nItems = nItems, itemValues = items$open, threshold = 0)
 
 # difficulty categories
-Items1 <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = items$diff_1, tolerance = 0.5)
-Items2 <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = items$diff_2, tolerance = 0.5)
-Items3 <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = items$diff_3, tolerance = 0.5)
-Items4 <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = items$diff_4, tolerance = 0.5)
-Items5 <- singleParameterConstraint(nForms = f, nItems = n_items, itemValues = items$diff_5, tolerance = 0.5)
+Items1 <- autoItemValuesMinMax(nForms = nForms, nItems = nItems, itemValues = items$diff_1, threshold = 0)
+Items2 <- autoItemValuesMinMax(nForms = nForms, nItems = nItems, itemValues = items$diff_2, threshold = 0)
+Items3 <- autoItemValuesMinMax(nForms = nForms, nItems = nItems, itemValues = items$diff_3, threshold = 0)
+Items4 <- autoItemValuesMinMax(nForms = nForms, nItems = nItems, itemValues = items$diff_4, threshold = 0)
+Items5 <- autoItemValuesMinMax(nForms = nForms, nItems = nItems, itemValues = items$diff_5, threshold = 0)
 
 # number of items per test form
-min_Nitems <- floor(n_items / f) - 3
-noItems <- itemsPerFormConstraint(nForms = f, nItems = n_items, 
-                                  operator = ">=", min_Nitems)
+#min_Nitems <- floor(n_items / nForms) - 3
+#noItems <- itemsPerFormConstraint(nForms = f, nItems = n_items, 
+#                                  operator = ">=", min_Nitems)
 
 # item exclusions
 exclusionTuples <- itemExclusionTuples(items, idCol = "Item_ID", exclusions = "exclusions")
 excl_constraints <- itemExclusionConstraint(nForms = 14, exclusionTuples = exclusionTuples, itemIDs = items$Item_ID)
 
 # optimize average time
-av_time <- targetConstraint(f, nItems = n_items, itemValues = matrix(items$RT_in_min, nrow = 1), targetValues = 10,
-                            thetaPoints = matrix(c(0)))
+av_time <- itemTargetConstraint(nForms, nItems = nItems, itemValues = matrix(items$RT_in_min, nrow = 1), targetValue = 10)
 
 
 ```

@@ -17,9 +17,9 @@ itemValuesConstraint(
 
 \item{nItems}{Number of items in the item pool.}
 
-\item{itemValues}{item parameter/values for which the sum per test form should be constrained}
+\item{itemValues}{Item parameter/values for which the sum per test form should be constrained.}
 
-\item{operator}{a character indicating which operator should be used in the
+\item{operator}{A character indicating which operator should be used in the
 constraints, with three possible values: \code{"<="}, \code{"="},
 or \code{">="}. See details for more information.}
 

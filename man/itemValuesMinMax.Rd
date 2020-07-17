@@ -20,7 +20,7 @@ itemValuesThreshold(nForms, nItems, itemValues, targetValue, threshold)
 
 \item{nItems}{Number of items in the item pool.}
 
-\item{itemValues}{item parameter/values for which the sum per test form should be constrained}
+\item{itemValues}{Item parameter/values for which the sum per test form should be constrained.}
 
 \item{min}{the minimal sum of the \code{itemValues} per test form}
 
