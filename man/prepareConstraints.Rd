@@ -23,9 +23,9 @@ Transform a list of constraints set up via \code{eatATA} as input to the \code{g
 ## setup some example constraints
 usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 1)
 perForm <- itemsPerFormConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 5)
-target <- targetConstraint(nForms = 2, nItems = 10, itemValues = 1:10, targetValue = 5, thetaPoints = matrix(c(0)))
+target <- itemTargetConstraint(nForms = 2, nItems = 10, itemValues = 1:10, targetValue = 5)
 
 ## Prepare Constraints
-prepareConstraints(usage, perForm, target)
+prepareConstraints(list(usage, perForm, target), nForms = 2, nItems = 10)
 
 }

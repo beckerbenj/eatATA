@@ -14,15 +14,15 @@
 #' ## setup some example constraints
 #' usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 1)
 #' perForm <- itemsPerFormConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 5)
-#' target <- targetConstraint(nForms = 2, nItems = 10, itemValues = 1:10, targetValue = 5, thetaPoints = matrix(c(0)))
+#' target <- itemTargetConstraint(nForms = 2, nItems = 10, itemValues = 1:10, targetValue = 5)
 #'
 #' ## Prepare Constraints
-#' prepareConstraints(usage, perForm, target)
+#' prepareConstraints(list(usage, perForm, target), nForms = 2, nItems = 10)
 #'
 #'@export
 prepareConstraints <- function(allConstraints, nForms, nItems) {
   if(!is.list(allConstraints)) stop("allConstraints needs to be a list.")
-  if(!all(sapply(allConstraints, is.matrix))) stop("All elements in allConstraints need to be matrices.")
+  if(!all(sapply(allConstraints, function(x) "dgCMatrix" %in% class(x)))) stop("All elements in allConstraints need to be matrices.")
 
   ## Further tests: identical ncols... optimzitation via M test?
 
