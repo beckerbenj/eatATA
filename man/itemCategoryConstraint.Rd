@@ -17,6 +17,8 @@ itemCategoryConstraint(
 
 \item{nItems}{Number of items in the item pool.}
 
+\item{itemCategories}{a factor representing the categories/grouping of the items}
+
 \item{operator}{a character indicating which operator should be used in the
 constraints, with three possible values: \code{"<="}, \code{"="},
 or \code{">="}. See details for more information.}
@@ -24,8 +26,6 @@ or \code{">="}. See details for more information.}
 \item{targetValues}{an integer vector representing the target number per category.
 The order of the target values should correspond with the order of the levels
 of the factor in \code{itemCategory}.}
-
-\item{itemCategory}{a factor representing the categories/grouping of the items}
 }
 \value{
 A sparse matrix.
@@ -35,7 +35,7 @@ Create constraints related to item categories/groupings (as
 represented by \code{itemCategories}). That is, the created
 constraints assure that the number of items of each category per test form is either
 (a) smaller or equal than (\code{operator = "<="}), (b) equal to
-(\code{operator = "="}), or (c) greater or equal than (\code{operator = ">="})
+(\code{operator = "="}), or (c) greater than or equal to (\code{operator = ">="})
 the corresponding \code{targetValues}.
 }
 \examples{

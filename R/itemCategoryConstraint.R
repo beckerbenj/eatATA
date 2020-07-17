@@ -4,23 +4,22 @@
 #' represented by \code{itemCategories}). That is, the created
 #' constraints assure that the number of items of each category per test form is either
 #' (a) smaller or equal than (\code{operator = "<="}), (b) equal to
-#' (\code{operator = "="}), or (c) greater or equal than (\code{operator = ">="})
+#' (\code{operator = "="}), or (c) greater than or equal to (\code{operator = ">="})
 #' the corresponding \code{targetValues}.
 #'
 #'
-#'@param nForms Number of forms to be created.
-#'@param nItems Number of items in the item pool.
-#'@param itemCategory a factor representing the categories/grouping of the items
-#'@param operator a character indicating which operator should be used in the
+#' @inheritParams itemValuesConstraint
+#' @param itemCategories a factor representing the categories/grouping of the items
+#' @param operator a character indicating which operator should be used in the
 #'  constraints, with three possible values: \code{"<="}, \code{"="},
 #'  or \code{">="}. See details for more information.
-#'@param targetValues an integer vector representing the target number per category.
+#' @param targetValues an integer vector representing the target number per category.
 #'  The order of the target values should correspond with the order of the levels
 #'  of the factor in \code{itemCategory}.
 #'
-#'@return A sparse matrix.
+#' @return A sparse matrix.
 #'
-#'@examples
+#' @examples
 #' ## constraints to make sure that there are at least 3 items of each item type
 #' ## in each test form
 #' nItems <- 30
@@ -41,7 +40,7 @@ itemCategoryConstraint <- function(nForms, nItems, itemCategories, operator = c(
   check <- sapply(list(nForms, nItems, operator), length) == 1
   if(any(!check)) stop("The following arguments should have length 1: 'nForms', 'nItems', 'operator'.")
 
-  # itemValues should have length equal to nItems
+  # itemCategories should have length equal to nItems
   if(length(itemCategories) != nItems) stop("The lenght of 'itemCategories' should be equal to 'nItems'.")
 
   # the number of levels should be equal to the number of targetValues

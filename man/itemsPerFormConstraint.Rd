@@ -4,7 +4,12 @@
 \alias{itemsPerFormConstraint}
 \title{Create number of items per test form constraints.}
 \usage{
-itemsPerFormConstraint(nForms, nItems, operator = c("<=", "=", ">="), value)
+itemsPerFormConstraint(
+  nForms,
+  nItems,
+  operator = c("<=", "=", ">="),
+  targetValue
+)
 }
 \arguments{
 \item{nForms}{Number of forms to be created.}
@@ -15,7 +20,8 @@ itemsPerFormConstraint(nForms, nItems, operator = c("<=", "=", ">="), value)
 constraints, with three possible values: \code{"<="}, \code{"="},
 or \code{">="}. See details for more information.}
 
-\item{value}{The value to be used in the constraints}
+\item{value}{The target value to be used in the constraints. That is,
+the number of items per form.}
 }
 \value{
 A sparse matrix.
@@ -29,6 +35,6 @@ That is, the number of items per test form is constrained to be either
 }
 \examples{
 ## Constrain the test forms to have exactly five items
-itemsPerFormConstraint(3, 20, operator = "=", value = 5)
+itemsPerFormConstraint(3, 20, operator = "=", targetValue = 5)
 
 }

@@ -12,7 +12,7 @@ test_that("Item Values Constraint", {
   expect_is(out, "Matrix")
 })
 
-test_that("Item Usage Constraint returns errors", {
+test_that("Item Values Constraint returns errors", {
   expect_error(itemValuesConstraint(c(2, 4), 10, 1:10, targetValue = 4),
                "The following arguments should have length 1: 'nForms', 'nItems', 'operator', 'targetValue'.")
   expect_error(itemValuesConstraint(2, 10, 1:5, "=", 3),
@@ -20,4 +20,28 @@ test_that("Item Usage Constraint returns errors", {
   expect_error(itemValuesConstraint(2, 5, 1:5, "=", 20),
                "The 'targetValue' should be smaller than the sum of the 'itemValues'.")
 })
+
+
+test_that("Item Values Min Max and Threshold", {
+  minMax <- itemValuesMinMax(2, 4, 2:5, min = 3, max = 5)
+  expect_equal(minMax[1:2, ], itemValuesMin(2, 4, 2:5, min = 3))
+  expect_equal(minMax[3:4, ], itemValuesMax(2, 4, 2:5, 5))
+  expect_equal(minMax, itemValuesThreshold(2, 4, 2:5, 4, 1))
+
+  min <- itemValuesMin(3, 3, 1:3, 2)
+  expect_equal(min[1,], c(1:3, rep(0, 6), 0, 1, 2))
+  expect_equal(min[3,], c(rep(0, 6), 1:3, 0, 1, 2))
+
+  max <- itemValuesMax(3, 3, 1:3, 4)
+  expect_equal(max[1,], c(1:3, rep(0, 6), 0, -1, 4))
+  expect_equal(max[3,], c(rep(0, 6), 1:3, 0, -1, 4))
+
+  expect_is(minMax, "Matrix")
+})
+
+test_that("Item Min Max returns error", {
+  expect_error(itemValuesMinMax(2, 4, 2:5, min = 3, max = 2),
+               "'min' should be smaller than 'max'.")
+})
+
 

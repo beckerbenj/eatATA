@@ -31,8 +31,8 @@ A sparse matrix.
 \description{
 Create constraints related to an item parameter/value. That is, the created
 constraints assure that the sum of the item values (\code{itemValues}) per test form is either
-(a) smaller or equal than (\code{operator = "<="}), (b) equal to
-(\code{operator = "="}), or (c) greater or equal than (\code{operator = ">="})
+(a) smaller than or equal to (\code{operator = "<="}), (b) equal to
+(\code{operator = "="}), or (c) greater than or equal to (\code{operator = ">="})
 the chosen \code{targetValue}.
 }
 \examples{

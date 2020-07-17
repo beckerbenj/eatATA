@@ -26,3 +26,24 @@ test_that("Item Category Constraint returns errors", {
                "The following arguments should have length 1: 'nForms', 'nItems', 'operator'.")
 })
 
+
+test_that("Item Category Min Max and Threshold", {
+  minMax <- itemCategoryMinMax(2, 20, factor(rep(1:2, 10)), min = c(3, 4), max = c(5, 6))
+  expect_equal(minMax[1:4, ], itemCategoryMin(2, 20, factor(rep(1:2, 10)), c(3, 4)))
+  expect_equal(minMax[5:8, ], itemCategoryMax(2, 20, factor(rep(1:2, 10)), c(5, 6)))
+  expect_equal(minMax, itemCategoryThreshold(2, 20, factor(rep(1:2, 10)), c(4, 5), c(1, 1)))
+
+
+  max <- itemCategoryMax(1, 3, factor(c(1, 2, 3)), max = c(1, 1, 1))
+  expect_equal(max, itemCategoryConstraint(1, 3, factor(c(1, 2, 3)), targetValues = c(1, 1, 1)))
+
+  min <- itemCategoryMin(1, 3, factor(c(1, 2, 3)), min = c(1, 1, 1))
+  expect_equal(min[1, ], c(1, 0, 0, 0, 1, 1))
+  expect_equal(min[2, ], c(0, 1, 0, 0, 1, 1))
+  expect_equal(min[3, ], c(0, 0, 1, 0, 1, 1))
+
+  expect_is(minMax, "Matrix")
+})
+
+
+
