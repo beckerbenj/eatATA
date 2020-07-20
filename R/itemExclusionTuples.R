@@ -31,10 +31,18 @@ itemExclusionTuples <- function(items, idCol = "ID", exclusions, sepPattern = ",
   splitted_vec <- strsplit(as.character(items[[exclusions]]), split = sepPattern)
   max_excl <- max(sapply(splitted_vec, length))
 
+  splitted_list <- lapply(splitted_vec, function(x) {
+    diff_na <- max_excl - length(x)
+    out <- c(x, rep(NA, diff_na))
+    #if(all(is.na(out))) NULL
+    out
+  })
+  #if(nrow(items) == 80) browser()
+
   ## transform exclusions into tuples
   #items2 <- tidyr::separate(items, col = exclusions, into = paste("excl_", 1:max_excl), sep = sepPattern)
   #excl_df <- items2[, c(idCol, paste("excl_", 1:max_excl))]
-  excl_vars <- do.call(rbind, splitted_vec)
+  excl_vars <- do.call(rbind, splitted_list)
   excl_df <- data.frame(items[, idCol], excl_vars, stringsAsFactors = FALSE)
   colnames(excl_df) <- c(idCol, paste0("excl_", 1:max_excl))
 

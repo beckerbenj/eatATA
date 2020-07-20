@@ -101,20 +101,6 @@ eatAnalysis::write_xlsx(new_items, filePath = "T:/Pauline Kohrt/ATA in VERA3/eat
                         row.names = FALSE)
 
 
-## to do
-# --------------------------------------------------------------------------------------------------------
-# Example itempool
-
-# booklet incompatabilities function
-
-# Vignette eatATA (Inhalte zB Lockerungen, wie mehr Toleranz bei Schw. aber MW constrainen)
-
-# UI eatATA (function names, help pages...)
-
-# tests eatATA
-
-# Check excel output: any mistakes/flaws? (PK)
-
 
 
 

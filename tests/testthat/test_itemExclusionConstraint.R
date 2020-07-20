@@ -7,3 +7,14 @@ test_that("item exclusion constraint", {
   expect_equal(out[4, ], c(0, 0, 0, 0, 1, 1, 0, -1, 1))
 
 })
+
+
+test_that("item exclusion constraint big item pool", {
+  items <- eatATA::items
+  exclusionTuples <- itemExclusionTuples(items, idCol = "Item_ID", exclusions = "exclusions", sepPattern = ", ")
+
+  out <- itemExclusionConstraint(nForms = 14, exclusionTuples = exclusionTuples, itemIDs = items$Item_ID)
+  expect_equal(as.character(class(out)), "dgCMatrix")
+  expect_equal(dim(out), c(630, 1123))
+
+})
