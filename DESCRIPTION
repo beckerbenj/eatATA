@@ -1,7 +1,7 @@
 Package: eatATA
 Type: Package
 Title: User interface for small test assembly problems using 'Gurobi'
-Version: 0.4.1
+Version: 0.5.0
 Authors@R: c(
     person("Benjamin", "Becker", email = "b.becker@iqb.hu-berlin.de", role = c("aut", "cre")),
     person("Dries", "Debeer", email = "dries.debeer@kuleuven.be", role = c("ctb")))
@@ -10,12 +10,13 @@ License: GPL
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.5.0)
-Imports: Matrix, tidyr, stringr
+Imports: Matrix
 RoxygenNote: 7.1.0
 Suggests: 
     testthat (>= 2.1.0),
     covr,
     knitr,
     rmarkdown,
-    readxl
+    readxl,
+    tidyr
 VignetteBuilder: knitr
