@@ -32,9 +32,9 @@
 processGurobiOutput <- function(gurobiObj, items, nForms, output = "data.frame"){
   nItems <- nrow(items)
   block_ind <- 1:nForms
-  names(block_ind) <- paste("Block", block_ind, sep = "_")
+  names(block_ind) <- paste("form", block_ind, sep = "_")
   block_df <- as.data.frame(lapply(block_ind, function(x) {
-    ind <- (x-1)*80 + 1:80
+    ind <- (x-1)*nItems + 1:nItems
     gurobiObj$x[ind]
   }))
 
@@ -42,8 +42,7 @@ processGurobiOutput <- function(gurobiObj, items, nForms, output = "data.frame")
 
   if(output == "list") {
     new_items <- lapply(names(block_ind), function(nam) {
-      df <- new_items[new_items[, nam] == 1, ]
-      list(df, c(time = sum(df[, 2]), Aufgaben = nrow(df)))
+      new_items[new_items[, nam] == 1, ]
     })
   }
 

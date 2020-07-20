@@ -22,6 +22,6 @@ A sparse matrix.
 Create constraints that define the optimization goal of a automated test assembly problem.
 }
 \examples{
-#tbd
+itemTargetConstraint(nForms = 2, nItems = 4, c(1, 0.5, 1.5, 2), targetValue = 1)
 
 }

@@ -13,7 +13,7 @@
 #'@return A sparse matrix.
 #'
 #'@examples
-#' #tbd
+#' itemTargetConstraint(nForms = 2, nItems = 4, c(1, 0.5, 1.5, 2), targetValue = 1)
 #'
 #'@export
 itemTargetConstraint <- function(nForms, nItems, itemValues, targetValue){
