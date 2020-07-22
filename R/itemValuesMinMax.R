@@ -2,7 +2,7 @@
 #'
 #' Create constraints related to an item parameter/value. That is, the created
 #' constraints assure that the sum of the \code{itemValues} is smaller than or equal
-#' to \code{max}, greater dan or equal to \code{min}, or both.
+#' to \code{max}, greater than or equal to \code{min}, or both.
 #'
 #' \code{itemValuesThreshold} also constrains the minimal and the maximal value
 #' of the sum of the \code{itemValues}, but based on a chosen
@@ -49,7 +49,7 @@ itemValuesMax <- function(nForms, nItems, itemValues, max){
 }
 
 
-#' @describeIn itemValuesMinMax constrain the distance form the targetValue
+#' @describeIn itemValuesMinMax constrain the distance form the \code{targetValue}
 #' @export
 itemValuesThreshold <- function(nForms, nItems, itemValues, targetValue, threshold){
   itemValuesMinMax(nForms, nItems, itemValues, min = targetValue - threshold,

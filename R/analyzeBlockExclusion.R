@@ -5,7 +5,7 @@
 #'
 #' If exclusion tuples have been used to assemble test forms (using the \code{\link{itemExclusionConstraint}} function), the resulting
 #' item blocks might also be exclusive. Using the initially used item exclusion tuples and the processed \code{gurobi} output
-#' (via \code{\link{processGurobiOutput}}) this function determines, which teim blocks are exclusive and can not be together in an
+#' (via \code{\link{processGurobiOutput}}) this function determines, which item blocks are exclusive and can not be together in an
 #' assembled test form.
 #'
 #'@param processedObj Object created by \code{gurobi} solver and processed by \code{\link{processGurobiOutput}}. Must be a \code{list}.

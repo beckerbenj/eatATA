@@ -36,7 +36,7 @@ A sparse matrix.
 \description{
 Create constraints related to an item parameter/value. That is, the created
 constraints assure that the sum of the \code{itemValues} is smaller than or equal
-to \code{max}, greater dan or equal to \code{min}, or both.
+to \code{max}, greater than or equal to \code{min}, or both.
 }
 \details{
 \code{itemValuesThreshold} also constrains the minimal and the maximal value
@@ -49,7 +49,7 @@ and a maximal allowed deviation (i.e., \code{threshold}) from that \code{targetV
 
 \item \code{itemValuesMax}: constrain maximum value
 
-\item \code{itemValuesThreshold}: constrain the distance form the targetValue
+\item \code{itemValuesThreshold}: constrain the distance form the \code{targetValue}
 }}
 
 \examples{

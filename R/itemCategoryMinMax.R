@@ -56,7 +56,7 @@ itemCategoryMax <- function(nForms, nItems, itemCategories, max){
 }
 
 
-#' @describeIn itemCategoryMinMax constrain the distance form the targetValues
+#' @describeIn itemCategoryMinMax constrain the distance form the \code{targetValues}
 #' @export
 itemCategoryThreshold <- function(nForms, nItems, itemCategories, targetValues, thresholds){
   itemCategoryMinMax(nForms, nItems, itemCategories, min = targetValues - thresholds,

@@ -16,7 +16,7 @@ A sparse matrix.
 }
 \description{
 Creates constraints that assure that every item in the item pool is used
-(at least) once. Essentially a wrapper around itemUsageConstraint.
+(at least) once. Essentially a wrapper around \code{itemUsageConstraint}.
 }
 \examples{
 depletePoolConstraint(2, 10)

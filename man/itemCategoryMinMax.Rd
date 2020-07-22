@@ -55,7 +55,7 @@ from those \code{targetValues}.
 
 \item \code{itemCategoryMax}: constrain maximum value
 
-\item \code{itemCategoryThreshold}: constrain the distance form the targetValues
+\item \code{itemCategoryThreshold}: constrain the distance form the \code{targetValues}
 }}
 
 \examples{

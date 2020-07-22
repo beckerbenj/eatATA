@@ -1,7 +1,7 @@
 #' Use complete item pool.
 #'
 #' Creates constraints that assure that every item in the item pool is used
-#' (at least) once. Essentially a wrapper around itemUsageConstraint.
+#' (at least) once. Essentially a wrapper around \code{itemUsageConstraint}.
 #'
 #'@param nForms Number of forms to be created.
 #'@param nItems Number of items in the item pool.
