@@ -32,7 +32,7 @@ library(eatATA)
 
 
 ## Prepare item pool information
-First we import the item pool information into `R`. For this purpose we recommend using the package `readxl`. As this package imports the data as a `tibble`, we transform it to a `data.frame`. `R` requires a rectangular data set (and often excel files store additional information outside of this format). The `skip` argument can be used to skip unnecessary rows in the `excel` file. 
+First we import the item pool information into `R`. For this purpose we recommend using the package `readxl`. As this package imports the data as a `tibble`, we transform it to a `data.frame`. `R` requires a rectangular data set (and often excel files store additional information outside of this format). The `skip` argument can be used to skip unnecessary rows in the `excel` file. (note that the item pool can also be directly accessed in the package via `items`; see `items` for more information)
 
 ```{r import items, message = FALSE}
 items_path <- system.file("extdata", "items.xlsx", package = "eatATA")
