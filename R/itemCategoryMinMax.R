@@ -34,7 +34,7 @@
 itemCategoryMinMax <- function(nForms, nItems, itemCategories, min, max){
 
   # min should be smaller than max
-  if(any(max <= min)) stop("'min' should be smaller than 'max'.")
+  if(any(max < min)) stop("'min' should be smaller than 'max'.")
 
   rbind(
     itemCategoryConstraint(nForms, nItems, itemCategories, operator = ">=", targetValues = min),

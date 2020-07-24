@@ -9,18 +9,16 @@
 #' forms and 5 multiple choice items (b). If (a), the tolerance level works exactly as one would expect. If (b) the tolerance level is
 #' adapted, meaning that if tolerance level is 0 in example (b), allowed values are 2 or 3 multiple choice items per test form.
 #'
-#'@param nForms Number of forms to be created.
-#'@param nItems Number of items in the item pool.
-#'@param itemValues Item parameter/values for which the sum per test form should be constrained
-#'@param threshold The maximum allowed difference from the \code{targetValue}
-#'@param verbose Should calculated values be reported?
+#' @inheritParams itemValuesConstraint
+#' @inheritParams computeTargetValues
+#' @param verbose Should calculated values be reported?
 #'
-#'@return A sparse matrix.
+#' @return A sparse matrix.
 #'
-#'@examples
+#' @examples
 #' autoItemValuesMinMax
 #'
-#'@export
+#' @export
 autoItemValuesMinMax <- function(nForms, nItems, itemValues, threshold, verbose = TRUE){
   targetValue <- detTargetValue(nForms = nForms, itemValues = itemValues)
   threshold <- threshold + 0.5 ## not correct if targetValue is an integer, but should still work
@@ -48,4 +46,50 @@ detTargetValue <- function(nForms, itemValues) {
   }
   (sum(itemValues) / nForms)
 
+}
+
+
+
+## mew version
+autoItemValuesMinMax <- function(nForms, itemValues, allowedDeviation = NULL,
+                                 relative = FALSE, verbose = TRUE){
+
+  # compute the minmum and maximum values
+  min_max <- computeTargetValues(itemValues, nForms, testLength = NULL,
+                                 allowedDeviation, relative)
+
+  # compute the number of items
+  nItem <- length(itemValues)
+
+
+  # if itemValues are actually categories (i.e., a factor)
+  if(is.factor(itemValues)){
+    out <- itemCategoryMinMax(nForms, nItems, itemCategories = itemValues,
+                       min = min_max[,1], max = min_max[,2])
+
+    if(verbose){
+      message("The minimum and maximum frequences per test form for each item Category are")
+      print(min_max)
+    }
+
+  } else { # if item values are numerical
+    if(is.null(allowedDeviation)){  # no minimum or maximum, but only a target value is used
+                                    # thus equality constraints are used rather than
+                                    # inequality constraints
+      out <- itemValuesConstraint(nForms, nItems, itemValues,
+                           operator = "=", targetValue = min_max)
+      if(verbose){
+        message("The target value per test form is: ", min_max)
+        }
+
+    } else {  # constraints with respect to a minimum and maximum
+      out <- itemValuesMinMax(nForms, nItems, itemValues,
+                       min = min_max[1], max = min_max[2])
+      if(verbose){
+        message("The minimum and maximum values per test form are: ",
+                paste(min_max, collapse = " - "))
+      }
+    }
+  }
+  return(out)
 }
