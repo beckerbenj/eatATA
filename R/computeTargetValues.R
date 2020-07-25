@@ -22,10 +22,7 @@
 #
 #' @inheritParams itemValuesConstraint
 #' @inheritParams itemCategoryConstraint
-#' @param allowedDeviation a numerical value representing the allowed deviation
-#'        from the target value(s)
-#' @param relative a logical expressing whether or not the \code{allowedDeviation}
-#'        should be interpreted as a proportion.
+#'
 #'
 #' @return a vector or a matrix with targetValues (see details)
 #'
@@ -36,7 +33,7 @@
 computeTargetValues <- function(itemValues, ...)
   UseMethod("computeTargetValues", itemValues)
 
-#' @describeIn ComputeTargetValues compute target values
+#' @describeIn computeTargetValues compute target values
 #' @export
 computeTargetValues.default <- function(itemValues, nForms, testLength = NULL,
                                         allowedDeviation = NULL, relative = FALSE, ...) {
@@ -57,7 +54,7 @@ computeTargetValues.default <- function(itemValues, nForms, testLength = NULL,
 }
 
 
-#' @describeIn ComputeTargetValues compute target frequencies for item categories
+#' @describeIn computeTargetValues compute target frequencies for item categories
 #' @export
 computeTargetValues.factor <- function(itemValues, nForms, testLength = NULL,
                                        allowedDeviation = NULL, relative = FALSE, ...) {

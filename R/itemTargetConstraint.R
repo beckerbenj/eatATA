@@ -47,19 +47,13 @@ targetConstraint <- function(nForms, nItems, itemValues, targetValues, thetaPoin
   do.call(rbind, lapply(1:nThPts, function(pt){
     R <- if(relative){targetValues[pt]} else {1}                        # relative : R = TargetValues[pt]
     rbind(
-      Matrix::sparseMatrix(i = c(rep(1:nForms, each = nItems),
-                                 1:nForms                         , 1:nForms                  , 1:nForms),
-                           j = c(1:M,
-                                 rep(M+1, nForms)                 , rep(M+2, nForms)          , rep(M+3, nForms)),
-                           x = c(rep(itemValues[pt,]/R, times = nForms),
-                                 rep(c(-objWeight), each = nForms), rep(c(-1), each = nForms), rep(targetValues[pt]/R + bWidth, nForms))),
+      Matrix::sparseMatrix(i = c(rep(1:nForms, each = nItems),               1:nForms                          , 1:nForms                  , 1:nForms),
+                           j = c(1:M,                                        rep(M+1, nForms)                  , rep(M+2, nForms)          , rep(M+3, nForms)),
+                           x = c(rep(itemValues[pt,]/R, times = nForms),     rep(c(-objWeight), each = nForms) , rep(c(-1), each = nForms) , rep(targetValues[pt]/R + bWidth, nForms))),
 
-      Matrix::sparseMatrix(i = c(rep(1:nForms, each = nItems),
-                                 1:nForms                         , 1:nForms                  , 1:nForms),
-                           j = c(1:M,
-                                 rep(M+1, nForms)                 , rep(M+2, nForms)          , rep(M+3, nForms)),
-                           x = c(rep(itemValues[pt,]/R, times = nForms),
-                                 rep(c(+objWeight), each = nForms), rep(c(+1), each = nForms), rep(targetValues[pt]/R - bWidth, nForms))))
+      Matrix::sparseMatrix(i = c(rep(1:nForms, each = nItems),               1:nForms                          , 1:nForms                  , 1:nForms),
+                           j = c(1:M,                                        rep(M+1, nForms)                  , rep(M+2, nForms)          , rep(M+3, nForms)),
+                           x = c(rep(itemValues[pt,]/R, times = nForms),     rep(c(+objWeight), each = nForms) , rep(c(+1), each = nForms) , rep(targetValues[pt]/R - bWidth, nForms))))
   }))
 }
 

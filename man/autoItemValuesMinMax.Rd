@@ -4,16 +4,18 @@
 \alias{autoItemValuesMinMax}
 \title{Create single value constraints with minimum and maximum.}
 \usage{
-autoItemValuesMinMax(nForms, nItems, itemValues, threshold, verbose = TRUE)
+autoItemValuesMinMax(
+  nForms,
+  itemValues,
+  allowedDeviation = NULL,
+  relative = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{nForms}{Number of forms to be created.}
 
-\item{nItems}{Number of items in the item pool.}
-
-\item{itemValues}{Item parameter/values for which the sum per test form should be constrained}
-
-\item{threshold}{The maximum allowed difference from the \code{targetValue}}
+\item{itemValues}{Item parameter/values for which the sum per test form should be constrained.}
 
 \item{verbose}{Should calculated values be reported?}
 }

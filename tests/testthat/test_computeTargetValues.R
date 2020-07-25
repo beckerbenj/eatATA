@@ -5,7 +5,7 @@ test_that("computeTargetValues works", {
   expect_equal(computeTargetValues(2:5, 2), sum(2:5)/2)
   expect_equal(computeTargetValues(1:9, 2, testLength = 2), mean(1:9) * 2)
   expect_equal(computeTargetValues(-5:5, 2, allowedDeviation = 1),
-               sum(-5:5)/2 + c(-1, 1))
+               sum(-5:5)/2 + c(min = -1, max = 1))
   expect_equal(computeTargetValues(itemValues, 2, allowedDeviation = .1, relative = TRUE),
                sum(itemValues)/2 * c(min = .9, max = 1.1))
 })

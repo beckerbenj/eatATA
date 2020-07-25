@@ -19,34 +19,34 @@
 #' autoItemValuesMinMax
 #'
 #' @export
-autoItemValuesMinMax <- function(nForms, nItems, itemValues, threshold, verbose = TRUE){
-  targetValue <- detTargetValue(nForms = nForms, itemValues = itemValues)
-  threshold <- threshold + 0.5 ## not correct if targetValue is an integer, but should still work
-
-  if(verbose) {
-    minV <- ceiling(targetValue - threshold)
-    maxV <- floor(targetValue + threshold)
-    possibleV <- seq(minV, maxV)
-    message("Target value: ", targetValue,"\t Values in range: ", paste(possibleV, collapse = ", "))
-  }
-
-  itemValuesThreshold(nForms = nForms, nItems = nItems, itemValues = itemValues,
-                      targetValue = targetValue, threshold = threshold)
-}
-
-
-# determine target value automatically based on empirical frequency of category
-detTargetValue <- function(nForms, itemValues) {
-  if(!identical(sort(unique(itemValues)), c(0, 1)) && !identical(sort(unique(itemValues)), 1)) {
-    stop("autoItemValuesMinMax only works for (dichotomous) dummy indicators with values 0 and 1. See itemValuesMinMax for more flexibility.")
-  }
-
-  if(sum(itemValues) %% nForms != 0) {
-    return((sum(itemValues) %/% nForms) + 0.5)
-  }
-  (sum(itemValues) / nForms)
-
-}
+# autoItemValuesMinMax <- function(nForms, nItems, itemValues, threshold, verbose = TRUE){
+#   targetValue <- detTargetValue(nForms = nForms, itemValues = itemValues)
+#   threshold <- threshold + 0.5 ## not correct if targetValue is an integer, but should still work
+#
+#   if(verbose) {
+#     minV <- ceiling(targetValue - threshold)
+#     maxV <- floor(targetValue + threshold)
+#     possibleV <- seq(minV, maxV)
+#     message("Target value: ", targetValue,"\t Values in range: ", paste(possibleV, collapse = ", "))
+#   }
+#
+#   itemValuesThreshold(nForms = nForms, nItems = nItems, itemValues = itemValues,
+#                       targetValue = targetValue, threshold = threshold)
+# }
+#
+#
+# # determine target value automatically based on empirical frequency of category
+# detTargetValue <- function(nForms, itemValues) {
+#   if(!identical(sort(unique(itemValues)), c(0, 1)) && !identical(sort(unique(itemValues)), 1)) {
+#     stop("autoItemValuesMinMax only works for (dichotomous) dummy indicators with values 0 and 1. See itemValuesM# inMax for more flexibility.")
+#   }
+#
+#   if(sum(itemValues) %% nForms != 0) {
+#     return((sum(itemValues) %/% nForms) + 0.5)
+#   }
+#   (sum(itemValues) / nForms)
+#
+# }
 
 
 
@@ -59,16 +59,16 @@ autoItemValuesMinMax <- function(nForms, itemValues, allowedDeviation = NULL,
                                  allowedDeviation, relative)
 
   # compute the number of items
-  nItem <- length(itemValues)
+  nItems <- length(itemValues)
 
 
   # if itemValues are actually categories (i.e., a factor)
   if(is.factor(itemValues)){
-    out <- itemCategoryMinMax(nForms, nItems, itemCategories = itemValues,
-                       min = min_max[,1], max = min_max[,2])
+    out <- itemCategoryRange(nForms, nItems, itemCategories = itemValues,
+                       range = min_max)
 
     if(verbose){
-      message("The minimum and maximum frequences per test form for each item Category are")
+      message("The minimum and maximum frequences per test form for each item category are")
       print(min_max)
     }
 
@@ -83,11 +83,11 @@ autoItemValuesMinMax <- function(nForms, itemValues, allowedDeviation = NULL,
         }
 
     } else {  # constraints with respect to a minimum and maximum
-      out <- itemValuesMinMax(nForms, nItems, itemValues,
-                       min = min_max[1], max = min_max[2])
+      out <- itemValuesRange(nForms, nItems, itemValues,
+                       range = min_max)
       if(verbose){
-        message("The minimum and maximum values per test form are: ",
-                paste(min_max, collapse = " - "))
+        message("The minimum and maximum values per test form are: min = ",
+                paste(min_max, collapse = " - max = "))
       }
     }
   }

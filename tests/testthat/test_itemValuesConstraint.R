@@ -23,10 +23,10 @@ test_that("Item Values Constraint returns errors", {
 
 
 test_that("Item Values Min Max and Threshold", {
-  minMax <- itemValuesMinMax(2, 4, 2:5, min = 3, max = 5)
+  minMax <- itemValuesRange(2, 4, 2:5, range = c(3, 5))
   expect_equal(minMax[1:2, ], itemValuesMin(2, 4, 2:5, min = 3))
   expect_equal(minMax[3:4, ], itemValuesMax(2, 4, 2:5, 5))
-  expect_equal(minMax, itemValuesThreshold(2, 4, 2:5, 4, 1))
+  expect_equal(minMax, itemValuesDeviation(2, 4, 2:5, 4, 1))
 
   min <- itemValuesMin(3, 3, 1:3, 2)
   expect_equal(min[1,], c(1:3, rep(0, 6), 0, 1, 2))
@@ -40,8 +40,8 @@ test_that("Item Values Min Max and Threshold", {
 })
 
 test_that("Item Min Max returns error", {
-  expect_error(itemValuesMinMax(2, 4, 2:5, min = 3, max = 2),
-               "'min' should be smaller than 'max'.")
+  expect_error(itemValuesRange(2, 4, 2:5,range = c(3, 2)),
+               "The first value of 'range' should be smaller than second value of 'range'.")
 })
 
 

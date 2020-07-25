@@ -28,10 +28,10 @@ test_that("Item Category Constraint returns errors", {
 
 
 test_that("Item Category Min Max and Threshold", {
-  minMax <- itemCategoryMinMax(2, 20, factor(rep(1:2, 10)), min = c(3, 4), max = c(5, 6))
+  minMax <- itemCategoryRange(2, 20, factor(rep(1:2, 10)), range = cbind(min = c(3, 4), max = c(5, 6)))
   expect_equal(minMax[1:4, ], itemCategoryMin(2, 20, factor(rep(1:2, 10)), c(3, 4)))
   expect_equal(minMax[5:8, ], itemCategoryMax(2, 20, factor(rep(1:2, 10)), c(5, 6)))
-  expect_equal(minMax, itemCategoryThreshold(2, 20, factor(rep(1:2, 10)), c(4, 5), c(1, 1)))
+  expect_equal(minMax, itemCategoryDeviation(2, 20, factor(rep(1:2, 10)), c(4, 5), c(1, 1)))
 
 
   max <- itemCategoryMax(1, 3, factor(c(1, 2, 3)), max = c(1, 1, 1))
@@ -45,5 +45,17 @@ test_that("Item Category Min Max and Threshold", {
   expect_is(minMax, "Matrix")
 })
 
+
+
+test_that("Item Category Range returns errors", {
+  expect_error(itemCategoryRange(2, 20, factor(rep(1:2, 10)), range = cbind(min = c(6, 4), max = c(5, 6))),
+               "The values in the first column of 'range' should be smaller than the values in the second column of 'range'.")
+  expect_error(itemCategoryRange(2, 20, factor(rep(1:2, 10)), range = c(min = c(4, 4), max = c(5, 6))),
+               "itemCategories")
+  expect_error(itemCategoryRange(2, 20, factor(rep(1:3, 10)), range = rbind(min = c(4, 4, 2), max = c(5, 6, 3))),
+               "itemCategories")
+  expect_error(itemCategoryRange(2, 20, factor(rep(1:2, 10)), range = rbind(min = c(4, 4, 2), max = c(5, 6, 3))),
+               "itemCategories")
+})
 
 
