@@ -4,10 +4,13 @@
 \alias{analyzeBlockExclusion}
 \title{Analyze block exclusiveness}
 \usage{
-analyzeBlockExclusion(processedObj, exclusionTuples)
+analyzeBlockExclusion(processedObj, idCol, exclusionTuples)
 }
 \arguments{
-\item{processedObj}{Object created by \code{gurobi} solver and processed by \code{\link{processGurobiOutput}}. Must be a \code{list}.}
+\item{processedObj}{Object created by \code{gurobi} solver and processed by \code{\link{processGurobiOutput}}.
+Must be a \code{list}.}
+
+\item{idCol}{Column name with item IDs in the \code{data.frames} in \code{processedObj}.}
 
 \item{exclusionTuples}{\code{data.frame} with two columns, containing tuples with item IDs which should be in test forms exclusively.
 Must be the same object as used in \code{\link{itemExclusionConstraint}}.}

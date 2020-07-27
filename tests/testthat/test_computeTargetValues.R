@@ -2,6 +2,7 @@
 itemValues <- rep(1:4, times = 20)
 
 test_that("computeTargetValues works", {
+  expect_equal(computeTargetValues(c(0, 1, 1, 1, 0), 2, allowedDeviation = 1), c(min = 0.5, max = 2.5))
   expect_equal(computeTargetValues(2:5, 2), sum(2:5)/2)
   expect_equal(computeTargetValues(1:9, 2, testLength = 2), mean(1:9) * 2)
   expect_equal(computeTargetValues(-5:5, 2, allowedDeviation = 1),

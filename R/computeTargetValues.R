@@ -22,21 +22,24 @@
 #
 #' @inheritParams itemValuesConstraint
 #' @inheritParams itemCategoryConstraint
+#' @param allowedDeviation Numeric value of length 1. How much deviance is allowed from target values?
+#' @param relative Is the \code{allowedDeviation} expressed as a proportion?
+#' @param testLength to be documented.
 #'
-#'
-#' @return a vector or a matrix with targetValues (see details)
+#' @return a vector or a matrix with target values (see details)
 #'
 #'@examples
-#'
+#'computeTargetValues(items$MC, nForms = 14)
 #'
 #'@export
-computeTargetValues <- function(itemValues, ...)
+computeTargetValues <- function(itemValues, nForms, testLength = NULL,
+                                allowedDeviation = NULL, relative = FALSE)
   UseMethod("computeTargetValues", itemValues)
 
 #' @describeIn computeTargetValues compute target values
 #' @export
 computeTargetValues.default <- function(itemValues, nForms, testLength = NULL,
-                                        allowedDeviation = NULL, relative = FALSE, ...) {
+                                        allowedDeviation = NULL, relative = FALSE) {
 
   target <- 'if'(is.null(testLength),
                  sum(itemValues) / nForms,
@@ -57,7 +60,7 @@ computeTargetValues.default <- function(itemValues, nForms, testLength = NULL,
 #' @describeIn computeTargetValues compute target frequencies for item categories
 #' @export
 computeTargetValues.factor <- function(itemValues, nForms, testLength = NULL,
-                                       allowedDeviation = NULL, relative = FALSE, ...) {
+                                       allowedDeviation = NULL, relative = FALSE) {
 
   # the number of levels should be equal to the number of 'allowedDeviations'
   levels <- levels(itemValues)

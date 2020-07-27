@@ -8,7 +8,9 @@
 #' (via \code{\link{processGurobiOutput}}) this function determines, which item blocks are exclusive and can not be together in an
 #' assembled test form.
 #'
-#'@param processedObj Object created by \code{gurobi} solver and processed by \code{\link{processGurobiOutput}}. Must be a \code{list}.
+#'@param processedObj Object created by \code{gurobi} solver and processed by \code{\link{processGurobiOutput}}.
+#'Must be a \code{list}.
+#'@param idCol Column name with item IDs in the \code{data.frames} in \code{processedObj}.
 #'@param exclusionTuples \code{data.frame} with two columns, containing tuples with item IDs which should be in test forms exclusively.
 #' Must be the same object as used in \code{\link{itemExclusionConstraint}}.
 #'
@@ -45,17 +47,18 @@
 #' }
 #'
 #'@export
-analyzeBlockExclusion <- function(processedObj, exclusionTuples){
-  if(is.data.frame(processedObj)) stop("processedObj has to be a list, not a data.frame.")
+analyzeBlockExclusion <- function(processedObj, idCol, exclusionTuples){
+  if(is.data.frame(processedObj)) stop("'processedObj' has to be a list, not a data.frame.")
+  if(!idCol %in% names(processedObj[[1]])) stop("'idCol' must be a column name in the entries of 'processedObj'.")
 
   names(processedObj) <- paste0("block ", seq(length(processedObj)))
-  match_df <- do_call_rbind_withName(processedObj, colName = "block")[, c("ID", "block")]
-  if(!all(unlist(exclusionTuples) %in% match_df$ID)) stop("Currently analyzeBlockExclusion only works if item pool is depleted.")
+  match_df <- do_call_rbind_withName(processedObj, colName = "block")[, c(idCol, "block")]
+  if(!all(unlist(exclusionTuples) %in% match_df[, idCol])) stop("Currently analyzeBlockExclusion only works if item pool is depleted.")
 
 
   exclusionOut <- exclusionTuples
-  exclusionOut[, 1] <- match_df$block[match(exclusionOut[, 1], match_df$ID)]
-  exclusionOut[, 2] <- match_df$block[match(exclusionOut[, 2], match_df$ID)]
+  exclusionOut[, 1] <- match_df$block[match(exclusionOut[, 1], match_df[, idCol])]
+  exclusionOut[, 2] <- match_df$block[match(exclusionOut[, 2], match_df[, idCol])]
 
   out <- do.call(rbind, lapply(seq(nrow(exclusionOut)), function(row_no) {
     sorted_vec <- sort(exclusionOut[row_no, ])

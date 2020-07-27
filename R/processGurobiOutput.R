@@ -14,7 +14,13 @@
 #'@return a \code{data.frame} or a \code{list}.
 #'
 #'@examples
+#' ## using existing gurobi example
+#' processGurobiOutput(gurobiExample, items = items, nForms = 2, output = "list")
+#' processGurobiOutput(gurobiExample, items = items, nForms = 2, output = "data.frame")
+#'
 #' \dontrun{
+#'
+#' ## Full workflow
 #' items <- data.frame(paste0("item", 1:10), stringsAsFactors = FALSE)
 #'
 #' ## setup constraints

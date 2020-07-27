@@ -17,14 +17,18 @@ autoItemValuesMinMax(
 
 \item{itemValues}{Item parameter/values for which the sum per test form should be constrained.}
 
+\item{allowedDeviation}{Numeric value of length 1. How much deviance is allowed from target values?}
+
+\item{relative}{Is the \code{allowedDeviation} expressed as a proportion?}
+
 \item{verbose}{Should calculated values be reported?}
 }
 \value{
 A sparse matrix.
 }
 \description{
-\code{\link{itemValuesThreshold}} creates constraints related to an item parameter/value. \code{autoItemValuesMixMax} automatically
-determines the appropriate \code{targetValue} and then calls \code{\link{itemValuesThreshold}}. The function only works for
+\code{\link{itemValuesDeviation}} creates constraints related to an item parameter/value. \code{autoItemValuesMixMax} automatically
+determines the appropriate \code{targetValue} and then calls \code{\link{itemValuesDeviation}}. The function only works for
 (dichotomous) dummy indicators with values 0 and 1.
 }
 \details{

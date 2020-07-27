@@ -6,15 +6,20 @@
 \alias{computeTargetValues.factor}
 \title{Compute target values based on the item pool.}
 \usage{
-computeTargetValues(itemValues, ...)
+computeTargetValues(
+  itemValues,
+  nForms,
+  testLength = NULL,
+  allowedDeviation = NULL,
+  relative = FALSE
+)
 
 \method{computeTargetValues}{default}(
   itemValues,
   nForms,
   testLength = NULL,
   allowedDeviation = NULL,
-  relative = FALSE,
-  ...
+  relative = FALSE
 )
 
 \method{computeTargetValues}{factor}(
@@ -22,17 +27,22 @@ computeTargetValues(itemValues, ...)
   nForms,
   testLength = NULL,
   allowedDeviation = NULL,
-  relative = FALSE,
-  ...
+  relative = FALSE
 )
 }
 \arguments{
 \item{itemValues}{Item parameter/values for which the sum per test form should be constrained.}
 
 \item{nForms}{Number of forms to be created.}
+
+\item{testLength}{to be documented.}
+
+\item{allowedDeviation}{Numeric value of length 1. How much deviance is allowed from target values?}
+
+\item{relative}{Is the \code{allowedDeviation} expressed as a proportion?}
 }
 \value{
-a vector or a matrix with targetValues (see details)
+a vector or a matrix with target values (see details)
 }
 \description{
 Compute target values for item values/categories based on the number
@@ -64,6 +74,6 @@ minimal and maximal value is one (or zero).
 }}
 
 \examples{
-
+computeTargetValues(items$MC, nForms = 14)
 
 }

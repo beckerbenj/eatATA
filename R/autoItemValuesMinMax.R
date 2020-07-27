@@ -1,7 +1,7 @@
 #' Create single value constraints with minimum and maximum.
 #'
-#' \code{\link{itemValuesThreshold}} creates constraints related to an item parameter/value. \code{autoItemValuesMixMax} automatically
-#' determines the appropriate \code{targetValue} and then calls \code{\link{itemValuesThreshold}}. The function only works for
+#' \code{\link{itemValuesDeviation}} creates constraints related to an item parameter/value. \code{autoItemValuesMixMax} automatically
+#' determines the appropriate \code{targetValue} and then calls \code{\link{itemValuesDeviation}}. The function only works for
 #' (dichotomous) dummy indicators with values 0 and 1.
 #'
 #' Two scenarios are possible when automatically determining the target value: (a) Either items with the selected property could be exactly
@@ -54,9 +54,11 @@
 autoItemValuesMinMax <- function(nForms, itemValues, allowedDeviation = NULL,
                                  relative = FALSE, verbose = TRUE){
 
-  # compute the minmum and maximum values
+  # compute the minimum and maximum values
   min_max <- computeTargetValues(itemValues, nForms, testLength = NULL,
-                                 allowedDeviation, relative)
+                                 allowedDeviation = allowedDeviation, relative = relative)
+  min_max <- round(min_max, 2)
+  if(min_max[1] < 0) min_max[1] <- 0
 
   # compute the number of items
   nItems <- length(itemValues)

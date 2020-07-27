@@ -32,7 +32,7 @@ library(eatATA)
 
 
 ## Prepare item pool information
-First we import the item pool information into `R`. For this purpose we recommend using the package `readxl`. As this package imports the data as a `tibble`, we transform it to a `data.frame`. `R` requires a rectangular data set (and often excel files store additional information outside of this format). The `skip` argument can be used to skip unnecessary rows in the `excel` file. (note that the item pool can also be directly accessed in the package via `items`; see `items` for more information)
+First we import the item pool information into `R`. For this purpose we recommend using the package `readxl`. As this package imports the data as a `tibble`, we transform it to a `data.frame`. `R` requires a rectangular data set (and often excel files store additional information outside of this format). The `skip` argument can be used to skip unnecessary rows in the `excel` file. (note that the item pool can also be directly accessed in the package via `items`; see `?items` for more information)
 
 ```{r import items, message = FALSE}
 items_path <- system.file("extdata", "items.xlsx", package = "eatATA")
@@ -40,13 +40,13 @@ items_path <- system.file("extdata", "items.xlsx", package = "eatATA")
 items <- as.data.frame(readxl::read_excel(path = items_path), stringsAsFactors = FALSE)
 ```
 
-In this vignette we use an fictional example item pool of 80 items. The items have different properties: item format (`MC`, `CMC`, `short_answer`, or `open`), difficulty (`diff_1` - `diff_5`), average response times in minutes (`RT_in_min`) and similar items that can not be in the same booklet or test form (`exclusions`).
+In this vignette we use a fictional example item pool of 80 items. The items have different properties: item format (`MC`, `CMC`, `short_answer`, or `open`), difficulty (`diff_1` - `diff_5`), average response times in minutes (`RT_in_min`) and similar items that can not be in the same booklet or test form (`exclusions`).
 
 ```{r inspect items, message = FALSE}
 head(items)
 ```
 
-Next, we clean the imported data (all dummy variables have to use the values 0 (category does not apply) and 1 (category does apply). 
+Next, we clean the imported data: All dummy variables have to use the values 0 (category does not apply) and 1 (category does apply). Alternatively, item properties can also be supplied as factors (see `?autoItemValuesMinMax` for further information).
 
 ```{r data cleaning, message = FALSE}
 # clean data set (categorical dummy variables must contain only 0 and 1)
@@ -87,24 +87,24 @@ The first two constraints (no item overlap and item pool depletion) can be imple
 itemOverlap <- itemUsageConstraint(nForms, nItems = nItems, operator = "=") 
 ```
 
-Categorical variables (like item format or, like in this case, item difficulty), can be implemented by using dummy variables and the `autoItemValuesMinMax()` function. It automatically determines the target value for the category. The `threshold` argument specifies the required range between booklets regarding the category. The functions prints the calculated target value and the resulting allowed values on booklet level.    
+Categorical variables (like item format or, like in this case, item difficulty), can be implemented by using dummy variables and the `autoItemValuesMinMax()` function. It automatically determines the target value for the category. The `allowedDeviation` argument specifies the required range between booklets regarding the category. The function prints the calculated target value and the resulting allowed values on booklet level.    
 
 ```{r categorical constraints}
 # item formats
-mcItems <- autoItemValuesMinMax(nForms = nForms, nItems = nItems, itemValues = items$MC, threshold = 0)
-cmcItems <- autoItemValuesMinMax(nForms = nForms, nItems = nItems, itemValues = items$CMC, threshold = 0)
-kaItems <- autoItemValuesMinMax(nForms = nForms, nItems = nItems, itemValues = items$short_answer, threshold = 0)
-offenItems <- autoItemValuesMinMax(nForms = nForms, nItems = nItems, itemValues = items$open, threshold = 0)
+mcItems <- autoItemValuesMinMax(nForms = nForms, itemValues = items$MC, allowedDeviation = 1)
+cmcItems <- autoItemValuesMinMax(nForms = nForms, itemValues = items$CMC, allowedDeviation = 1)
+saItems <- autoItemValuesMinMax(nForms = nForms, itemValues = items$short_answer, allowedDeviation = 1)
+openItems <- autoItemValuesMinMax(nForms = nForms, itemValues = items$open, allowedDeviation = 1)
 
 # difficulty categories
-Items1 <- autoItemValuesMinMax(nForms = nForms, nItems = nItems, itemValues = items$diff_1, threshold = 0)
-Items2 <- autoItemValuesMinMax(nForms = nForms, nItems = nItems, itemValues = items$diff_2, threshold = 0)
-Items3 <- autoItemValuesMinMax(nForms = nForms, nItems = nItems, itemValues = items$diff_3, threshold = 0)
-Items4 <- autoItemValuesMinMax(nForms = nForms, nItems = nItems, itemValues = items$diff_4, threshold = 0)
-Items5 <- autoItemValuesMinMax(nForms = nForms, nItems = nItems, itemValues = items$diff_5, threshold = 0)
+Items1 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_1, allowedDeviation = 1)
+Items2 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_2, allowedDeviation = 1)
+Items3 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_3, allowedDeviation = 1)
+Items4 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_4, allowedDeviation = 1)
+Items5 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_5, allowedDeviation = 1)
 ```
 
-To implement item exclusion constraints we use two functions: `itemExclusionTuples()` and `itemExclusionConstraint()`. Often item exclusions are originally supplied as a single character string for each item, with item identifiers separates, for example, by `", "`.
+To implement item exclusion constraints we use two functions: `itemExclusionTuples()` and `itemExclusionConstraint()`. Often item exclusions are originally supplied as a single character string for each item, with item identifiers separated by `", "`.
 
 ```{r exclusion demo}
 # item exclusions variable
@@ -119,7 +119,7 @@ exclusionTuples <- itemExclusionTuples(items, idCol = "Item_ID", exclusions = "e
 excl_constraints <- itemExclusionConstraint(nForms = 14, exclusionTuples = exclusionTuples, itemIDs = items$Item_ID)
 ```
 
-Another sometimes desirable constraint is the number of items per test forms. This can be implemented using the `itemsPerFormConstraint()` function. 
+Another sometimes desirable constraint is the number of items per test forms. This can be implemented using the `itemsPerFormConstraint()` function. (this constraint is not implemented in the final example below) 
 
 ```{r item numbers constraints}
 # number of items per test form
@@ -129,7 +129,7 @@ noItems <- itemsPerFormConstraint(nForms = nForms, nItems = nItems,
 
 ```
 
-Finally, we set up our optimization constraint. This constraint is not a clear *yes* or *no* constraint. Instead, the optimizer will minimize the distance of the actual booklet value for all booklets towards a target value. In our example we specify 10 minutes as the target response time `RT_in_min` for all booklets.
+Finally, we set up our optimization constraint. This constraint is not a clear *yes* or *no* constraint. Instead, the optimizer will minimize the distance of the actual booklet value for all booklets towards a target value. In our example, we specify 10 minutes as the target response time `RT_in_min` for all booklets.
 
 ```{r target constraints}
 # optimize average time
@@ -142,13 +142,14 @@ Before calling the optimization algorithm we have to prepare the specified const
 
 ```{r prepare constraints, eval = T}
 # Prepare constraints
-gurobi_constr <- list(itemOverlap, mcItems, excl_constraints,
+gurobi_constr <- list(itemOverlap, mcItems, cmcItems, saItems, openItems, 
+                      Items1, Items2, Items3, Items4, Items5, excl_constraints,
                       av_time)
 
 gurobi_rdy <- prepareConstraints(gurobi_constr, nForms = nForms, nItems = nItems)
 ```
 
-Now we can call `Gurobis` `gurobi()` function, which will solve the optimization problem for us. Using the `params` argument we can set options and parameters of the solver. By setting the `TimeLimit` to 30, we limit `Gurobi` to stop searching for an optimal solution after 30 seconds. For most small test assembly problems, however, solution times will be much shorter. 
+Now we can call `Gurobis` `gurobi()` function, which will solve the optimization problem for us. Using the `params` argument we can set options and parameters of the solver. By setting the `TimeLimit` to 30, we limit `Gurobi` to stop searching for an optimal solution after 30 seconds. For most small test assembly problems, however, computation times will be much shorter. 
 
 ```{r solver, eval = FALSE}
 library(gurobi)
@@ -160,35 +161,47 @@ solver_raw <- gurobi(gurobi_rdy, params = list(TimeLimit = 30))
 
 If the problem is feasible, the output printed by `Gurobi` will look like this:
 
-<insert Gurobi output>
+```{r feasible output, eval = TRUE, echo = FALSE}
+out_path <- system.file("extdata", "gurobi_out_feasible.RDS", package = "eatATA")
+cat(readRDS(out_path))
+```
 
 If the problem is unfeasible, the output printed by `Gurobi` will look like this:
 
-<insert other Gurobi output>
+```{r infeasible output, eval = TRUE, echo = FALSE}
+out_path <- system.file("extdata", "gurobi_out_infeasible.RDS", package = "eatATA")
+cat(readRDS(out_path))
+```
 
-In this case, we will want to relax some of the constraints. For first diagnostic purposes we can omit some constraints completely, to see which constraints are especially challenging. If we have a better grasp of the possibilities of the item pool, wen can add these constraints back, but for example with larger thresholds.
+In this case, we will want to relax some of the constraints. For first diagnostic purposes we can omit some constraints completely, to see which constraints are especially challenging. If we have a better grasp of the possibilities of the item pool, wen can add these constraints back, but for example with larger `allowedDeviations`.
 
 ## Inspect Solution
 
 We can inspect the solution provided by `Gurobi` using the `processGurobiOutput()` function. If we set the `output` argument to `"list"`, we get a list output which is easy to read. If we set the argument to `"data.frame"`, we get an output optimized for exporting, for example to excel.
 
-```{r inspect solution, eval = FALSE}
-out_list <- processGurobiOutput(solver_raw, items = items, nForms = nForms, output = "list")
-out_list
+```{r load solver output, eval = TRUE, echo = FALSE}
+solver_raw <- gurobiExample
 ```
-If we want to assemble the created booklets to test forms, we might be interested in booklet exclusions that might result from item exclusions. We can use the `analyzeBlockExclusion` to obtain tuples with booklet exclusions.
 
-```{r block exclusions, eval = FALSE}
-analyzeBlockExclusion(processedObj = out_list, exclusionTuples = exclusionTuples)
+```{r inspect solution}
+out_list <- processGurobiOutput(solver_raw, items = items, nForms = nForms, output = "list")
+
+## first two booklets
+out_list[1:2]
+```
+If we want to assemble the created booklets to test forms, we might be interested in booklet exclusions that can result from item exclusions. We can use the `analyzeBlockExclusion` to obtain tuples with booklet exclusions.
+
+```{r block exclusions}
+analyzeBlockExclusion(processedObj = out_list, idCol = "Item_ID", exclusionTuples = exclusionTuples)
 
 ```
 
 ## Save as Excel
-Finally, it is often desirable to export the solution as an `Excel` file (`.xlsx`). This can, for example, be achieved via the `eatAnalysis` package, which has to be installed from Github.
+Finally, it is often desirable to export the solution as an `Excel` file (`.xlsx`). This can, for example, be achieved via the `eatAnalysis` package, which has to be installed from `Github`.
 
 ```{r export solution to excel, eval = FALSE}
 devtools::install_github("beckerbenj/eatAnalysis")
-out_df <- processGurobiOutput(solver_raw, items = items, nForms = nForms, output = "list")
+out_df <- processGurobiOutput(solver_raw, items = items, nForms = nForms, output = "data.frame")
 
 eatAnalysis::write_xlsx(out_df, filePath = "example_excel.xlsx",
                         row.names = FALSE)

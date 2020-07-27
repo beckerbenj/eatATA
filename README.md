@@ -9,7 +9,7 @@
 
 ## Overview
 
-`eatATA` provides an `R` interface to the mathematical optimization solver `Gurobi`. It can be used to solve simple automated test assembly problems (ATA).
+`eatATA` provides an `R` interface to the mathematical optimization solver `Gurobi`. It can be used to solve simple automated test assembly problems (*ATA*).
 
 ## Installation
 
