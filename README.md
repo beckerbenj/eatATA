@@ -9,7 +9,7 @@
 
 ## Overview
 
-`eatATA` provides an `R` interface to the mathematical optimization solver `Gurobi`. It can be used to solve simple automated test assembly problems (*ATA*).
+`eatATA` provides a small `R` interface to mathematical optimization solvers specialized on solving simple automated test assembly problems (*ATA*). Internally, sparse matrices are used via the `Matrix` package. Currently the only supported solver  is `Gurobi`. See below for a list of implemented features and feature to come.
 
 ## Installation
 
@@ -18,9 +18,37 @@
 devtools::install_github("beckerbenj/eatATA", build_vignettes = TRUE)
 ```
 
-## Usage
+## Documentation
 
 ```R
 library(eatATA)
 vignette("eatATA")
 ```
+
+## Implemented Features
+
+The following types of constraints can be set via `eatATA`:
+
+* no item overlap between test forms
+
+* complete item pool depletion
+
+* categorical and numerical constraints across test forms
+
+* excluding items from beeing together in the same booklet (item exclusions)
+
+* simple optimization constraints
+
+## Outlook
+
+We are hoping to build interfaces to other mathematical optimization solvers. The current interface to `Gurobi` is the function `prepareConstraints()`. 
+
+Constraints that we hope to implement in the future:
+
+* force items to be in the same test form
+
+* more complex optimization targets
+
+If you wish to contribute to the package, please send an email to b.becker@iqb.hu-berlin.de.
+
+
