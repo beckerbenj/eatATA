@@ -6,19 +6,25 @@
 #'
 #' Both for numerical and categorical item values, the target values are the item
 #' pool average scaled by the ratio of items in the forms and items in the item
-#' pool.
+#' pool. The behavior of the function changes depeding on the class of
+#' \code{itemValues}.
 #'
-#' When the \code{allowedDeviation} is \code{NULL} (the default), only one target
-#' value is computed. Otherwise, the target is computed, but a minimal and a
-#' maximal (target)value is returned, based on the allowed deviation. When
-#' \code{relative == TRUE} the allowed deviation should be expressed as a
-#' proportion. In that case the minimal and maximal values are a computed
-#' proportionally.
+#' When \code{itemValues} is a numerical vector, an when \code{allowedDeviation}
+#' is \code{NULL} (the default), only one target value is computed. This value
+#' could be used in the \code{targetConstraint}-function. Otherwise (i.e.,
+#' \code{allowedDeviation} is a numerical value), the target is computed, but a
+#' minimal and a maximal (target)value are returned, based on the allowed
+#' deviation. When \code{relative == TRUE} the allowed deviation should be
+#' expressed as a proportion. In that case the minimal and maximal values are
+#' a computed proportionally.
 #'
-#' When \code{itemValues} is a \code{factor}, a matrix with the minimal and
-#' maximal target frequencies for every level of the factor are returned.
-#' When \code{allowedDeviation} is \code{NULL}, the difference between the
-#' minimal and maximal value is one (or zero).
+#' When \code{itemValues} is a \code{factor}, it is assumed that the item values
+#' are item categories, and hence only whole valued frequencies are returned.
+#' To be more precise, a matrix with the minimal and maximal target frequencies
+#' for every level of the factor are returned. When \code{allowedDeviation}
+#' is \code{NULL}, the difference between the minimal and maximal value is
+#' one (or zero). As a consequence, dummy-item values are best specified as a
+#' factor (see examples).
 #
 #' @inheritParams itemValuesConstraint
 #' @inheritParams itemCategoryConstraint
@@ -28,10 +34,37 @@
 #'
 #' @return a vector or a matrix with target values (see details)
 #'
-#'@examples
-#'computeTargetValues(items$MC, nForms = 14)
+#' @examples
+#' ## Assume an item pool with 50 items with random item information values (iif) for
+#' ## a given ability value.
+#' set.seed(50)
+#' itemInformations <- runif(50, 0.5, 3)
 #'
-#'@export
+#' ## The target value for the test information value (i.e., sum of the item
+#' ## informations) when three test forms of 10 items are assembled is:
+#' computeTargetValues(itemInformations, nForms = 3, testLength = 10)
+#'
+#' ## The minimum and maximum test iformation values for an allowed deviation of
+#' ## 10 percent are:
+#' computeTargetValues(itemInformations, nForms = 3, allowedDeviation = .10,
+#'    relative = TRUE, testLength = 10)
+#'
+#'
+#' ## items$MC is dummy variable indication which items in the pool are multiple choise
+#' str(items$MC)
+#'
+#' ## when used as a numerical vector, the dummy is not treated as a categorical
+#' ## indicator, but rather as a numerical value.
+#' computeTargetValues(items$MC, nForms = 14)
+#' computeTargetValues(items$MC, nForms = 14, allowedDeviation = 1)
+#'
+#' ## Therefore, it is best to convert dummy variables into a factor, so that
+#' ## automatically freqyencies are returned
+#' MC_factor <- factor(items$MC, labels = c("not MC", "MC"))
+#' computeTargetValues(MC_factor, nForms = 14)
+#' computeTargetValues(MC_factor, nForms = 3)
+#'
+#' @export
 computeTargetValues <- function(itemValues, nForms, testLength = NULL,
                                 allowedDeviation = NULL, relative = FALSE)
   UseMethod("computeTargetValues", itemValues)
