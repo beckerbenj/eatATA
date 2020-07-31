@@ -8,6 +8,8 @@
 #'@param dat A \code{data.frame}.
 #'@param dummies Character vector containing the names of the dummy variables in the \code{data.frame}.
 #'@param facVar Name of the factor variable, that should be created.
+#'@param nameEmptyCategory a character of length 1 that defines the name of cases
+#'  for which no dummy is equal to one.
 #'
 #'@return A \code{data.frame} containing the newly created factor.
 #'
@@ -18,12 +20,14 @@
 #' dummiesToFactor(tdat, dummies = c("d1", "d2", "d3"), facVar = "newFac")
 #'
 #'@export
-dummiesToFactor <- function(dat, dummies, facVar) {
+dummiesToFactor <- function(dat, dummies, facVar, nameEmptyCategory = "_none_") {
   if(!is.data.frame(dat)) stop("'dat' needs to be a data.frame.")
   if(!is.character(dummies)) stop("'dummies' needs to be a character vector.")
   if(!all(dummies %in% names(dat))) stop("All 'dummies' have to be columns in 'dat'.")
   if(!is.character(facVar) || length(facVar) != 1) stop("'facVar' needs to be a character vector of length 1.")
   if(facVar %in% names(dat)) stop("'facVar' is an existing column in 'dat'.")
+
+  if(!is.character(nameEmptyCategory) || length(nameEmptyCategory) != 1) stop("'nameEmptyCategory' needs to be a character vector of length 1.")
 
   dummie_dat <- dat[, dummies, drop = FALSE]
   if(!all(unlist(dummie_dat) %in% c(0, 1, NA))) stop("All values in the 'dummies' columns have to be 0, 1 or NA.")
@@ -31,6 +35,21 @@ dummiesToFactor <- function(dat, dummies, facVar) {
   illegal_rows <- which(rowSums(dummie_dat) > 1)
   if(length(illegal_rows) > 0) stop("For these rows, more than 1 dummy variable is 1: ",
                                     paste(illegal_rows, collapse = ", "))
+  no_dummy_rows <- rowSums(dummie_dat) == 0
+  if(length(which(no_dummy_rows)) > 0) {
+    index <- 1
+    name <- nameEmptyCategory
+    while (name %in% names(dummie_dat)) {
+      name <- paste0(nameEmptyCategory, index)
+      index <- index + 1
+    }
+    warning("For these rows, there is no dummy variable equal to 1: ",
+            paste(illegal_rows, collapse = ", "),
+            "\n",
+            "A '", name, " 'category is created for these rows.")
+    dummie_dat[name] <- 1 * no_dummy_rows
+  }
+
 
   fac <- factor(names(dummie_dat)[max.col(dummie_dat)])
   out <- cbind(dat, fac)
