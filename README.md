@@ -47,6 +47,8 @@ Constraints that we hope to implement in the future:
 
 * force items to be in the same test form
 
+* taking into account hierarchical stimulus-item structures
+
 * more complex optimization targets
 
 If you wish to contribute to the package, please send an email to b.becker@iqb.hu-berlin.de.
