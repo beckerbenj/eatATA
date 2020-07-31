@@ -25,7 +25,9 @@ dummiesToFactor <- function(dat, dummies, facVar, nameEmptyCategory = "_none_") 
   if(!is.character(dummies)) stop("'dummies' needs to be a character vector.")
   if(!all(dummies %in% names(dat))) stop("All 'dummies' have to be columns in 'dat'.")
   if(!is.character(facVar) || length(facVar) != 1) stop("'facVar' needs to be a character vector of length 1.")
+  if(!is.character(nameEmptyCategory) || length(nameEmptyCategory) != 1) stop("'nameEmptyCategory' needs to be a character vector of length 1.")
   if(facVar %in% names(dat)) stop("'facVar' is an existing column in 'dat'.")
+  if(nameEmptyCategory %in% dummies) stop("'nameEmptyCategory' is an existing category in 'dummies'.")
 
   if(!is.character(nameEmptyCategory) || length(nameEmptyCategory) != 1) stop("'nameEmptyCategory' needs to be a character vector of length 1.")
 
@@ -35,19 +37,15 @@ dummiesToFactor <- function(dat, dummies, facVar, nameEmptyCategory = "_none_") 
   illegal_rows <- which(rowSums(dummie_dat) > 1)
   if(length(illegal_rows) > 0) stop("For these rows, more than 1 dummy variable is 1: ",
                                     paste(illegal_rows, collapse = ", "))
-  no_dummy_rows <- rowSums(dummie_dat) == 0
-  if(length(which(no_dummy_rows)) > 0) {
-    index <- 1
-    name <- nameEmptyCategory
-    while (name %in% names(dummie_dat)) {
-      name <- paste0(nameEmptyCategory, index)
-      index <- index + 1
-    }
+
+  no_dummy_rows <- which(rowSums(dummie_dat) == 0)
+  if(length(no_dummy_rows) > 0) {
     warning("For these rows, there is no dummy variable equal to 1: ",
-            paste(illegal_rows, collapse = ", "),
+            paste(no_dummy_rows, collapse = ", "),
             "\n",
-            "A '", name, " 'category is created for these rows.")
-    dummie_dat[name] <- 1 * no_dummy_rows
+            "A '", nameEmptyCategory, " 'category is created for these rows.")
+    dummie_dat[, nameEmptyCategory] <- 0
+    dummie_dat[no_dummy_rows, nameEmptyCategory] <- 1
   }
 
 
