@@ -20,7 +20,7 @@ A \code{data.frame} containing the newly created factor.
 Convert multiple dummy variables into a single factor variable.
 }
 \details{
-The content of a single factor variable can alternatively be stored in multiple dichotomous dummy variables coded with \code{0}/\code{1} or \code{NA}/\code{1}. \code{1} always has to refer to "this category applies".
+The content of a single factor variable can alternatively be stored in multiple dichotomous dummy variables coded with \code{0}/\code{1} or \code{NA}/\code{1}. \code{1} always has to refer to "this category applies". The function requires factor levels to be exclusive (i.e. only one factor level applies per row.).
 }
 \examples{
 # Example data set

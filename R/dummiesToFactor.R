@@ -3,7 +3,7 @@
 #'
 #' Convert multiple dummy variables into a single factor variable.
 #'
-#' The content of a single factor variable can alternatively be stored in multiple dichotomous dummy variables coded with \code{0}/\code{1} or \code{NA}/\code{1}. \code{1} always has to refer to "this category applies".
+#' The content of a single factor variable can alternatively be stored in multiple dichotomous dummy variables coded with \code{0}/\code{1} or \code{NA}/\code{1}. \code{1} always has to refer to "this category applies". The function requires factor levels to be exclusive (i.e. only one factor level applies per row.).
 #'
 #'@param dat A \code{data.frame}.
 #'@param dummies Character vector containing the names of the dummy variables in the \code{data.frame}.
@@ -28,7 +28,9 @@ dummiesToFactor <- function(dat, dummies, facVar) {
   dummie_dat <- dat[, dummies, drop = FALSE]
   if(!all(unlist(dummie_dat) %in% c(0, 1, NA))) stop("All values in the 'dummies' columns have to be 0, 1 or NA.")
   dummie_dat[is.na(dummie_dat)] <- 0
-  if(any(rowSums(dummie_dat) > 1)) stop("For some rows, more than 1 dummy variable is 1.")
+  illegal_rows <- which(rowSums(dummie_dat) > 1)
+  if(length(illegal_rows) > 0) stop("For these rows, more than 1 dummy variable is 1: ",
+                                    paste(illegal_rows, collapse = ", "))
 
   fac <- factor(names(dummie_dat)[max.col(dummie_dat)])
   out <- cbind(dat, fac)

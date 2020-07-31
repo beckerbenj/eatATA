@@ -46,15 +46,25 @@ In this vignette we use a fictional example item pool of 80 items. The items hav
 head(items)
 ```
 
-Next, we clean the imported data: All dummy variables have to use the values 0 (category does not apply) and 1 (category does apply). Alternatively, item properties can also be supplied as factors (see `?autoItemValuesMinMax` for further information).
+Next, we clean the imported data: All dummy variables have to use the values 0 (category does not apply) and 1 (category does apply). In general, dummy variables can be summarized to a single factor variable using the function `dummiesToFactor()`. This, however, is only possible if the factor levels are exclusive. In our example item pool, our items can contain subitems with different format or difficulties or more than 1 item of a kind. In this case, the function will throw an error.
+
+```{r dummies to factors, error = TRUE}
+# clean data set (categorical dummy variables must contain only 0 and 1)
+items <- dummiesToFactor(items, dummies = c("MC", "CMC", "short_answer", "open"), facVar = "itemFormat")
+items <- dummiesToFactor(items, dummies = paste0("diff_", 1:5), facVar = "itemDiff")
+items[c(24, 33, 37, 47, 48, 54, 76), ]
+```
+
+Therefore, in our example the dummy variables are true numerical variables and should be treated as such (see `?autoItemValuesMinMax` and `?computeTargetValues` for further information). In this case, we have to transform the missing values to 0.
 
 ```{r data cleaning, message = FALSE}
 # clean data set (categorical dummy variables must contain only 0 and 1)
 for(ty in c(paste0("diff_", 1:5), "MC", "CMC", "short_answer", "open")){
-  items[, ty] <- ifelse(is.na(items[, ty]), yes = 0, no = 1)
+  items[, ty] <- ifelse(is.na(items[, ty]), yes = 0, no = items[, ty])
 }
 
-head(items)
+# example item format
+table(items$short_answer)
 ```
 
 We set up two variables we will use later frequently: number of test forms or booklets to be created (`nForms`) and number of items in the item pool (`nItems`).
@@ -87,7 +97,7 @@ The first two constraints (no item overlap and item pool depletion) can be imple
 itemOverlap <- itemUsageConstraint(nForms, nItems = nItems, operator = "=") 
 ```
 
-Categorical variables (like item format or, like in this case, item difficulty), can be implemented by using dummy variables and the `autoItemValuesMinMax()` function. It automatically determines the target value for the category. The `allowedDeviation` argument specifies the required range between booklets regarding the category. The function prints the calculated target value and the resulting allowed values on booklet level.    
+Categorical variables (like item format or, like in this case, item difficulty), can be implemented by using dummy variables and the `autoItemValuesMinMax()` function. It automatically determines the target value for the category. The `allowedDeviation` argument specifies the required range between booklets regarding the category. If the argument is omitted, it defaults to "no deviation is allowed", which would work for factors. As we are working with numeric values, we have to specify `allowedDeviation = 1`. The function prints the calculated target value and the resulting allowed value range on booklet level.    
 
 ```{r categorical constraints}
 # item formats

@@ -17,7 +17,7 @@ test_that("Errors dummiesToFactor", {
   expect_error(dummiesToFactor(tdat2, dummies = c("d1", "d2", "d3"), facVar = "newFact"),
                "All values in the 'dummies' columns have to be 0, 1 or NA.")
   expect_error(dummiesToFactor(tdat3, dummies = c("d1", "d2", "d3"), facVar = "newFact"),
-               "For some rows, more than 1 dummy variable is 1")
+               "For these rows, more than 1 dummy variable is 1: 2")
 })
 
 
