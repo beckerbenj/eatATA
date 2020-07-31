@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-`eatATA` efficiently translates test design requirements for Automated Test Assembly (ATA) into constraints for a Mixed Integer Linear Programming Model (MILP). A number of efficient and user-friendly functions are available, and the resulting matrix of constrains can be easily transformed to be inline with a MILP solver, like the `Gurobi` solver. In the remainder of this vignette I will illustrate the typical use of `eatATA` using a case-based example.
+`eatATA` efficiently translates test design requirements for Automated Test Assembly (ATA) into constraints for a Mixed Integer Linear Programming Model (MILP). A number of efficient and user-friendly functions are available, and the resulting matrix of constrains can be easily transformed to be in line with a MILP solver, like the `Gurobi` solver. In the remainder of this vignette I will illustrate the typical use of `eatATA` using a case-based example.
 
 ## Setup
 The `eatATA` package can be installed from GitHub. Note that older R versions had issues with installations from online repositories like GitHub. `R` version `> 3.6.0` should work without any issues. 
@@ -27,10 +27,10 @@ devtools::install_github("beckerbenj/eatATA")
 
 To use `eatATA`, you also need to install the `Gurobi` solver and its corresponding `R` package. A detailed vignette on the installation process can be found [here](https://cran.r-project.org/web/packages/prioritizr/vignettes/gurobi_installation.html). 
 
-When the `Gurobi` solver and its corresponding `R` package installed on your machine, `eatATA` can be loaded into your `R` session.
+First, `eatATA` is loaded into your `R` session.
 
 ```{r library, message = FALSE}
-# loading all necessary packages
+# loading eatATA
 library(eatATA)
 ```
 
@@ -38,7 +38,7 @@ library(eatATA)
 ## Item pool
 No ATA without an item pool. In this example I use a fictional example item pool of 80 items. The item pool information is stored as an `excel` file that is included in the package. To import the item pool information into `R` I recommend using the package `readxl`. This package imports the data as a `tibble`, but in the code below, the item pool is immediately transformed into a `data.frame`. 
 
-Note that `R` requires a rectangular data set. Yet often excel files store additional information in rows above or below the "rectangular" item pool information. The `skip` argument in the `read_excel()` function can be used to skip unnecessary rows in the `excel` file. (Note that the item pool can also be directly accessed in the package via `items`; see `?items` for more information.)
+Note that `R` requires a rectangular data set. Yet, often excel files store additional information in rows above or below the "rectangular" item pool information. The `skip` argument in the `read_excel()` function can be used to skip unnecessary rows in the `excel` file. (Note that the item pool can also be directly accessed in the package via `items`; see `?items` for more information.)
 
 ```{r import items, message = FALSE}
 items_path <- system.file("extdata", "items.xlsx", package = "eatATA")
@@ -85,7 +85,7 @@ table(items$short_answer)
 
 ## ATA goal
 
-In this example the goal is to assemble 14 booklets out of the 80 items item pool. All items should be assigned to one (and only one booklet), so that there is no item overlap and the item pool is completely depleted.
+In this example, the goal is to assemble 14 booklets out of the 80 items item pool. All items should be assigned to one (and only one booklet), so that there is no item overlap and the item pool is completely depleted.
 
 To be more precise, the required constraints are:
 
@@ -121,7 +121,7 @@ itemOverlap <- itemUsageConstraint(nForms, nItems = nItems, operator = "=")
 
 Constraints with respect to categorical variables or factors (like `MC_open_none`) or numerical variables (like `short_answer`), can be easily implemented using the `autoItemValuesMinMax()` function. The result of this function depends on whether a factor or a numerical variable is used. That is, `autoItemValuesMinMax()` automatically determines the minimum and maximum frequency of each category of a factor. But for numerical variables, it automatically determines the target value. 
 
-The `allowedDeviation` argument specifies the allowed range between booklets regarding the category or the numerical value. If the argument is omitted, it defaults to "no deviation is allowed" for numerical values, and to the minimal possible deviation for categorical variables or factors. Hence, when fur numeric values, I will specify `allowedDeviation = 1`. The function prints the calculated target value or the resulting allowed value range on booklet level.    
+The `allowedDeviation` argument specifies the allowed range between booklets regarding the category or the numerical value. If the argument is omitted, it defaults to "no deviation is allowed" for numerical values, and to the minimal possible deviation for categorical variables or factors. Hence, for numeric values, I will specify `allowedDeviation = 1`. The function prints the calculated target value or the resulting allowed value range on booklet level.    
 
 ```{r categorical constraints}
 # item formats
@@ -137,7 +137,7 @@ Items4 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_4, allow
 Items5 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_5, allowedDeviation = 1)
 ```
 
-To implement item exclusion constraints two function can be used: `itemExclusionTuples()` and `itemExclusionConstraint()`. When item exclusions are supplied as a single character string for each item, with item identifiers separated by `", "`, they should be transformed first.
+To implement item exclusion constraints, two function can be used: `itemExclusionTuples()` and `itemExclusionConstraint()`. When item exclusions are supplied as a single character string for each item, with item identifiers separated by `", "`, they should be transformed first.
 
 ```{r exclusion demo}
 # item exclusions variable
@@ -148,8 +148,10 @@ This transformation can be done using the `itemExclusionTuples()` function, whic
 
 ```{r exclusion constraints}
 # item exclusions
-exclusionTuples <- itemExclusionTuples(items, idCol = "Item_ID", exclusions = "exclusions", sepPattern = ", ")
-excl_constraints <- itemExclusionConstraint(nForms = 14, exclusionTuples = exclusionTuples, itemIDs = items$Item_ID)
+exclusionTuples <- itemExclusionTuples(items, idCol = "Item_ID", 
+                                       exclusions = "exclusions", sepPattern = ", ")
+excl_constraints <- itemExclusionConstraint(nForms = 14, exclusionTuples = exclusionTuples, 
+                                            itemIDs = items$Item_ID)
 ```
 
 Another helpful function is the `itemsPerFormConstraint()` function, which constrains the number of items per test forms. However, since this is not required in this example, I will not use these constraints in the final ATA constraints.
@@ -171,7 +173,7 @@ av_time <- itemTargetConstraint(nForms, nItems = nItems, itemValues = items$RT_i
 
 
 ## Prepare constraints and run solver
-Before calling the optimization algorithm the specified constraints should be formatted to be in line with`Gurobi`. First I collect all the constraints that should be used in a `list`, which I then use in the `prepareConstraints()` function. 
+Before calling the optimization algorithm the specified constraints should be formatted to be in line with `Gurobi`. First, I collect all the constraints that should be used in a `list`, which I then use in the `prepareConstraints()` function. 
 
 ```{r prepare constraints, eval = T}
 # Prepare constraints
@@ -210,7 +212,7 @@ If the latter happens, one option is to relax some of the constraints. Further, 
 
 ## Inspect Solution
 
-The solution provided by `Gurobi` can be inspected using the `processGurobiOutput()` function. If the `output` argument is set to `"list"`, you get a list output which is easy to read. If the `output` argument to `"data.frame"`, you get an output optimized for exporting, for example to excel.
+The solution provided by `Gurobi` can be inspected using the `processGurobiOutput()` function. If the `output` argument is set to `"list"`, you get a list output which is easy to read. If the `output` argument to `"data.frame"`, you get an output optimized for exporting, for example to `excel`.
 
 ```{r load solver output, eval = TRUE, echo = FALSE}
 solver_raw <- gurobiExample
@@ -222,7 +224,7 @@ out_list <- processGurobiOutput(solver_raw, items = items, nForms = nForms, outp
 ## first two booklets
 out_list[1:2]
 ```
-In this case I also want to assemble the created booklets into test forms. Therefore, I am interested in booklet exclusions that can result from item exclusions. The `analyzeBlockExclusion` can be used to obtain tuples with booklet exclusions.
+In this case I also want to assemble the created booklets into test forms. Therefore, I am interested in booklet exclusions that can result from item exclusions. The `analyzeBlockExclusion()` function can be used to obtain tuples with booklet exclusions.
 
 ```{r block exclusions}
 analyzeBlockExclusion(processedObj = out_list, idCol = "Item_ID", exclusionTuples = exclusionTuples)
@@ -230,7 +232,7 @@ analyzeBlockExclusion(processedObj = out_list, idCol = "Item_ID", exclusionTuple
 ```
 
 ## Save as Excel
-Finally, when the solution should be exported as an `Excel` file (`.xlsx`), This can, for example, be achieved via the `eatAnalysis` package, which has to be installed from `Github`.
+Finally, when the solution should be exported as an `excel` file (`.xlsx`), This can, for example, be achieved via the `eatAnalysis` package, which has to be installed from `Github`.
 
 ```{r export solution to excel, eval = FALSE}
 devtools::install_github("beckerbenj/eatAnalysis")
