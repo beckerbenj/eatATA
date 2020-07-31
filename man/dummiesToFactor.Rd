@@ -4,7 +4,7 @@
 \alias{dummiesToFactor}
 \title{Convert dummy variables to factor.}
 \usage{
-dummiesToFactor(dat, dummies, facVar)
+dummiesToFactor(dat, dummies, facVar, nameEmptyCategory = "_none_")
 }
 \arguments{
 \item{dat}{A \code{data.frame}.}
@@ -12,6 +12,9 @@ dummiesToFactor(dat, dummies, facVar)
 \item{dummies}{Character vector containing the names of the dummy variables in the \code{data.frame}.}
 
 \item{facVar}{Name of the factor variable, that should be created.}
+
+\item{nameEmptyCategory}{a character of length 1 that defines the name of cases
+for which no dummy is equal to one.}
 }
 \value{
 A \code{data.frame} containing the newly created factor.

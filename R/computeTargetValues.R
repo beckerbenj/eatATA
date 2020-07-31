@@ -6,7 +6,7 @@
 #'
 #' Both for numerical and categorical item values, the target values are the item
 #' pool average scaled by the ratio of items in the forms and items in the item
-#' pool. The behavior of the function changes depeding on the class of
+#' pool. The behavior of the function changes depending on the class of
 #' \code{itemValues}.
 #'
 #' When \code{itemValues} is a numerical vector, an when \code{allowedDeviation}

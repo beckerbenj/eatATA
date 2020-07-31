@@ -35,7 +35,7 @@ The following types of constraints can be set via `eatATA`:
 
 * categorical and numerical constraints across test forms
 
-* excluding items from beeing together in the same booklet (item exclusions)
+* excluding items from being together in the same booklet (item exclusions)
 
 * simple optimization constraints
 

@@ -46,7 +46,7 @@ items_path <- system.file("extdata", "items.xlsx", package = "eatATA")
 items <- as.data.frame(readxl::read_excel(path = items_path), stringsAsFactors = FALSE)
 ```
 
-Inspection of the item pool indecates that the items have different properties: item format (`MC`, `CMC`, `short_answer`, or `open`), difficulty (`diff_1` - `diff_5`), average response times in minutes (`RT_in_min`). In addition, similar items can not be in the same booklet or test form. This information is stored in the column `exclusions`, which indicates which items are too similar and should not be in the same booklet with the item in that row..
+Inspection of the item pool indicates that the items have different properties: item format (`MC`, `CMC`, `short_answer`, or `open`), difficulty (`diff_1` - `diff_5`), average response times in minutes (`RT_in_min`). In addition, similar items can not be in the same booklet or test form. This information is stored in the column `exclusions`, which indicates which items are too similar and should not be in the same booklet with the item in that row..
 
 ```{r inspect items, message = FALSE}
 head(items)
@@ -57,7 +57,7 @@ head(items)
 
 Before defining the constraints, item pool data has to be in the correct format. For instance, some dummy variables (indicator variables) in the item pool use both `NA` and `0` to indicate "the category does not apply". Therefore, the dummy variables should be transformed so that there are only two values (1 = "the category applies", and 0 = "the category does not apply"). 
 
-Often a set of dummy variables can be summarized into a single factor variable. This is automatically done by the function `dummiesToFactor()`. However, the funciton can only be used when the categories are mutually exclusive. For instance, in the example item pool, items can contain subitems with different format or difficulties. As a result, some items contain two subitems with different formats. Therefore, in this example, the `dummiesToFactor()` function throws an error and cannot be used.
+Often a set of dummy variables can be summarized into a single factor variable. This is automatically done by the function `dummiesToFactor()`. However, the function can only be used when the categories are mutually exclusive. For instance, in the example item pool, items can contain subitems with different format or difficulties. As a result, some items contain two subitems with different formats. Therefore, in this example, the `dummiesToFactor()` function throws an error and cannot be used.
 
 ```{r dummies to factors, error = TRUE}
 # clean data set (categorical dummy variables must contain only 0 and 1)
@@ -66,7 +66,7 @@ items <- dummiesToFactor(items, dummies = paste0("diff_", 1:5), facVar = "itemDi
 items[c(24, 33, 37, 47, 48, 54, 76), ]
 ```
 
-In addition, the column `short_answer` can have `r max(items$short_answer)` as a value, and is consequently not a dummy variable. Therefore, I will (a) treat `short_answer` as a numerical value, (b) collapse `MC` and `open` into a new factor `MC_open_none`, (these dummies are mutually exclusive), and (c) turn `CMC` and the difficlty indicators into factors. (See `?autoItemValuesMinMax` and `?computeTargetValues` for further information on the different treatement of factors and numerical variables.)
+In addition, the column `short_answer` can have `r max(items$short_answer)` as a value, and is consequently not a dummy variable. Therefore, I will (a) treat `short_answer` as a numerical value, (b) collapse `MC` and `open` into a new factor `MC_open_none`, (these dummies are mutually exclusive), and (c) turn `CMC` and the difficulty indicators into factors. (See `?autoItemValuesMinMax` and `?computeTargetValues` for further information on the different treatment of factors and numerical variables.)
  
 
 ```{r data cleaning, message = FALSE}
@@ -162,7 +162,7 @@ noItems <- itemsPerFormConstraint(nForms = nForms, nItems = nItems,
 
 ```
 
-Finally, I am setting up an optimization constraint. This constraint is not a clear *yes* or *no* constraint, and it does not have to be atained perfectly. Instead, the solver will minimize the distance of the actual booklet value for all booklets towards a target value. In our example, we specify 10 minutes as the target response time `RT_in_min` for all booklets.
+Finally, I am setting up an optimization constraint. This constraint is not a clear *yes* or *no* constraint, and it does not have to be attained perfectly. Instead, the solver will minimize the distance of the actual booklet value for all booklets towards a target value. In our example, we specify 10 minutes as the target response time `RT_in_min` for all booklets.
 
 ```{r target constraints}
 # optimize average time
@@ -171,7 +171,7 @@ av_time <- itemTargetConstraint(nForms, nItems = nItems, itemValues = items$RT_i
 
 
 ## Prepare constraints and run solver
-Before calling the optimization algorithm the specified constraints should be formated to be in line with`Gurobi`. First I collect all the constraints that should be used in a `list`, which I then use in the `prepareConstraints()` function. 
+Before calling the optimization algorithm the specified constraints should be formatted to be in line with`Gurobi`. First I collect all the constraints that should be used in a `list`, which I then use in the `prepareConstraints()` function. 
 
 ```{r prepare constraints, eval = T}
 # Prepare constraints
@@ -192,7 +192,7 @@ solver_raw <- gurobi(gurobi_rdy, params = list(TimeLimit = 30))
 
 ```
 
-If the problem is feasible (which means that there is at least one sollution that sattisfies all the constraints), the output printed by `Gurobi` will look like this:
+If the problem is feasible (which means that there is at least one solution that satisfies all the constraints), the output printed by `Gurobi` will look like this:
 
 ```{r feasible output, eval = TRUE, echo = FALSE}
 out_path <- system.file("extdata", "gurobi_out_feasible.RDS", package = "eatATA")
