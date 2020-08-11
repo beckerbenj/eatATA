@@ -14,6 +14,7 @@ A \code{data.frame} with two columns.
 }
 \description{
 If item exclusions are stored as a matrix, \code{matrixExclusionTuples} transforms this format into item pairs ('tuples').
+Information on exclusions has to be coded as \code{1} (items are exclusive) and \code{0} (items are not exclusive).
 }
 \details{
 Exclusion tuples can be used by \code{\link{itemExclusionConstraint}} to set up exclusion constraints.

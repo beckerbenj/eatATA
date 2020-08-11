@@ -3,6 +3,7 @@
 #' Create item exclusion tuples from matrix.
 #'
 #' If item exclusions are stored as a matrix, \code{matrixExclusionTuples} transforms this format into item pairs ('tuples').
+#' Information on exclusions has to be coded as \code{1} (items are exclusive) and \code{0} (items are not exclusive).
 #'
 #' Exclusion tuples can be used by \code{\link{itemExclusionConstraint}} to set up exclusion constraints.
 #'
@@ -28,6 +29,7 @@ matrixExclusionTuples <- function(exclMatrix) {
   if(!identical(colnames(exclMatrix), rownames(exclMatrix))) stop("'exclMatrix' needs to have symmetrical row and column names.")
 
   exclMatrix <- as.matrix(exclMatrix)
+  if(!all(exclMatrix %in% c(0, 1))) stop("'exclMatrix' must only contain 0 and 1.")
   if(!isSymmetric(exclMatrix)) stop("'exclMatrix' needs to be symmetrical.")
 
   exclTri <- exclMatrix

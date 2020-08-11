@@ -14,6 +14,9 @@ test_that("matrixExclusionTuples errors", {
 
   exclDF2[3, 4] <- 1
   expect_error(matrixExclusionTuples(exclDF2), "'exclMatrix' needs to be symmetrical.")
+
+  exclDF3[3, 4] <- 3
+  expect_error(matrixExclusionTuples(exclDF3), "'exclMatrix' must only contain 0 and 1.")
 })
 
 test_that("matrixExclusionTuples works", {
