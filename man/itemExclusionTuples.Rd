@@ -16,7 +16,7 @@ itemExclusionTuples(items, idCol = "ID", exclusions, sepPattern = ", ")
 \item{sepPattern}{String which should be used for separating item IDs in the \code{exclusions} column..}
 }
 \value{
-A sparse matrix.
+A \code{data.frame} with two columns.
 }
 \description{
 If item exclusions are stored as a character vector, \code{itemExclusionTuples} separates this vector and creates item pairs ('tuples').
@@ -31,7 +31,7 @@ items <- data.frame(ID = c("items1", "items2", "items3", "items4"),
 
 # Create tuples
 itemExclusionTuples(items = items, idCol = "ID", exclusions = "exclusions",
-                    sepPattern = ",")
+                    sepPattern = ", ")
 
 
 }

@@ -12,7 +12,7 @@
 #'@param exclusions Name of the exclusion column.
 #'@param sepPattern String which should be used for separating item IDs in the \code{exclusions} column..
 #'
-#'@return A sparse matrix.
+#'@return A \code{data.frame} with two columns.
 #'
 #'@examples
 #' # Example data.frame
@@ -21,7 +21,7 @@
 #'
 #' # Create tuples
 #' itemExclusionTuples(items = items, idCol = "ID", exclusions = "exclusions",
-#'                     sepPattern = ",")
+#'                     sepPattern = ", ")
 #'
 #'
 #'@export
