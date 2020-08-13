@@ -1,11 +1,11 @@
 Package: eatATA
 Type: Package
-Title: User interface for small test assembly problems using 'Gurobi'
-Version: 0.6.6
+Title: Create constraints for small test assembly problems
+Version: 0.7.0
 Authors@R: c(
     person("Benjamin", "Becker", email = "b.becker@iqb.hu-berlin.de", role = c("aut", "cre")),
     person("Dries", "Debeer", email = "dries.debeer@kuleuven.be", role = c("aut")))
-Description: User interface for 'Gurobi' to solve small test assembly problems via a pure 'R' interface.
+Description: Provides simple functions to create constraints for small test assembly problems using sparse matrices. Currently, only 'Gurobi' is supported as an optimizer.
 License: GPL
 Encoding: UTF-8
 LazyData: true

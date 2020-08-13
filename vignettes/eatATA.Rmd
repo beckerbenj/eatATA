@@ -57,7 +57,7 @@ head(items)
 
 Before defining the constraints, item pool data has to be in the correct format. For instance, some dummy variables (indicator variables) in the item pool use both `NA` and `0` to indicate "the category does not apply". Therefore, the dummy variables should be transformed so that there are only two values (1 = "the category applies", and 0 = "the category does not apply"). 
 
-Often a set of dummy variables can be summarized into a single factor variable. This is automatically done by the function `dummiesToFactor()`. However, the function can only be used when the categories are mutually exclusive. For instance, in the example item pool, items can contain subitems with different format or difficulties. As a result, some items contain two subitems with different formats. Therefore, in this example, the `dummiesToFactor()` function throws an error and cannot be used.
+Often a set of dummy variables can be summarized into a single factor variable. This is automatically done by the function `dummiesToFactor()`. However, the function can only be used when the categories are mutually exclusive. For instance, in the example item pool, items can contain sub-items with different format or difficulties. As a result, some items contain two sub-items with different formats. Therefore, in this example, the `dummiesToFactor()` function throws an error and cannot be used.
 
 ```{r dummies to factors, error = TRUE}
 # clean data set (categorical dummy variables must contain only 0 and 1)
