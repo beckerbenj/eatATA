@@ -25,7 +25,7 @@ The `eatATA` package can be installed from GitHub. Note that older R versions ha
 devtools::install_github("beckerbenj/eatATA")
 ```
 
-To use `eatATA`, you also need to install the `Gurobi` solver and its corresponding `R` package. A detailed vignette on the installation process can be found [here](https://cran.r-project.org/web/packages/prioritizr/vignettes/gurobi_installation.html). 
+To use `eatATA`, you also need to install the `Gurobi` solver and its corresponding `R` package. A detailed vignette on the installation process can be found [here](https://CRAN.R-project.org/package=prioritizr/vignettes/gurobi_installation.html). 
 
 First, `eatATA` is loaded into your `R` session.
 
