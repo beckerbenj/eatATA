@@ -38,6 +38,6 @@ forms and 5 multiple choice items (b). If (a), the tolerance level works exactly
 adapted, meaning that if tolerance level is 0 in example (b), allowed values are 2 or 3 multiple choice items per test form.
 }
 \examples{
-autoItemValuesMinMax
+autoItemValuesMinMax(2, itemValues = c(0, 1, 0, 1))
 
 }

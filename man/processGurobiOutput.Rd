@@ -30,18 +30,22 @@ a \code{list} (optimal for quick visual inspection.)
 processGurobiOutput(gurobiExample, items = items, nForms = 2, output = "list")
 processGurobiOutput(gurobiExample, items = items, nForms = 2, output = "data.frame")
 
-\dontrun{
 
 ## Full workflow
 items <- data.frame(paste0("item", 1:10), stringsAsFactors = FALSE)
+items$RTs <- c(5, 3, 4, 1, 2.5, 8.5, 6, 5, 4, 6.5)
 
-## setup constraints
-# ...
+# setup constraints
+constraint1 <- depletePoolConstraint(2, nItems = 10)
+constraint2 <- itemTargetConstraint(2, nItems = 10, itemValues = items$RTs, targetValue = 20)
 
-gurobi_model <- prepareConstraints(list(constraint1, constraint2, constraint3),
+gurobi_model <- prepareConstraints(list(constraint1, constraint2),
                                    nForms = 2, nItems = 10)
 
-gurobi_out <- gurobi(gurobi_model, params = list(TimeLimit = 30))
+\dontrun{
+# Run gurobi (this can only be run with Gurobi and the gurobi package installed,
+# for which a Gurobi license is required)
+gurobi_out <- gurobi::gurobi(gurobi_model, params = list(TimeLimit = 30))
 
 processGurobiOutput(gurobi_out, items = items, nForms = 2, output = "list")
 }

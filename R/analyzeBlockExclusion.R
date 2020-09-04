@@ -38,7 +38,8 @@
 #'                                    nForms = 2, nItems = 4)
 #'
 #'\dontrun{
-#' # Run gurobi
+#' # Run gurobi (this can only be run with Gurobi and the gurobi package installed,
+#' # for which a Gurobi license is required)
 #' gurobi_out <- gurobi::gurobi(gurobi_model, params = list(TimeLimit = 30))
 #'
 #' processedObj <- processGurobiOutput(gurobi_out, items = items, nForms = 2, output = "list")

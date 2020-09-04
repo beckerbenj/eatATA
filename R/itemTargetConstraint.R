@@ -37,7 +37,7 @@ itemTargetConstraint <- function(nForms, nItems, itemValues, targetValue){
 }
 
 
-### original function
+### original function (deprecated)
 targetConstraint <- function(nForms, nItems, itemValues, targetValues, thetaPoints,
                              relative = TRUE, bWidth = 0){
   M <- nForms*nItems

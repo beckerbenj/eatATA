@@ -16,41 +16,9 @@
 #' @return A sparse matrix.
 #'
 #' @examples
-#' autoItemValuesMinMax
+#' autoItemValuesMinMax(2, itemValues = c(0, 1, 0, 1))
 #'
 #' @export
-# autoItemValuesMinMax <- function(nForms, nItems, itemValues, threshold, verbose = TRUE){
-#   targetValue <- detTargetValue(nForms = nForms, itemValues = itemValues)
-#   threshold <- threshold + 0.5 ## not correct if targetValue is an integer, but should still work
-#
-#   if(verbose) {
-#     minV <- ceiling(targetValue - threshold)
-#     maxV <- floor(targetValue + threshold)
-#     possibleV <- seq(minV, maxV)
-#     message("Target value: ", targetValue,"\t Values in range: ", paste(possibleV, collapse = ", "))
-#   }
-#
-#   itemValuesThreshold(nForms = nForms, nItems = nItems, itemValues = itemValues,
-#                       targetValue = targetValue, threshold = threshold)
-# }
-#
-#
-# # determine target value automatically based on empirical frequency of category
-# detTargetValue <- function(nForms, itemValues) {
-#   if(!identical(sort(unique(itemValues)), c(0, 1)) && !identical(sort(unique(itemValues)), 1)) {
-#     stop("autoItemValuesMinMax only works for (dichotomous) dummy indicators with values 0 and 1. See itemValuesM# inMax for more flexibility.")
-#   }
-#
-#   if(sum(itemValues) %% nForms != 0) {
-#     return((sum(itemValues) %/% nForms) + 0.5)
-#   }
-#   (sum(itemValues) / nForms)
-#
-# }
-
-
-
-## mew version
 autoItemValuesMinMax <- function(nForms, itemValues, allowedDeviation = NULL,
                                  relative = FALSE, verbose = TRUE){
 
@@ -95,3 +63,33 @@ autoItemValuesMinMax <- function(nForms, itemValues, allowedDeviation = NULL,
   }
   return(out)
 }
+
+## deprecated version
+# autoItemValuesMinMax <- function(nForms, nItems, itemValues, threshold, verbose = TRUE){
+#   targetValue <- detTargetValue(nForms = nForms, itemValues = itemValues)
+#   threshold <- threshold + 0.5 ## not correct if targetValue is an integer, but should still work
+#
+#   if(verbose) {
+#     minV <- ceiling(targetValue - threshold)
+#     maxV <- floor(targetValue + threshold)
+#     possibleV <- seq(minV, maxV)
+#     message("Target value: ", targetValue,"\t Values in range: ", paste(possibleV, collapse = ", "))
+#   }
+#
+#   itemValuesThreshold(nForms = nForms, nItems = nItems, itemValues = itemValues,
+#                       targetValue = targetValue, threshold = threshold)
+# }
+#
+#
+# # determine target value automatically based on empirical frequency of category
+# detTargetValue <- function(nForms, itemValues) {
+#   if(!identical(sort(unique(itemValues)), c(0, 1)) && !identical(sort(unique(itemValues)), 1)) {
+#     stop("autoItemValuesMinMax only works for (dichotomous) dummy indicators with values 0 and 1. See itemValuesM# inMax for more flexibility.")
+#   }
+#
+#   if(sum(itemValues) %% nForms != 0) {
+#     return((sum(itemValues) %/% nForms) + 0.5)
+#   }
+#   (sum(itemValues) / nForms)
+#
+# }
