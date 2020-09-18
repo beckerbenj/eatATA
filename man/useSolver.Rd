@@ -34,8 +34,8 @@ maximize the objective function.}
 A list with the following elements:
 \describe{
   \item{\code{solution}}{The object returned by the solver.}
-  \item{\code{call}}{The call to the solver from R.}
-  \item{\code{objects_in_call}}{A list with the objects that are used in the call.}
+  \item{\code{solver_function}}{The solver function that was called, and can be called with the \code{objects_for_solver}.}
+  \item{\code{objects_for_solver}}{A list with the objects that are used in the call.}
 }
 }
 \description{
@@ -56,6 +56,10 @@ testLength <- itemsPerFormConstraint(nForms = nForms, nItems = nItems,
 # use a solver
 result <- useSolver(list(target, noItemOverlap, testLength),
   nForms = nForms, nItems = nItems, solver = "GLPK")
+
+# run the solver again
+with(result, do.call(solver_function, objects_for_solver))
+
 
 
 }

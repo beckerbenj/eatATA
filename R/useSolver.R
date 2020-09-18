@@ -17,8 +17,8 @@
 #'@return A list with the following elements:
 #'\describe{
 #'   \item{\code{solution}}{The object returned by the solver.}
-#'   \item{\code{call}}{The call to the solver from R.}
-#'   \item{\code{objects_in_call}}{A list with the objects that are used in the call.}
+#'   \item{\code{solver_function}}{The solver function that was called, and can be called with the \code{objects_for_solver}.}
+#'   \item{\code{objects_for_solver}}{A list with the objects that are used in the call.}
 #' }
 #'
 #'
@@ -36,6 +36,10 @@
 #' # use a solver
 #' result <- useSolver(list(target, noItemOverlap, testLength),
 #'   nForms = nForms, nItems = nItems, solver = "GLPK")
+#'
+#' # run the solver again
+#' with(result, do.call(solver_function, objects_for_solver))
+#'
 #'
 #'
 #'@export
@@ -97,7 +101,7 @@ useGLPK <- function(A, direction, d, c, modelSense, nBin, nVar,
   solver_function <- Rglpk::Rglpk_solve_LP
 
   # create list with all the objects for Rglpk::Rglpk_solve_LP()
-  objects_for_call <- c(list(
+  objects_for_solver <- c(list(
     obj = c,
     mat = A,
     dir = direction,
@@ -110,12 +114,12 @@ useGLPK <- function(A, direction, d, c, modelSense, nBin, nVar,
     dots)
 
   # compute solution
-  solution <- do.call(solver_function, objects_for_call)
+  solution <- do.call(solver_function, objects_for_solver)
 
   # object to return
   out <- list(solution = solution,
               solver_function = solver_function,
-              objects_for_call = objects_for_call)
+              objects_for_solver = objects_for_solver)
 
 }
 
@@ -131,7 +135,7 @@ useLpSolve <- function(A, direction, d, c, modelSense, nBin, nVar,
   solver_function <- lpSolve::lp
 
     # create list with all the objects for lpSolve::lp()
-  objects_for_call <- c(list(
+  objects_for_solver <- c(list(
       direction = modelSense,
       objective.in = c,
       const.mat = A,
@@ -143,13 +147,13 @@ useLpSolve <- function(A, direction, d, c, modelSense, nBin, nVar,
     dots)
 
   # compute solution with time limit
-  call <- substitute(do.call(solver_function, objects_for_call))
+  call <- substitute(do.call(solver_function, objects_for_solver))
   solution <- eval_call_with_time_limit(call, elapsed = timeLimit, ...)
 
   # object to return
   out <- list(solution = solution,
               solver_function = solver_function,
-              objects_for_call = objects_for_call)
+              objects_for_solver = objects_for_solver)
 }
 
 
@@ -165,7 +169,7 @@ useGurobi <- function(A, direction, d, c, modelSense, nBin, nVar,
   solver_function <- substitute(gurobi::gurobi)
 
   # create list with all the objects for Rglpk::Rglpk_solve_LP()
-  objects_for_call <- list(MILP = c(
+  objects_for_solver <- list(MILP = c(
       list(A = A,
            rhs = d,
            sense = direction,
@@ -177,14 +181,14 @@ useGurobi <- function(A, direction, d, c, modelSense, nBin, nVar,
 
   # compute solution
   solution <- 'if'(requireNamespace("gurobi", quietly = TRUE),
-                   do.call(eval(solver_function), objects_for_call),
+                   do.call(eval(solver_function), objects_for_solver),
                    {message("No solution, the 'gurobi'-package is not installed");
                    NULL})
 
   # object to return
   out <- list(solution = solution,
               solver_function = solver_function,
-              objects_for_call = objects_for_call)
+              objects_for_solver = objects_for_solver)
 
 }
 
