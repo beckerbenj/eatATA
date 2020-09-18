@@ -26,7 +26,7 @@
 #' ##  items of each item type in each test form
 #' nItems <- 30
 #' item_type <- factor(sample(1:3, size = nItems, replace = TRUE))
-#' itemCategoryRange(2, nItems, item_type, range = cbind(min = rep(2, 3), range = rep(4, 3)))
+#' itemCategoryRange(2, nItems, item_type, range = cbind(min = rep(2, 3), max = rep(4, 3)))
 #'
 #' ## or alternatively
 #' itemCategoryDeviation(2, nItems, item_type, targetValues = rep(3, 3), allowedDeviation = rep(4, 3))
