@@ -10,11 +10,14 @@ License: GPL
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.5.0)
-Imports: Matrix
-RoxygenNote: 7.1.0
+Imports: Matrix, 
+         Rglpk,
+         lpSolve
+RoxygenNote: 7.1.1
 Suggests: 
     testthat (>= 2.1.0),
     covr,
+    gurobi,
     knitr,
     rmarkdown,
     readxl
