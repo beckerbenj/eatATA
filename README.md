@@ -10,16 +10,23 @@
 
 ## Overview
 
-`eatATA` provides a small `R` interface to mathematical optimization solvers specialized on solving simple automated test assembly problems (*ATA*). Internally, sparse matrices are used via the `Matrix` package. Currently the only supported solver  is `Gurobi`. See below for a list of implemented features and feature to come.
+`eatATA` provides a small `R` interface to mathematical optimization solvers specialized on solving simple automated test assembly problems (*ATA*). Internally, sparse matrices are used via the `Matrix` package. Currently the only supported solver is `Gurobi`. See below for a list of implemented features and feature to come.
 
 ## Installation
 
 ```R
-# Install eatATA from GitHub via
+# Install eatATA from CRAN via
+install.packages("eatATA")
+
+# Install development version from GitHub via
 devtools::install_github("beckerbenj/eatATA", build_vignettes = TRUE)
 ```
 
 ## Documentation
+
+An vignette describing the current functionality can be found on [CRAN](https://CRAN.R-project.org/package=eatATA/vignettes/eatATA.html).
+
+Alternatively, the vignette under the development version can be accessed through `R`. 
 
 ```R
 library(eatATA)
