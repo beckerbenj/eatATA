@@ -41,24 +41,27 @@ test_that("Solve problem using glpk", {
   }
   expect_equal(sol[21], 13)
 })
+requireNamespace("gurobi", quietly = TRUE)
 
-test_that("Solve problem using gurobi", {
-  outp <- capture_output(out <- useSolver(allConstraints = list(usage, perForm, target),
-                   nForms = 2, nItems = 10, solver = "Gurobi"))
+if("gurobi" %in% rownames(installed.packages())){
+  test_that("Solve problem using gurobi", {
+    outp <- capture_output(out <- useSolver(allConstraints = list(usage, perForm, target),
+                                            nForms = 2, nItems = 10, solver = "Gurobi"))
 
-  sol <- out$solution$x
-  objval <- out$solution$objval
-  processGurobiOutput(out$solution, items = items, nForms = 2)
+    sol <- out$solution$x
+    objval <- out$solution$objval
+    processGurobiOutput(out$solution, items = items, nForms = 2)
 
-  expect_equal(sum(sol[1:10]), 5)
-  expect_equal(sum(sol[11:20]), 5)
-  for(i in 1:10) {
-    expect_equal(sum(sol[i], sol[i+10]), 1)
-  }
-  for(i in seq(1, 19, by = 2)) {
-    expect_equal(sum(sol[i], sol[i+1]), 1)
-  }
-  expect_equal(objval, 13)
-})
+    expect_equal(sum(sol[1:10]), 5)
+    expect_equal(sum(sol[11:20]), 5)
+    for(i in 1:10) {
+      expect_equal(sum(sol[i], sol[i+10]), 1)
+    }
+    for(i in seq(1, 19, by = 2)) {
+      expect_equal(sum(sol[i], sol[i+1]), 1)
+    }
+    expect_equal(objval, 13)
+  })
+}
 
 
