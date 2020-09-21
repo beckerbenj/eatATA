@@ -19,13 +19,13 @@ knitr::opts_chunk$set(
 `eatATA` efficiently translates test design requirements for Automated Test Assembly (ATA) into constraints for a Mixed Integer Linear Programming Model (MILP). A number of efficient and user-friendly functions are available, and the resulting matrix of constrains can be easily transformed to be in line with a MILP solver, like the `Gurobi` solver. In the remainder of this vignette I will illustrate the typical use of `eatATA` using a case-based example.
 
 ## Setup
-The `eatATA` package can be installed from GitHub. Note that older R versions had issues with installations from online repositories like GitHub. `R` version `> 3.6.0` should work without any issues. 
+The `eatATA` package can be installed from `CRAN`.  
 
 ```{r installation, eval = FALSE}
-devtools::install_github("beckerbenj/eatATA")
+install.packages("eatATA")
 ```
 
-To use `eatATA`, you also need to install the `Gurobi` solver and its corresponding `R` package. A detailed vignette on the installation process can be found [here](https://CRAN.R-project.org/package=prioritizr/vignettes/gurobi_installation.html). 
+If you want to use the `R` package `gurobi`, you also need to install the `Gurobi` solver and its corresponding `R` package. A detailed vignette on the installation process can be found [here](https://CRAN.R-project.org/package=prioritizr/vignettes/gurobi_installation.html). Note that currently `gurobi` works only under R versions <= 3.6.3.
 
 First, `eatATA` is loaded into your `R` session.
 

@@ -168,8 +168,10 @@ useGurobi <- function(A, direction, d, c, modelSense, nBin, nVar,
   # create solver function
   solver_function <- substitute(gurobi::gurobi)
 
+  if(timeLimit == Inf) timeLimit <- 9999
+
   # create list with all the objects for Rglpk::Rglpk_solve_LP()
-  objects_for_solver <- list(MILP = c(
+  objects_for_solver <- list(model = c(
       list(A = A,
            rhs = d,
            sense = direction,

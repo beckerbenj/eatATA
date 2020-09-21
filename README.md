@@ -24,9 +24,9 @@ devtools::install_github("beckerbenj/eatATA", build_vignettes = TRUE)
 
 ## Documentation
 
-An vignette describing the current functionality can be found on [CRAN](https://CRAN.R-project.org/package=eatATA/vignettes/eatATA.html).
+A vignette describing the current functionality can be found on [CRAN](https://CRAN.R-project.org/package=eatATA/vignettes/eatATA.html).
 
-Alternatively, the vignette under the development version can be accessed through `R`. 
+Alternatively, the vignette of the development version can be accessed through `R`. 
 
 ```R
 library(eatATA)
