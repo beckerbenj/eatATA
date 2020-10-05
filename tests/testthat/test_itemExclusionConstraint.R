@@ -1,5 +1,11 @@
 
 
+test_that("errors", {
+  tupl <- data.frame(i1 = c("I1 ", "I2"), i2 = c("I2", "I3"))
+  expect_error(itemExclusionConstraint(nForms = 2, exclusionTuples = tupl, itemIDs = paste0("I", 1:3)),
+               "The following item identifiers in the exclusion column are not item identifiers in the idCol column (check for correct sepPattern!):'I1 '", fixed = TRUE)
+})
+
 test_that("item exclusion constraint", {
   tupl <- data.frame(i1 = c("I1", "I2"), i2 = c("I2", "I3"))
   out <- itemExclusionConstraint(nForms = 2, exclusionTuples = tupl, itemIDs = paste0("I", 1:3))

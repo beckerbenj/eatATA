@@ -28,8 +28,8 @@
 #' ########
 #' ## Full workflow using itemExclusionTuples
 #' # Example data.frame
-#' items <- data.frame(ID = c("items1", "items2", "items3", "items4"),
-#'                      exclusions = c("items2, items3", NA, NA, NA))
+#' items <- data.frame(ID = c("item1", "item2", "item3", "item4"),
+#'                      exclusions = c("item2, item3", NA, NA, NA))
 #'
 #' # Create tuples
 #' exTuples2 <- itemExclusionTuples(items = items, idCol = "ID", exclusions = "exclusions",
@@ -40,6 +40,7 @@
 #'
 #'@export
 itemExclusionConstraint <- function(nForms, exclusionTuples, itemIDs) {
+  check_item_identifiers(new_idents = unique(unlist(exclusionTuples)), ident_col = itemIDs)
 
   id_df <- data.frame(no = seq(length(itemIDs)), ID = itemIDs)
 
