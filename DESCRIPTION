@@ -1,7 +1,7 @@
 Package: eatATA
 Type: Package
 Title: Create Constraints for Small Test Assembly Problems
-Version: 0.7.0
+Version: 0.8.1
 Authors@R: c(
     person("Benjamin", "Becker", email = "b.becker@iqb.hu-berlin.de", role = c("aut", "cre")),
     person("Dries", "Debeer", email = "dries.debeer@kuleuven.be", role = c("aut")))

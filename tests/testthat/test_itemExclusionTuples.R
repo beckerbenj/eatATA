@@ -1,4 +1,18 @@
 
+test_that("item exclusion errors", {
+  items <- data.frame(ID = c("item1", "item2", "item3", "item4"),
+                      exclusions = c("item2, item3", "item2,  item3", NA, NA))
+  expect_error(itemExclusionTuples(items = items, idCol = "ID", exclusions = "exclusions",
+                             sepPattern = ", "),
+               "The following item identifiers in the exclusion column are not item identifiers in the idCol column (check for correct sepPattern!):' item3'", fixed = TRUE)
+
+  items2 <- data.frame(ID = c("item1", "item2", "item3", "item4"),
+                      exclusions = c("item2 , item3", "item2,  item3", NA, NA))
+  expect_error(itemExclusionTuples(items = items2, idCol = "ID", exclusions = "exclusions",
+                                   sepPattern = ", "),
+               "The following item identifiers in the exclusion column are not item identifiers in the idCol column (check for correct sepPattern!):' item3', 'item2 ", fixed = TRUE)
+})
+
 
 test_that("item exclusion tuples", {
   items <- data.frame(ID = c("item1", "item2", "item3", "item4"),

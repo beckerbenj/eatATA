@@ -33,7 +33,7 @@
 #'
 #' # Create tuples
 #' exTuples2 <- itemExclusionTuples(items = items, idCol = "ID", exclusions = "exclusions",
-#'                     sepPattern = ",")
+#'                     sepPattern = ", ")
 #'
 #' #' ## Create constraints
 #' itemExclusionConstraint(nForms = 2, exclusionTuples = exTuples2, itemIDs = IDs)

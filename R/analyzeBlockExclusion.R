@@ -52,6 +52,8 @@ analyzeBlockExclusion <- function(processedObj, idCol, exclusionTuples){
   if(is.data.frame(processedObj)) stop("'processedObj' has to be a list, not a data.frame.")
   if(!idCol %in% names(processedObj[[1]])) stop("'idCol' must be a column name in the entries of 'processedObj'.")
 
+  ## to do: implement checks for idCol and exclusionTuples
+
   names(processedObj) <- paste0("block ", seq(length(processedObj)))
   match_df <- do_call_rbind_withName(processedObj, colName = "block")[, c(idCol, "block")]
   if(!all(unlist(exclusionTuples) %in% match_df[, idCol])) stop("Currently analyzeBlockExclusion only works if item pool is depleted.")
