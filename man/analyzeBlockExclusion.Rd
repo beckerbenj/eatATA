@@ -4,16 +4,17 @@
 \alias{analyzeBlockExclusion}
 \title{Analyze block exclusiveness}
 \usage{
-analyzeBlockExclusion(processedObj, idCol, exclusionTuples)
+analyzeBlockExclusion(solverOut, items, idCol, exclusionTuples)
 }
 \arguments{
-\item{processedObj}{Object created by \code{gurobi} solver and processed by \code{\link{processGurobiOutput}}.
-Must be a \code{list}.}
+\item{solverOut}{Object created by \code{useSolver}.}
 
-\item{idCol}{Column name with item IDs in the \code{data.frames} in \code{processedObj}.}
+\item{items}{Original \code{data.frame} containing information on item level.}
 
-\item{exclusionTuples}{\code{data.frame} with two columns, containing tuples with item IDs which should be in test forms exclusively.
-Must be the same object as used in \code{\link{itemExclusionConstraint}}.}
+\item{idCol}{Column name with item IDs in the \code{items} \code{data.frames}.}
+
+\item{exclusionTuples}{\code{data.frame} with two columns, containing tuples with item IDs which should be in test
+forms exclusively. Must be the same object as used in \code{\link{itemExclusionConstraint}}.}
 }
 \value{
 A \code{data.frame} of block exclusions.
@@ -22,9 +23,10 @@ A \code{data.frame} of block exclusions.
 Use exclusion tuples information to determine which assembled test blocks are exclusive.
 }
 \details{
-If exclusion tuples have been used to assemble test forms (using the \code{\link{itemExclusionConstraint}} function), the resulting
-item blocks might also be exclusive. Using the initially used item exclusion tuples and the processed \code{gurobi} output
-(via \code{\link{processGurobiOutput}}) this function determines, which item blocks are exclusive and can not be together in an
+If exclusion tuples have been used to assemble test forms (using the \code{\link{itemExclusionConstraint}}
+function), the resulting
+item blocks might also be exclusive. Using the initially used item exclusion tuples and the optimal solution
+given by \code{useSolver} this function determines, which item blocks are exclusive and can not be together in an
 assembled test form.
 }
 \examples{
@@ -44,18 +46,12 @@ depletion_constraint <- depletePoolConstraint(2, nItems = 4)
 target_constraint <- itemTargetConstraint(nForms = 2, nItems = 4,
                                           itemValues = c(3, 1.5, 2, 4), targetValue = 1)
 
-gurobi_model <- prepareConstraints(list(exclusion_constraint, target_constraint,
+opt_solution <- useSolver(list(exclusion_constraint, target_constraint,
                                         depletion_constraint),
                                    nForms = 2, nItems = 4)
 
-\dontrun{
-# Run gurobi (this can only be run with Gurobi and the gurobi package installed,
-# for which a Gurobi license is required)
-gurobi_out <- gurobi::gurobi(gurobi_model, params = list(TimeLimit = 30))
+analyzeBlockExclusion(opt_solution, items = items, idCol = "ID",
+                       exclusionTuples = exTuples2)
 
-processedObj <- processGurobiOutput(gurobi_out, items = items, nForms = 2, output = "list")
-
-analyzeBlockExclusion(processedObj, exTuples2)
-}
 
 }

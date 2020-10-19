@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-`eatATA` efficiently translates test design requirements for Automated Test Assembly (ATA) into constraints for a Mixed Integer Linear Programming Model (MILP). A number of efficient and user-friendly functions are available, and the resulting matrix of constrains can be easily transformed to be in line with a MILP solver, like the `Gurobi` solver. In the remainder of this vignette I will illustrate the typical use of `eatATA` using a case-based example.
+`eatATA` efficiently translates test design requirements for Automated Test Assembly (ATA) into constraints for a Mixed Integer Linear Programming Model (MILP). A number of efficient and user-friendly functions are available, and the resulting matrix of constrains can be easily transformed to be in line with a MILP solver, like the `GLPK` or `Gurobi` solvers. In the remainder of this vignette I will illustrate the typical use of `eatATA` using a case-based example.
 
 ## Setup
 The `eatATA` package can be installed from `CRAN`.  
@@ -25,7 +25,7 @@ The `eatATA` package can be installed from `CRAN`.
 install.packages("eatATA")
 ```
 
-If you want to use the `R` package `gurobi`, you also need to install the `Gurobi` solver and its corresponding `R` package. A detailed vignette on the installation process can be found [here](https://CRAN.R-project.org/package=prioritizr/vignettes/gurobi_installation.html). Note that currently `gurobi` works only under R versions <= 3.6.3.
+As a default solver, we recommend `GLPK`, which is automaticly installed alongside this package. If you want to use `Gurobi` as a solver (the most powerful and efficient solver currently implemented in `eatATA`), an external software installation and licensing is required. This means, you need to install the `Gurobi` solver and its corresponding `R` package. A detailed vignette on the installation process can be found [here](https://CRAN.R-project.org/package=prioritizr/vignettes/gurobi_installation.html). Note that currently `gurobi` works only under R versions <= 3.6.3.
 
 First, `eatATA` is loaded into your `R` session.
 
@@ -172,54 +172,36 @@ av_time <- itemTargetConstraint(nForms, nItems = nItems, itemValues = items$RT_i
 ```
 
 
-## Prepare constraints and run solver
-Before calling the optimization algorithm the specified constraints should be formatted to be in line with `Gurobi`. First, I collect all the constraints that should be used in a `list`, which I then use in the `prepareConstraints()` function. 
+## Run solver
+Before calling the optimization algorithm the specified constraints are collected in a `list`. 
 
 ```{r prepare constraints, eval = T}
 # Prepare constraints
-gurobi_constr <- list(itemOverlap, mc_openItems, cmcItems, saItems, 
+constr_list <- list(itemOverlap, mc_openItems, cmcItems, saItems, 
                       Items1, Items2, Items3, Items4, Items5, excl_constraints,
                       av_time)
-
-gurobi_rdy <- prepareConstraints(gurobi_constr, nForms = nForms, nItems = nItems)
 ```
 
-Now I can call `Gurobis` `gurobi()` function, which will solve the optimization problem. Using the `params` argument you can set options and parameters of the solver. By setting the `TimeLimit` to 30, I limit `Gurobi` to stop searching for an optimal solution after 30 seconds. For most small test assembly problems, however, computation times will be much shorter. 
+Now I can call `useSolver()` function, which restructures the constraints internally and solves the optimization problem. Using the `solver` argument I specify `GLPK` as the solver (other alternatives are `lpSolve` and `Gurobi`). Using the `timeLimit` argument we set the time limit to 10. This means I limit the solver to stop searching for an optimal solution after 10 seconds. Note that the computation times might depend on the solver you have selected.
 
-```{r solver, eval = FALSE}
-library(gurobi)
-
+```{r solver, eval = TRUE, message=TRUE}
 # Optimization
-solver_raw <- gurobi(gurobi_rdy, params = list(TimeLimit = 30))
+solver_raw <- useSolver(constr_list, nForms = nForms, nItems = nItems, 
+                        solver = "GLPK", timeLimit = 10)
 
 ```
 
-If the problem is feasible (which means that there is at least one solution that satisfies all the constraints), the output printed by `Gurobi` will look like this:
-
-```{r feasible output, eval = TRUE, echo = FALSE}
-out_path <- system.file("extdata", "gurobi_out_feasible.RDS", package = "eatATA")
-cat(readRDS(out_path))
-```
-
-If the problem is unfeasible, the output printed by `Gurobi` will look like this:
-
-```{r infeasible output, eval = TRUE, echo = FALSE}
-out_path <- system.file("extdata", "gurobi_out_infeasible.RDS", package = "eatATA")
-cat(readRDS(out_path))
-```
-
-If the latter happens, one option is to relax some of the constraints. Further, for first diagnostic purposes you can omit some constraints completely, to see which constraints are especially challenging. If you have a better grasp of the possibilities of the item pool, you can add these constraints back, but for example with larger `allowedDeviations`.
+The function provides a short message indicating, whether an optimal solution has been found. If no optimal solution has been found, one option is to relax some of the constraints. Further, for first diagnostic purposes you can omit some constraints completely, to see which constraints are especially challenging. If you have a better grasp of the possibilities of the item pool, you can add these constraints back, but for example with larger `allowedDeviations`.
 
 ## Inspect Solution
 
-The solution provided by `Gurobi` can be inspected using the `processGurobiOutput()` function. If the `output` argument is set to `"list"`, you get a list output which is easy to read. If the `output` argument to `"data.frame"`, you get an output optimized for exporting, for example to `excel`.
-
-```{r load solver output, eval = TRUE, echo = FALSE}
-solver_raw <- gurobiExample
-```
+The solution provided by `eatATA` can be inspected using the `inspectSolution()` function. It allows me to inspect the assembled item blocks at a first glance, including some column sums.
 
 ```{r inspect solution}
-out_list <- processGurobiOutput(solver_raw, items = items, nForms = nForms, output = "list")
+out_list <- inspectSolution(solver_raw, items = items, colSums = TRUE,
+                            colNames = c("RT_in_min", "subitems", 
+                                         "MC", "CMC", "short_answer", "open",
+                                         paste0("diff_", 1:5)))
 
 ## first two booklets
 out_list[1:2]
@@ -227,7 +209,8 @@ out_list[1:2]
 In this case I also want to assemble the created booklets into test forms. Therefore, I am interested in booklet exclusions that can result from item exclusions. The `analyzeBlockExclusion()` function can be used to obtain tuples with booklet exclusions.
 
 ```{r block exclusions}
-analyzeBlockExclusion(processedObj = out_list, idCol = "Item_ID", exclusionTuples = exclusionTuples)
+analyzeBlockExclusion(solverOut = solver_raw, item = items, idCol = "Item_ID", 
+                      exclusionTuples = exclusionTuples)
 
 ```
 

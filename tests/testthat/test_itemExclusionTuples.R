@@ -1,16 +1,18 @@
 
-test_that("item exclusion errors", {
+test_that("item exclusion warnings", {
   items <- data.frame(ID = c("item1", "item2", "item3", "item4"),
                       exclusions = c("item2, item3", "item2,  item3", NA, NA))
   expect_error(itemExclusionTuples(items = items, idCol = "ID", exclusions = "exclusions",
                              sepPattern = ", "),
-               "The following item identifiers in the exclusion column are not item identifiers in the idCol column (check for correct sepPattern!):' item3'", fixed = TRUE)
+               "The following item is excluded from being with itself: item2", fixed = TRUE)
 
   items2 <- data.frame(ID = c("item1", "item2", "item3", "item4"),
-                      exclusions = c("item2 , item3", "item2,  item3", NA, NA))
-  expect_error(itemExclusionTuples(items = items2, idCol = "ID", exclusions = "exclusions",
+                      exclusions = c("item2 , item3", "item4,  item3", NA, NA))
+  expect_warning(out <- itemExclusionTuples(items = items2, idCol = "ID", exclusions = "exclusions",
                                    sepPattern = ", "),
-               "The following item identifiers in the exclusion column are not item identifiers in the idCol column (check for correct sepPattern!):' item3', 'item2 ", fixed = TRUE)
+               "The following item identifiers in the exclusion column are not item identifiers in the idCol column (check for correct sepPattern!): ' item3', 'item2 ", fixed = TRUE)
+  expect_equal(out[, 1], c("item1", "item1", "item2", " item3"))
+  expect_equal(out[, 2], c("item2 ", "item3", "item4", "item2"))
 })
 
 

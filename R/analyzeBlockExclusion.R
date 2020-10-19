@@ -3,16 +3,17 @@
 #'
 #' Use exclusion tuples information to determine which assembled test blocks are exclusive.
 #'
-#' If exclusion tuples have been used to assemble test forms (using the \code{\link{itemExclusionConstraint}} function), the resulting
-#' item blocks might also be exclusive. Using the initially used item exclusion tuples and the processed \code{gurobi} output
-#' (via \code{\link{processGurobiOutput}}) this function determines, which item blocks are exclusive and can not be together in an
+#' If exclusion tuples have been used to assemble test forms (using the \code{\link{itemExclusionConstraint}}
+#' function), the resulting
+#' item blocks might also be exclusive. Using the initially used item exclusion tuples and the optimal solution
+#' given by \code{useSolver} this function determines, which item blocks are exclusive and can not be together in an
 #' assembled test form.
 #'
-#'@param processedObj Object created by \code{gurobi} solver and processed by \code{\link{processGurobiOutput}}.
-#'Must be a \code{list}.
-#'@param idCol Column name with item IDs in the \code{data.frames} in \code{processedObj}.
-#'@param exclusionTuples \code{data.frame} with two columns, containing tuples with item IDs which should be in test forms exclusively.
-#' Must be the same object as used in \code{\link{itemExclusionConstraint}}.
+#'@param solverOut Object created by \code{useSolver}.
+#'@param items Original \code{data.frame} containing information on item level.
+#'@param idCol Column name with item IDs in the \code{items} \code{data.frames}.
+#'@param exclusionTuples \code{data.frame} with two columns, containing tuples with item IDs which should be in test
+#'forms exclusively. Must be the same object as used in \code{\link{itemExclusionConstraint}}.
 #'
 #'@return A \code{data.frame} of block exclusions.
 #'
@@ -33,31 +34,30 @@
 #' target_constraint <- itemTargetConstraint(nForms = 2, nItems = 4,
 #'                                           itemValues = c(3, 1.5, 2, 4), targetValue = 1)
 #'
-#' gurobi_model <- prepareConstraints(list(exclusion_constraint, target_constraint,
+#' opt_solution <- useSolver(list(exclusion_constraint, target_constraint,
 #'                                         depletion_constraint),
 #'                                    nForms = 2, nItems = 4)
 #'
-#'\dontrun{
-#' # Run gurobi (this can only be run with Gurobi and the gurobi package installed,
-#' # for which a Gurobi license is required)
-#' gurobi_out <- gurobi::gurobi(gurobi_model, params = list(TimeLimit = 30))
+#' analyzeBlockExclusion(opt_solution, items = items, idCol = "ID",
+#'                        exclusionTuples = exTuples2)
 #'
-#' processedObj <- processGurobiOutput(gurobi_out, items = items, nForms = 2, output = "list")
-#'
-#' analyzeBlockExclusion(processedObj, exTuples2)
-#' }
 #'
 #'@export
-analyzeBlockExclusion <- function(processedObj, idCol, exclusionTuples){
-  if(is.data.frame(processedObj)) stop("'processedObj' has to be a list, not a data.frame.")
-  if(!idCol %in% names(processedObj[[1]])) stop("'idCol' must be a column name in the entries of 'processedObj'.")
+analyzeBlockExclusion <- function(solverOut, items, idCol, exclusionTuples){
+  if(!is.data.frame(items)) stop("'items' must be a data.frame.")
+  if(!idCol %in% names(items)) stop("'idCol' must be a column name in 'items'.")
 
-  ## to do: implement checks for idCol and exclusionTuples
+  ## to do: implement input checks
+  #browser()
 
-  names(processedObj) <- paste0("block ", seq(length(processedObj)))
+  processedObj <- inspectSolution(solverOut, items, colNames = names(items), colSums = FALSE)
+
+  #names(processedObj) <- paste0("block ", seq(length(processedObj)))
   match_df <- do_call_rbind_withName(processedObj, colName = "block")[, c(idCol, "block")]
-  if(!all(unlist(exclusionTuples) %in% match_df[, idCol])) stop("Currently analyzeBlockExclusion only works if item pool is depleted.")
+  #if(!all(unlist(exclusionTuples) %in% match_df[, idCol])) browser()
 
+  exclusionTuples <- exclusionTuples[exclusionTuples[, 1] %in% match_df[, idCol], ]
+  exclusionTuples <- exclusionTuples[exclusionTuples[, 2] %in% match_df[, idCol], ]
 
   exclusionOut <- exclusionTuples
   exclusionOut[, 1] <- match_df$block[match(exclusionOut[, 1], match_df[, idCol])]

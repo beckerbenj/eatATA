@@ -57,9 +57,6 @@ testLength <- itemsPerFormConstraint(nForms = nForms, nItems = nItems,
 result <- useSolver(list(target, noItemOverlap, testLength),
   nForms = nForms, nItems = nItems, solver = "GLPK")
 
-# run the solver again
-with(result, do.call(solver_function, objects_for_solver))
-
 
 
 }

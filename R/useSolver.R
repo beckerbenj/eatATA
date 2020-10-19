@@ -37,9 +37,6 @@
 #' result <- useSolver(list(target, noItemOverlap, testLength),
 #'   nForms = nForms, nItems = nItems, solver = "GLPK")
 #'
-#' # run the solver again
-#' with(result, do.call(solver_function, objects_for_solver))
-#'
 #'
 #'
 #'@export
@@ -83,6 +80,16 @@ useSolver <- function(allConstraints, nForms, nItems,
     out <- useGurobi(A, direction, d, c, modelSense, nBin, nVar, timeLimit, ...)
   }
 
+  if(out$solution_found) message("Optimal solution found.")
+  else message("No optimal solution found.")
+
+  # append infos (item matrix, nFOrms)
+  out[["item_matrix"]] <-   as.data.frame(lapply(seq(nForms), function(x) {
+    ind <- (x-1)*nItems + 1:nItems
+    out$solution[ind]
+  }))
+  names(out$item_matrix) <- paste0("block_", seq(nForms))
+  #out[["nForms"]] <- nForms
   out
 }
 
@@ -114,13 +121,11 @@ useGLPK <- function(A, direction, d, c, modelSense, nBin, nVar,
     dots)
 
   # compute solution
-  solution <- do.call(solver_function, objects_for_solver)
+  glpk_out <- do.call(solver_function, objects_for_solver)
 
   # object to return
-  out <- list(solution = solution,
-              solver_function = solver_function,
-              objects_for_solver = objects_for_solver)
-
+  list(solution_found = glpk_out$status == 0,
+       solution = glpk_out$solution)
 }
 
 
@@ -148,12 +153,11 @@ useLpSolve <- function(A, direction, d, c, modelSense, nBin, nVar,
 
   # compute solution with time limit
   call <- substitute(do.call(solver_function, objects_for_solver))
-  solution <- eval_call_with_time_limit(call, elapsed = timeLimit, ...)
+  lpSolve_out <- eval_call_with_time_limit(call, elapsed = timeLimit, ...)
 
   # object to return
-  out <- list(solution = solution,
-              solver_function = solver_function,
-              objects_for_solver = objects_for_solver)
+  list(solution_found = lpSolve_out$status == 0,
+       solution = lpSolve_out$solution)
 }
 
 
@@ -182,15 +186,14 @@ useGurobi <- function(A, direction, d, c, modelSense, nBin, nVar,
     params = c(TimeLimit = timeLimit, dots))
 
   # compute solution
-  solution <- 'if'(requireNamespace("gurobi", quietly = TRUE),
+  gurobi_out <- 'if'(requireNamespace("gurobi", quietly = TRUE),
                    do.call(eval(solver_function), objects_for_solver),
                    {message("No solution, the 'gurobi'-package is not installed");
                    NULL})
 
   # object to return
-  out <- list(solution = solution,
-              solver_function = solver_function,
-              objects_for_solver = objects_for_solver)
+  list(solution_found = gurobi_out$status %in% c("OPTIMAL"),
+       solution = gurobi_out$x)
 
 }
 

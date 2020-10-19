@@ -42,6 +42,10 @@
 itemExclusionConstraint <- function(nForms, exclusionTuples, itemIDs) {
   check_item_identifiers(new_idents = unique(unlist(exclusionTuples)), ident_col = itemIDs)
 
+  exclusionTuples <- exclusionTuples[exclusionTuples[, 1] %in% itemIDs, ]
+  exclusionTuples <- exclusionTuples[exclusionTuples[, 2] %in% itemIDs, ]
+
+
   id_df <- data.frame(no = seq(length(itemIDs)), ID = itemIDs)
 
   ## tuples into constraints

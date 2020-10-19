@@ -57,6 +57,10 @@ itemExclusionTuples <- function(items, idCol = "ID", exclusions, sepPattern = ",
   rownames(out_excl_df) <- NULL
   out_excl_df2 <- unique(out_excl_df)
 
+  #browser()
+  apply(out_excl_df2, 1, function(excl_row) {
+    if(excl_row[1] == excl_row[2]) stop("The following item is excluded from being with itself: ", excl_row[1])
+  })
   check_item_identifiers(new_idents = unique(unlist(out_excl_df2)), ident_col = items[, idCol])
 
   out_excl_df2
@@ -66,6 +70,6 @@ itemExclusionTuples <- function(items, idCol = "ID", exclusions, sepPattern = ",
 check_item_identifiers <- function(new_idents, ident_col) {
   idents_not_in_idents <- new_idents[!new_idents %in% ident_col]
   idents_not_in_idents_string <- paste(idents_not_in_idents, collapse = "', '")
-  if(length(idents_not_in_idents) > 0) stop("The following item identifiers in the exclusion column are not item identifiers in the idCol column (check for correct sepPattern!):", paste0("'", idents_not_in_idents_string, "'"))
+  if(length(idents_not_in_idents) > 0) warning("The following item identifiers in the exclusion column are not item identifiers in the idCol column (check for correct sepPattern!): ", paste0("'", idents_not_in_idents_string, "'"))
   return()
 }

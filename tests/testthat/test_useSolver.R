@@ -9,10 +9,11 @@ target <- itemTargetConstraint(nForms = 2, nItems = 10,
                                targetValue = 0)
 
 test_that("Solve problem using lpsolve", {
-  out <- useSolver(allConstraints = list(usage, perForm, target),
-            nForms = 2, nItems = 10, solver = "lpSolve")
-
-  sol <- out$solution$solution
+  expect_message(out <- useSolver(allConstraints = list(usage, perForm, target),
+            nForms = 2, nItems = 10, solver = "lpSolve"),
+            "Optimal solution found.")
+  expect_true(out$solution_found)
+  sol <- out$solution
 
   expect_equal(sum(sol[1:10]), 5)
   expect_equal(sum(sol[11:20]), 5)
@@ -26,10 +27,12 @@ test_that("Solve problem using lpsolve", {
 })
 
 test_that("Solve problem using glpk", {
-  out <- useSolver(allConstraints = list(usage, perForm, target),
-                   nForms = 2, nItems = 10, solver = "GLPK")
+  expect_message(out <- useSolver(allConstraints = list(usage, perForm, target),
+                   nForms = 2, nItems = 10, solver = "GLPK"),
+                  "Optimal solution found.")
 
-  sol <- out$solution$solution
+  expect_true(out$solution_found)
+  sol <- out$solution
 
   expect_equal(sum(sol[1:10]), 5)
   expect_equal(sum(sol[11:20]), 5)
@@ -41,6 +44,7 @@ test_that("Solve problem using glpk", {
   }
   expect_equal(sol[21], 13)
 })
+
 requireNamespace("gurobi", quietly = TRUE)
 
 if("gurobi" %in% rownames(installed.packages())){
