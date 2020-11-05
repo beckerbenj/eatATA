@@ -21,7 +21,8 @@
 #' ## Full workflow using itemExclusionTuples
 #' # Example data.frame
 #' items <- data.frame(ID = c("items1", "items2", "items3", "items4"),
-#'                      exclusions = c("items2, items3", NA, NA, NA))
+#'                      exclusions = c("items2, items3", NA, NA, NA),
+#'                      stringsAsFactors = FALSE)
 #'
 #' # Create tuples
 #' exTuples2 <- itemExclusionTuples(items = items, idCol = "ID", exclusions = "exclusions",
