@@ -1,5 +1,5 @@
 
-items <- data.frame(ID = 1:10,
+items <- data.frame(ID = paste0("item_", 1:10),
                     itemValues = c(-4, -4, -2, -2, -1, -1, 20, 20, 0, 0))
 
 usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 1)
@@ -10,7 +10,7 @@ target <- itemTargetConstraint(nForms = 2, nItems = 10,
 
 test_that("Solve problem using lpsolve", {
   expect_message(out <- useSolver(allConstraints = list(usage, perForm, target),
-            nForms = 2, nItems = 10, solver = "lpSolve"),
+            nForms = 2, itemIDs = items$ID, solver = "lpSolve"),
             "Optimal solution found.")
   expect_true(out$solution_found)
   sol <- out$solution
@@ -28,7 +28,7 @@ test_that("Solve problem using lpsolve", {
 
 test_that("Solve problem using glpk", {
   expect_message(out <- useSolver(allConstraints = list(usage, perForm, target),
-                   nForms = 2, nItems = 10, solver = "GLPK"),
+                   nForms = 2, itemIDs = items$ID, solver = "GLPK"),
                   "Optimal solution found.")
 
   expect_true(out$solution_found)
@@ -50,7 +50,7 @@ requireNamespace("gurobi", quietly = TRUE)
 if("gurobi" %in% rownames(installed.packages())){
   test_that("Solve problem using gurobi", {
     outp <- capture_output(out <- useSolver(allConstraints = list(usage, perForm, target),
-                                            nForms = 2, nItems = 10, solver = "Gurobi"))
+                                            nForms = 2, itemIDs = items$ID, solver = "Gurobi"))
 
     sol <- out$solution$x
     objval <- out$solution$objval
@@ -68,4 +68,12 @@ if("gurobi" %in% rownames(installed.packages())){
   })
 }
 
+test_that("Output format", {
+  expect_message(out <- useSolver(allConstraints = list(usage, perForm, target),
+                                  nForms = 2, itemIDs = items$ID, solver = "GLPK"),
+                 "Optimal solution found.")
+
+  expect_equal(names(out), c("solution_found", "solution", "item_matrix"))
+  expect_equal(rownames(out$item_matrix), paste0("item_", 1:10))
+})
 

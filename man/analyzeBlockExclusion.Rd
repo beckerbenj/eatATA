@@ -48,7 +48,7 @@ target_constraint <- itemTargetConstraint(nForms = 2, nItems = 4,
 
 opt_solution <- useSolver(list(exclusion_constraint, target_constraint,
                                         depletion_constraint),
-                                   nForms = 2, nItems = 4)
+                                   nForms = 2, nItems = 4, itemIDs = items$ID)
 
 analyzeBlockExclusion(opt_solution, items = items, idCol = "ID",
                        exclusionTuples = exTuples2)

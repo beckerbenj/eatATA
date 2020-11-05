@@ -14,7 +14,7 @@ target <- itemTargetConstraint(nForms = 3, nItems = 6,
                                targetValue = 0)
 
 suppressMessages(sol <- useSolver(allConstraints = list(usage, excl, target, perForm),
-                                  nForms = 3, nItems = 6, solver = "GLPK"))
+                                  nForms = 3, itemIDs = items_small$ID, solver = "GLPK"))
 
 
 test_that("analyze block exclusions", {

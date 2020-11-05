@@ -2,12 +2,15 @@
 #############################################################################
 #' Use a solver for a list of constraints.
 #'
+#' Use a mathematical programming solver to solve a list for constrains.
+#'
 #' Wrapper around the functions of different solvers (\code{gurobi::gurobi(),
-#' lpSolve::lp(), ...} for a list of constraints set up via \code{eatATA} as input to the \code{gurobi} function.
+#' lpSolve::lp(), ...} for a list of constraints set up via \code{eatATA}.
+#' \code{Rglpk} is used per default.
 #'
 #'@param allConstraints List of constraints.
 #'@param nForms Number of forms to be created.
-#'@param nItems Number of items in the item pool.
+#'@param itemIDs Character vector of item IDs.
 #'@param solver A character string indicating the solver to use.
 #'@param timeLimit The maximal runtime in seconds.
 #'@param modelSense A character string indicating whether to minimize or
@@ -35,12 +38,13 @@
 #'
 #' # use a solver
 #' result <- useSolver(list(target, noItemOverlap, testLength),
-#'   nForms = nForms, nItems = nItems, solver = "GLPK")
+#'   nForms = nForms, itemIDs = paste0("Item_", 1:4),
+#'   solver = "GLPK")
 #'
 #'
 #'
 #'@export
-useSolver <- function(allConstraints, nForms, nItems,
+useSolver <- function(allConstraints, nForms, itemIDs,
                       solver = c("GLPK", "lpSolve", "Gurobi"),
                       timeLimit = Inf,
                       modelSense = c("min", "max"),
@@ -50,6 +54,11 @@ useSolver <- function(allConstraints, nForms, nItems,
   solver <- match.arg(solver)
   modelSense <- match.arg(modelSense)
 
+  # check inputs
+  check_single_numeric(nForms)
+  if(!is.character(itemIDs) && !is.numeric(itemIDs)) stop("'itemIDs' needs to be a numeric or character vector.")
+  if(!is.character(solver) || length(solver) != 1 || !solver %in% c("GLPK", "lpSolve", "Gurobi")) stop("'solver' needs to be exactly one of 'GLPK', 'lpSolve', or 'Gurobi'.")
+
   # check constraints
   if(!is.list(allConstraints)) stop("allConstraints needs to be a list.")
   if(!all(sapply(allConstraints, function(x) "dgCMatrix" %in% class(x)))) stop("All elements in allConstraints need to be matrices.")
@@ -58,6 +67,7 @@ useSolver <- function(allConstraints, nForms, nItems,
   Ad <- do.call(rbind, allConstraints)
 
   # get values for MILP
+  nItems <- length(itemIDs)
   nBin <- nItems*nForms         # number of binary MILP variables
   nVar <- nBin + 1              # number of MILP variables
   A <- as.matrix(Ad[ , 1:nVar])     # matrix with left-hand side of constraints
@@ -89,6 +99,7 @@ useSolver <- function(allConstraints, nForms, nItems,
     out$solution[ind]
   }))
   names(out$item_matrix) <- paste0("block_", seq(nForms))
+  rownames(out$item_matrix) <- itemIDs
   #out[["nForms"]] <- nForms
   out
 }

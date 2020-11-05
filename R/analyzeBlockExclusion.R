@@ -36,7 +36,7 @@
 #'
 #' opt_solution <- useSolver(list(exclusion_constraint, target_constraint,
 #'                                         depletion_constraint),
-#'                                    nForms = 2, nItems = 4)
+#'                                    nForms = 2, nItems = 4, itemIDs = items$ID)
 #'
 #' analyzeBlockExclusion(opt_solution, items = items, idCol = "ID",
 #'                        exclusionTuples = exTuples2)
@@ -50,7 +50,7 @@ analyzeBlockExclusion <- function(solverOut, items, idCol, exclusionTuples){
   ## to do: implement input checks
   #browser()
 
-  processedObj <- inspectSolution(solverOut, items, colNames = names(items), colSums = FALSE)
+  processedObj <- inspectSolution(solverOut, items, idCol = idCol, colNames = names(items), colSums = FALSE)
 
   #names(processedObj) <- paste0("block ", seq(length(processedObj)))
   match_df <- do_call_rbind_withName(processedObj, colName = "block")[, c(idCol, "block")]

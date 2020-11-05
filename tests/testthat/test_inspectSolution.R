@@ -1,6 +1,6 @@
 
 
-items <- data.frame(ID = 1:10,
+items <- data.frame(ID = paste0("item_", 1:10),
                     itemValues = c(-4, -4, -2, -2, -1, -1, 20, 20, 0, 0))
 
 usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 1)
@@ -10,35 +10,47 @@ target <- itemTargetConstraint(nForms = 2, nItems = 10,
                                targetValue = 0)
 
 suppressMessages(sol <- useSolver(allConstraints = list(usage, perForm, target),
-                 nForms = 2, nItems = 10, solver = "lpSolve"))
+                 nForms = 2, itemIDs = items$ID, solver = "lpSolve"))
 
 suppressMessages(sol_empty <- useSolver(allConstraints = list(target),
-                                  nForms = 2, nItems = 10, solver = "lpSolve"))
+                                  nForms = 2, itemIDs = items$ID, solver = "lpSolve"))
 
 
 test_that("inspect solution", {
-  out <- inspectSolution(sol, items = items, colNames = "itemValues")
+  out <- inspectSolution(sol, items = items, idCol = "ID", colNames = "itemValues")
 
   expect_equal(length(out), 2)
   expect_equal(names(out), paste0("block_", 1:2))
-  expect_equal(rownames(out[[1]]), c(paste0("Item ", 1:5), "Sum"))
+  expect_equal(rownames(out[[1]]), c(paste0("item_", c(1, 3, 5, 8, 10)), "Sum"))
   expect_equal(dim(out[[1]]), c(6, 1))
 })
 
 
 test_that("inspect solution complete items data.frame", {
-  out <- inspectSolution(sol, items = items, colNames = names(items), colSums = FALSE)
+  out <- inspectSolution(sol, items = items, idCol = "ID", colNames = names(items), colSums = FALSE)
 
   expect_equal(length(out), 2)
   expect_equal(names(out), paste0("block_", 1:2))
-  expect_equal(rownames(out[[1]]), paste0("Item ", 1:5))
+  expect_equal(rownames(out[[1]]), paste0("item_", c(1, 3, 5, 8, 10)))
   expect_equal(dim(out[[1]]), c(5, 2))
 })
 
 test_that("inspect solution for empty test forms", {
-  out <- inspectSolution(sol_empty, items = items, colNames = names(items), colSums = FALSE)
+  out <- inspectSolution(sol_empty, items = items, idCol = "ID", colNames = names(items), colSums = FALSE)
 
   expect_equal(length(out), 2)
   expect_equal(names(out), paste0("block_", 1:2))
   expect_equal(nrow(out[[1]]), 0)
+})
+
+test_that("errors", {
+  expect_error(inspectSolution(sol_empty, items = items, idCol = "ID2", colNames = names(items)),
+               "'idCol' is not a column in 'items'.")
+  expect_error(inspectSolution(sol_empty, items = mtcars, idCol = "ID", colNames = names(items)),
+               "The following 'colNames' are not columns in 'items': ID, itemValues")
+  items2 <- items
+  items2[1, "ID"] <- "item_15"
+  expect_error(inspectSolution(sol_empty, items = items2, idCol = "ID", colNames = names(items)),
+               "'items' and the solution in 'solverOut' have different sets of itemIDs.")
+
 })

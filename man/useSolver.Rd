@@ -7,7 +7,7 @@
 useSolver(
   allConstraints,
   nForms,
-  nItems,
+  itemIDs,
   solver = c("GLPK", "lpSolve", "Gurobi"),
   timeLimit = Inf,
   modelSense = c("min", "max"),
@@ -19,7 +19,7 @@ useSolver(
 
 \item{nForms}{Number of forms to be created.}
 
-\item{nItems}{Number of items in the item pool.}
+\item{itemIDs}{Character vector of item IDs.}
 
 \item{solver}{A character string indicating the solver to use.}
 
@@ -39,8 +39,12 @@ A list with the following elements:
 }
 }
 \description{
+Use a mathematical programming solver to solve a list for constrains.
+}
+\details{
 Wrapper around the functions of different solvers (\code{gurobi::gurobi(),
-lpSolve::lp(), ...} for a list of constraints set up via \code{eatATA} as input to the \code{gurobi} function.
+lpSolve::lp(), ...} for a list of constraints set up via \code{eatATA}.
+\code{Rglpk} is used per default.
 }
 \examples{
 nForms <- 2
@@ -55,7 +59,8 @@ testLength <- itemsPerFormConstraint(nForms = nForms, nItems = nItems,
 
 # use a solver
 result <- useSolver(list(target, noItemOverlap, testLength),
-  nForms = nForms, nItems = nItems, solver = "GLPK")
+  nForms = nForms, itemIDs = paste0("Item_", 1:4),
+  solver = "GLPK")
 
 
 

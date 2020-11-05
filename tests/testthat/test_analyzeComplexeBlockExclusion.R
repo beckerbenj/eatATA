@@ -6,8 +6,8 @@ suppressWarnings(exclusionTuples1 <- data.frame(v1 = c("item1", "item3"),
 suppressWarnings(exclusionTuples2 <- data.frame(v1 = c("item5", "item6"),
                                v2 = c("item3", "item7"), stringsAsFactors = FALSE))
 
-excl1 <- itemExclusionConstraint(nForms = 2, exclusionTuples1, itemIDs = items1$ID)
-excl2 <- itemExclusionConstraint(nForms = 2, exclusionTuples2, itemIDs = items2$ID)
+suppressWarnings(excl1 <- itemExclusionConstraint(nForms = 2, exclusionTuples1, itemIDs = items1$ID))
+suppressWarnings(excl2 <- itemExclusionConstraint(nForms = 2, exclusionTuples2, itemIDs = items2$ID))
 usage <- itemUsageConstraint(nForms = 2, nItems = 4, operator = "=", targetValue = 1)
 perForm <- itemsPerFormConstraint(nForms = 2, nItems = 4, operator = "=", targetValue = 2)
 
@@ -16,9 +16,9 @@ target <- itemTargetConstraint(nForms = 2, nItems = 4,
                                targetValue = 0)
 
 suppressMessages(sol1 <- useSolver(allConstraints = list(usage, excl1, target, perForm),
-                                  nForms = 2, nItems = 4, solver = "GLPK"))
+                                  nForms = 2, itemIDs = items1$ID, solver = "GLPK"))
 suppressMessages(sol2 <- useSolver(allConstraints = list(usage, excl2, target, perForm),
-                                   nForms = 2, nItems = 4, solver = "GLPK"))
+                                   nForms = 2, itemIDs = items2$ID, solver = "GLPK"))
 
 
 test_that("analyze block exclusions", {
