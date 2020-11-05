@@ -77,3 +77,25 @@ test_that("Output format", {
   expect_equal(rownames(out$item_matrix), paste0("item_", 1:10))
 })
 
+nItems <- 100
+nForms <- 2
+set.seed(144)
+items <- data.frame(ID = paste0("item_", 1:nItems),
+                    itemValues = rnorm(nItems))
+
+usage <- itemUsageConstraint(nForms = nForms, nItems = nItems, operator = "=", targetValue = 1)
+target <- itemTargetConstraint(nForms = nForms, nItems = nItems,
+                               itemValues = items$itemValues,
+                               targetValue = 0)
+test_that("Solve problem with time limit using glpk", {
+  expect_message(out <- useSolver(allConstraints = list(usage, target),
+                                  nForms = nForms, itemIDs = items$ID, solver = "GLPK", timeLimit = 0.1),
+                 "No optimal solution found.")
+  expect_false(out$solution_found)
+})
+
+#test_that("Solve problem with time limit using lpsolve", {
+#  expect_error(out <- useSolver(allConstraints = list(usage, target),
+#                                nForms = nForms, itemIDs = items$ID, solver = "lpSolve", timeLimit = 0.1),
+#               "reached elapsed time limit")
+#})
