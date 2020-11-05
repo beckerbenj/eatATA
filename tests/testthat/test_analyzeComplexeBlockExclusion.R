@@ -15,11 +15,12 @@ target <- itemTargetConstraint(nForms = 2, nItems = 4,
                                itemValues = items1$itemValues,
                                targetValue = 0)
 
-suppressMessages(sol1 <- useSolver(allConstraints = list(usage, excl1, target, perForm),
-                                  nForms = 2, itemIDs = items1$ID, solver = "GLPK"))
-suppressMessages(sol2 <- useSolver(allConstraints = list(usage, excl2, target, perForm),
-                                   nForms = 2, itemIDs = items2$ID, solver = "GLPK"))
-
+#suppressMessages(sol1 <- useSolver(allConstraints = list(usage, excl1, target, perForm),
+#                                  nForms = 2, itemIDs = items1$ID, solver = "GLPK"))
+#suppressMessages(sol2 <- useSolver(allConstraints = list(usage, excl2, target, perForm),
+#                                   nForms = 2, itemIDs = items2$ID, solver = "GLPK"))
+#save(sol1, sol2, file = "tests/testthat/helper_complexBlockExclusions.RData")
+load("helper_complexBlockExclusions.RData")
 
 test_that("analyze block exclusions", {
   out <- analyzeComplexBlockExclusion(solverOut_list = list(sol1, sol2),
