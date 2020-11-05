@@ -4,7 +4,7 @@ author: "Benjamin Becker"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{eatATA}
+  %\VignetteIndexEntry{Typical Use of eatATA: a Case-Based Example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
