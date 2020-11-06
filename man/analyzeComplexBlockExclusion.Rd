@@ -2,7 +2,7 @@
 % Please edit documentation in R/analyzeComplexeBlockExclusion.R
 \name{analyzeComplexBlockExclusion}
 \alias{analyzeComplexBlockExclusion}
-\title{Analyze complex block exclusivenes}
+\title{Analyze complex block exclusiveness}
 \usage{
 analyzeComplexBlockExclusion(
   solverOut_list,
@@ -33,7 +33,7 @@ If exclusion tuples have been used to assemble test forms (using the \code{\link
 function), the resulting
 item blocks might also be exclusive. Using the initially used item exclusion tuples and the optimal solution
 given by \code{useSolver} this function determines, which item blocks are exclusive and can not be together in an
-assembled test form. \code{analyzeComplexBlockExclusion} allows analyzing block exclusivenes from separate test
+assembled test form. \code{analyzeComplexBlockExclusion} allows analyzing block exclusiveness from separate test
 assembly problems. This can be useful if test forms consist of blocks containing different domains or dimensions.
 }
 \examples{

@@ -10,7 +10,7 @@
 
 ## Overview
 
-`eatATA` provides a small `R` interface to mathematical optimization solvers specialized on solving simple automated test assembly problems (*ATA*). Internally, sparse matrices are used via the `Matrix` package. Currently the only supported solver is `Gurobi`. See below for a list of implemented features and feature to come.
+`eatATA` provides a small `R` interface to mathematical optimization solvers specialized on solving simple automated test assembly problems (`ATA`). Internally, sparse matrices are used via the `Matrix` package. Currently supported solvers are `GLPK`, `lpSolve`, and `Gurobi`. See below for a list of implemented features and feature to come.
 
 ## Installation
 
@@ -49,7 +49,7 @@ The following types of constraints can be set via `eatATA`:
 
 ## Outlook
 
-We are hoping to build interfaces to other mathematical optimization solvers. The current interface to `Gurobi` is the function `prepareConstraints()`. 
+We are hoping to add interfaces to other mathematical optimization solvers. 
 
 Constraints that we hope to implement in the future:
 
