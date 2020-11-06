@@ -70,10 +70,10 @@ if("gurobi" %in% rownames(installed.packages())){
 
 test_that("Output format", {
   expect_message(out <- useSolver(allConstraints = list(usage, perForm, target),
-                                  nForms = 2, itemIDs = items$ID, solver = "GLPK"),
+                                  nForms = 2, itemIDs = items$ID, solver = "GLPK", verbose = FALSE),
                  "Optimal solution found.")
 
-  expect_equal(names(out), c("solution_found", "solution", "item_matrix"))
+  expect_equal(names(out), c("solution_found", "solution", "solution_status", "item_matrix"))
   expect_equal(rownames(out$item_matrix), paste0("item_", 1:10))
 })
 
@@ -89,8 +89,8 @@ target <- itemTargetConstraint(nForms = nForms, nItems = nItems,
                                targetValue = 0)
 test_that("Solve problem with time limit using glpk", {
   expect_message(out <- useSolver(allConstraints = list(usage, target),
-                                  nForms = nForms, itemIDs = items$ID, solver = "GLPK", timeLimit = 0.1),
-                 "No optimal solution found.")
+                                  nForms = nForms, itemIDs = items$ID, solver = "GLPK", timeLimit = 0.1, verbose = FALSE),
+                 "The solution is feasible, but may not be optimal.")
   expect_false(out$solution_found)
 })
 

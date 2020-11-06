@@ -91,11 +91,13 @@ useSolver <- function(allConstraints, nForms, itemIDs,
   }
 
   if(out$solution_found) message("Optimal solution found.")
-  else message("No optimal solution found.")
+  else message('if'(is.null(out$solution_status),
+                    "No optimal solution found.",
+                    out$solution_status))
 
   # append infos (item matrix, nFOrms)
-  out[["item_matrix"]] <-   as.data.frame(lapply(seq(nForms), function(x) {
-    ind <- (x-1)*nItems + 1:nItems
+  out[["item_matrix"]] <-   as.data.frame(lapply(seq(nForms), function(formNr) {
+    ind <- (formNr - 1)*nItems + 1:nItems
     out$solution[ind]
   }))
   names(out$item_matrix) <- paste0("block_", seq(nForms))
@@ -128,15 +130,26 @@ useGLPK <- function(A, direction, d, c, modelSense, nBin, nVar,
     types = c(rep("B", nBin), "C"),
     max = modelSense == "max",
     # Avoid warning when timeLimit == Inf
-    tm_limit = 'if'(timeLimit == Inf, 0, timeLimit * 1000)),
+    control = list(
+      canonicalize_status = FALSE,
+      verbose = TRUE,
+      tm_limit = 'if'(timeLimit == Inf, 0, timeLimit * 1000))),
     dots)
 
   # compute solution
   glpk_out <- do.call(solver_function, objects_for_solver)
 
   # object to return
-  list(solution_found = glpk_out$status == 0,
-       solution = glpk_out$solution)
+  list(solution_found = glpk_out$status == 5,
+       solution = glpk_out$solution,
+       solution_status =
+         switch(as.character(glpk_out$status),
+                "1" = "The solution is undefined",
+                "2" = "The solution is feasible, but may not be optimal",
+                "3" = "The solution is infeasible",
+                "4" = "No feasible solution exists",
+                "5" = "The solution is optimal",
+                "6" = "The solution is unbounded"))
 }
 
 
