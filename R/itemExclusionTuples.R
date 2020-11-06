@@ -6,7 +6,7 @@
 #' If item exclusions are stored as a character vector, \code{itemExclusionTuples} separates this vector and creates item pairs ('tuples').
 #'
 #' Exclusion tuples can be used by \code{\link{itemExclusionConstraint}} to set up exclusion constraints. Note that a
-#' separater pattern has to be used consistently throught the column (e.g. \code{", "}).
+#' separator pattern has to be used consistently throughout the column (e.g. \code{", "}).
 #'
 #'@param items A \code{data.frame} with information on an item pool.
 #'@param idCol Name of the item ID column.
