@@ -45,6 +45,11 @@ Use a mathematical programming solver to solve a list for constrains.
 Wrapper around the functions of different solvers (\code{gurobi::gurobi(),
 lpSolve::lp(), ...} for a list of constraints set up via \code{eatATA}.
 \code{Rglpk} is used per default.
+
+Additional arguments can be passed through
+\code{...} and vary from solver to solver (see their respective help pages,
+\code{\link[lpSolve]{lp}} or \code{\link[Rglpk]{Rglpk_solve_LP}}); for example
+time limits can not be set for \code{lpSolve}.
 }
 \examples{
 nForms <- 2

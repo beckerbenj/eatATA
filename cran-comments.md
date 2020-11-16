@@ -1,9 +1,3 @@
-## Resubmission
-This is a resubmission. In this version I have 
-* added a citation to the package description (which causes a note, see below)
-* added explanations to the dontrun sections in the examples 
- (these sections use external software, which requires a license)
-
 ## Test environments
 * local windows x86_64-w64-mingw32, R 3.6.2
 * OS X (on travis-ci), release
@@ -13,11 +7,9 @@ This is a resubmission. In this version I have
 
 ## R CMD check results
 
-0 errors | 0 warnings | 2 notes
+0 errors | 0 warnings | 1 note
 
-* This is a new release.
-* Possibly mis-spelled words in DESCRIPTION:
-    der (8:105)
+* Package which this enhances but not available for checking: 'gurobi'
 
 
 ## Downstream dependencies

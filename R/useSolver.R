@@ -8,6 +8,11 @@
 #' lpSolve::lp(), ...} for a list of constraints set up via \code{eatATA}.
 #' \code{Rglpk} is used per default.
 #'
+#' Additional arguments can be passed through
+#' \code{...} and vary from solver to solver (see their respective help pages,
+#' \code{\link[lpSolve]{lp}} or \code{\link[Rglpk]{Rglpk_solve_LP}}); for example
+#' time limits can not be set for \code{lpSolve}.
+#'
 #'@param allConstraints List of constraints.
 #'@param nForms Number of forms to be created.
 #'@param itemIDs Character vector of item IDs.
