@@ -28,7 +28,7 @@ test_that("Solve problem using lpsolve", {
 
 test_that("Solve problem using glpk", {
   expect_message(out <- useSolver(allConstraints = list(usage, perForm, target),
-                   nForms = 2, itemIDs = items$ID, solver = "GLPK"),
+                   nForms = 2, itemIDs = items$ID, solver = "GLPK", verbose = FALSE),
                   "Optimal solution found.")
 
   expect_true(out$solution_found)
@@ -43,6 +43,8 @@ test_that("Solve problem using glpk", {
     expect_equal(sum(sol[i], sol[i+1]), 1)
   }
   expect_equal(sol[21], 13)
+  expect_output(out <- useSolver(allConstraints = list(usage, perForm, target),
+                                  nForms = 2, itemIDs = items$ID, solver = "GLPK"))
 })
 
 requireNamespace("gurobi", quietly = TRUE)
@@ -94,8 +96,30 @@ test_that("Solve problem with time limit using glpk", {
   expect_false(out$solution_found)
 })
 
+
+
+
+
 #test_that("Solve problem with time limit using lpsolve", {
 #  expect_error(out <- useSolver(allConstraints = list(usage, target),
 #                                nForms = nForms, itemIDs = items$ID, solver = "lpSolve", timeLimit = 0.1),
 #               "reached elapsed time limit")
 #})
+
+
+
+fun <- function(x){
+  for(i in seq_len(x)){
+    Sys.sleep(.5)
+    cat(i)
+  }
+}
+call <- substitute(fun(6))
+
+test_that("eval_with_time_limit works", {
+  expect_equal(eval_call_with_time_limit(call, elapsed = .1, on_time_out = mean, x = c(1:3)),
+               2)
+  expect_error(eval_call_with_time_limit(call, elapsed = .1), "reached elapsed time limit")
+  expect_equal(eval_call_with_time_limit(call, elapsed = .1, on_time_out = "OK"), "OK")
+
+})

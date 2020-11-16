@@ -89,7 +89,6 @@ useSolver <- function(allConstraints, nForms, itemIDs,
   } else if(solver == "Gurobi") {
     out <- useGurobi(A, direction, d, c, modelSense, nBin, nVar, timeLimit, ...)
   }
-
   if(out$solution_found) message("Optimal solution found.")
   else message('if'(is.null(out$solution_status),
                     "No optimal solution found.",
@@ -177,11 +176,27 @@ useLpSolve <- function(A, direction, d, c, modelSense, nBin, nVar,
 
   # compute solution with time limit
   call <- substitute(do.call(solver_function, objects_for_solver))
-  lpSolve_out <- eval_call_with_time_limit(call, elapsed = timeLimit, ...)
+  lpSolve_out <- #try(
+    eval_call_with_time_limit(
+      call,
+      elapsed = timeLimit,
+      on_time_out = list(status = "No solution due to time limit.",
+                         solution = NULL))
+    #)
+
+#  if(inherits(lpSolve_out, "try-error")) {
+#    msg <- attributes(lpSolve_out)$condition$message
+#    if(msg == "reached elapsed time limit") {
+#      lpSolve_out <- list(status = "No solution due to time limit.",
+#                       solution = NULL)
+#      warning(msg)
+#    }
+#  }
 
   # object to return
   list(solution_found = lpSolve_out$status == 0,
-       solution = lpSolve_out$solution)
+       solution = lpSolve_out$solution,
+       solution_status = lpSolve_out$status)
 }
 
 
@@ -223,11 +238,32 @@ useGurobi <- function(A, direction, d, c, modelSense, nBin, nVar,
 
 
 # function that evaluates a call with a time limit
-eval_call_with_time_limit <- function(call, cpu = Inf, elapsed = Inf,
-                                 transient = TRUE,
-                                 envir = parent.frame(), ...){
-  try({
-    setTimeLimit(cpu, elapsed, transient)
-    eval(call, envir = envir, ...)})
+eval_call_with_time_limit <- function(
+  call, cpu = Inf, elapsed = Inf,
+  transient = TRUE,
+  envir = parent.frame(),
+  enclos = if(is.list(envir) || is.pairlist(envir)) parent.frame else baseenv(),
+  on_time_out = NULL,
+  ...){
+
+  setTimeLimit(cpu, elapsed, transient)
+  on.exit(setTimeLimit(cpu = Inf,
+                       elapsed = Inf,
+                       transient = FALSE))
+
+  tryCatch({
+    eval(call, envir = envir, enclos = enclos)
+  },
+  error = function(e) {
+    msg <- e$message
+    if (regexpr(gettext("reached elapsed time limit", domain="R"),
+                msg) != -1L & !is.null(on_time_out)) {
+      if(is.function(on_time_out)) return(on_time_out(...))
+        return(on_time_out)
+      } else {
+        stop(msg, call. = FALSE)
+      }
+  })
 }
+
 
