@@ -7,8 +7,9 @@
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
+0 errors | 0 warnings | 2 notes
 
+* Suggests or Enhances not in mainstream repositories: 'gurobi'
 * Package which this enhances but not available for checking: 'gurobi'
 
 

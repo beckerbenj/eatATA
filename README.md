@@ -19,7 +19,7 @@
 install.packages("eatATA")
 
 # Install development version from GitHub via
-devtools::install_github("beckerbenj/eatATA", build_vignettes = TRUE)
+remotes::install_github("beckerbenj/eatATA", build_vignettes = TRUE)
 ```
 
 ## Documentation

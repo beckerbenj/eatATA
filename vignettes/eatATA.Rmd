@@ -191,7 +191,9 @@ solver_raw <- useSolver(constr_list, nForms = nForms, nItems = nItems,
 
 ```
 
-The function provides a short message indicating, whether an optimal solution has been found. If no optimal solution has been found, one option is to relax some of the constraints. Further, for first diagnostic purposes you can omit some constraints completely, to see which constraints are especially challenging. If you have a better grasp of the possibilities of the item pool, you can add these constraints back, but for example with larger `allowedDeviations`.
+The function provides output that indicates whether an optimal solution has been found. In our case, a viable solution has been found but the function reached the time limit before finding the optimal solution.
+
+If there is no feasible solution, one option is to relax some of the constraints. Further, for first diagnostic purposes you can omit some constraints completely, to see which constraints are especially challenging. If you have a better grasp of the possibilities of the item pool, you can add these constraints back, but for example with larger `allowedDeviations`.
 
 ## Inspect Solution
 
