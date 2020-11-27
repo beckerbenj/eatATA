@@ -1,5 +1,5 @@
 ## Test environments
-* local windows x86_64-w64-mingw32, R 3.6.2
+* local windows x86_64-w64-mingw32, R 4.0.2
 * OS X (on travis-ci), release
 * ubuntu 14.04 (on travis-ci), oldrel, release, devel
 * windows (on AppVeyor), release 
