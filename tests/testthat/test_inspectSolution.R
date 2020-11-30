@@ -1,7 +1,8 @@
 
 
 items <- data.frame(ID = paste0("item_", 1:10),
-                    itemValues = c(-4, -4, -2, -2, -1, -1, 20, 20, 0, 0))
+                    itemValues = c(-4, -4, -2, -2, -1, -1, 20, 20, 0, 0),
+                    stringsAsFactors = FALSE)
 
 usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 1)
 perForm <- itemsPerFormConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 5)
