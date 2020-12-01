@@ -23,5 +23,6 @@ Calculate expected response times given item parameters of the log normal respon
 }
 \details{
 Expected response times are calculated according to the log normal response time models by
-van der Linden (2006) or Klein Entink et al. (2009).
+van der Linden (2006) or Klein Entink et al. (2009). If \code{phi} is \code{1}, the model
+by van der Linden (2006) is used.
 }
