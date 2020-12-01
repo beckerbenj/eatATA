@@ -25,7 +25,7 @@ Calculate expected response times given item parameters of the log normal respon
 Expected response times are calculated according to the log normal response time model by
 van der Linden (2006) or Klein Entink et al. (2009). If \code{phi} is \code{1}, the model
 by van der Linden (2006) is used. Either a single set of parameters of vectors of each parameters
-can be supplied. If multiple \code{zeta} are supplied, a list
+can be supplied.
 
 The calculation is based on Fenton (1960). For the model by van der Linden (2006), the calculation was
 first introduced by van der Linden (2011).
