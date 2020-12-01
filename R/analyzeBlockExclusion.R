@@ -65,7 +65,7 @@ analyzeBlockExclusion <- function(solverOut, items, idCol, exclusionTuples){
   exclusionOut[, 2] <- match_df$block[match(exclusionOut[, 2], match_df[, idCol])]
 
   out <- do.call(rbind, lapply(seq(nrow(exclusionOut)), function(row_no) {
-    sorted_vec <- sort(exclusionOut[row_no, ])
+    sorted_vec <- sort(as.character(exclusionOut[row_no, ]))
     as.character(sorted_vec)
   }))
   colnames(out) <- c("Name 1", "Name 2")

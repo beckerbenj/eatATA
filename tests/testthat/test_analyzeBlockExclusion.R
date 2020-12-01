@@ -16,6 +16,7 @@ target <- itemTargetConstraint(nForms = 3, nItems = 6,
 suppressMessages(sol <- useSolver(allConstraints = list(usage, excl, target, perForm),
                                   nForms = 3, itemIDs = items_small$ID, solver = "GLPK", verbose = FALSE))
 #save(sol, file = "tests/testthat/helper_BlockExclusions.RData")
+#load("tests/testthat/helper_BlockExclusions.RData")
 load("helper_BlockExclusions.RData")
 
 test_that("analyze block exclusions", {
