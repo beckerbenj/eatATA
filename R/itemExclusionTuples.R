@@ -49,7 +49,7 @@ itemExclusionTuples <- function(items, idCol = "ID", exclusions, sepPattern = ",
 
   out_list <- apply(excl_df, 1, function(excl_row) {
     do.call(rbind, lapply(excl_row[c(FALSE, !is.na(excl_row[2:(max_excl+1)]))], function(x) {
-      sort(c(excl_row[idCol], x))
+      sort(as.character(c(excl_row[idCol], x)))
     }))
   })
 
