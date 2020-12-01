@@ -9,6 +9,9 @@ env:
 
 warnings_are_errors: true
 
+before_install:
+  - if [ $TRAVIS_OS_NAME = linux ]; then sudo apt-get -y install libglpk-dev
+
 r:
   - oldrel
   - release
@@ -16,8 +19,6 @@ r:
 
 os:
   - linux
-  before_install:
-  - sudo apt-get -y install libglpk-dev
   - osx
 
 matrix:
