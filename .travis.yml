@@ -5,7 +5,7 @@ cache: packages
 
 env:
   - _R_CHECK_FORCE_SUGGESTS_=FALSE
-  USE_BSPM="true"
+#  USE_BSPM="true"
 
 warnings_are_errors: true
 
