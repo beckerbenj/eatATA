@@ -10,11 +10,14 @@ test_that("item exclusion warnings", {
   items2 <- data.frame(ID = c("item1", "item2", "item3", "item4"),
                       exclusions = c("item2 , item3", "item4,  item3", NA, NA),
                       stringsAsFactors = FALSE)
+
+  # carefully modified tests, as string sorting seems OS dependent!
   expect_warning(out <- itemExclusionTuples(items = items2, idCol = "ID", exclusions = "exclusions",
                                    sepPattern = ", "),
-               "The following item identifiers in the exclusion column are not item identifiers in the idCol column (check for correct sepPattern!): ' item3', 'item2 ", fixed = TRUE)
-  expect_equal(out[, 1], c("item1", "item1", "item2", " item3"))
-  expect_equal(out[, 2], c("item2 ", "item3", "item4", "item2"))
+               "The following item identifiers in the exclusion column are not item identifiers in the idCol column")
+  expect_equal(out[1:3, 1], c("item1", "item1", "item2"))
+  expect_equal(out[1:3, 2], c("item2 ", "item3", "item4"))
+  expect_true(all(out[4, 1:2] %in% c(" item3", "item2")))
 })
 
 
