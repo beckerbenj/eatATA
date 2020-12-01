@@ -11,7 +11,6 @@
 #'
 #'@return a vector
 #'
-#'
 #'@export
 calculateExpectedRT <- function(lambda, phi, zeta, sdEpsi) {
   cumulants <- getCumulantRT(zeta, lambda, phi, sdEpsi)
