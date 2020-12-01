@@ -1,8 +1,10 @@
 #############################################################################
 #' Calculate Expected Response Times
 #'
-#' Calculate expected response times given item parameters of the lognormal response time model.
+#' Calculate expected response times given item parameters of the log normal response time model.
 #'
+#' Expected response times are calculated according to the log normal response time models by
+#' van der Linden (2006) or Klein Entink et al. (2009).
 #'
 #'@param lambda Vector of time intensity parameters.
 #'@param phi Vector of time sensitivity parameters.

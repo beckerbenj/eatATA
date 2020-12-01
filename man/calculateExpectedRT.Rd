@@ -19,5 +19,9 @@ calculateExpectedRT(lambda, phi, zeta, sdEpsi)
 a vector
 }
 \description{
-Calculate expected response times given item parameters of the lognormal response time model.
+Calculate expected response times given item parameters of the log normal response time model.
+}
+\details{
+Expected response times are calculated according to the log normal response time models by
+van der Linden (2006) or Klein Entink et al. (2009).
 }
