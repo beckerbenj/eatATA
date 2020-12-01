@@ -1,5 +1,5 @@
-items1 <- data.frame(ID = paste0("item", 1:4), itemValues = c(-2, -4, 2, 4))
-items2 <- data.frame(ID = paste0("item", 5:8), itemValues = c(-2, -4, 2, 4))
+items1 <- data.frame(ID = paste0("item", 1:4), itemValues = c(-2, -4, 2, 4), stringsAsFactors = FALSE)
+items2 <- data.frame(ID = paste0("item", 5:8), itemValues = c(-2, -4, 2, 4), stringsAsFactors = FALSE)
 
 suppressWarnings(exclusionTuples1 <- data.frame(v1 = c("item1", "item3"),
                               v2 = c("item2", "item5"), stringsAsFactors = FALSE))

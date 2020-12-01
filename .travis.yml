@@ -4,7 +4,8 @@ language: R
 cache: packages
 
 env:
-  - _R_CHECK_FORCE_SUGGESTS_=FALSE
+  - _R_CHECK_FORCE_SUGGESTS_="false"
+  USE_BSPM="true"
 
 warnings_are_errors: true
 
@@ -15,6 +16,8 @@ r:
 
 os:
   - linux
+  before_install:
+  - sudo apt-get -y install libglpk-dev
   - osx
 
 matrix:

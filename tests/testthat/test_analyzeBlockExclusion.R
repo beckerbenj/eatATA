@@ -1,7 +1,7 @@
 
 
 items_small <- data.frame(ID = paste0("item", 1:6),
-                          itemValues = c(-4, -4, -2, -2, 20, 20))
+                          itemValues = c(-4, -4, -2, -2, 20, 20), stringsAsFactors = FALSE)
 
 exclusionTuples <- data.frame(v1 = c("item1", "item3"),
                               v2 = c("item2", "item4"), stringsAsFactors = FALSE)
