@@ -4,28 +4,35 @@
 \alias{calculateIIF}
 \title{Calculate Item Information Function}
 \usage{
-calculateIIF(
-  theta,
-  A = rep(1, length(B)),
-  B = 0,
-  C = rep(0, length(B)),
-  D = 1.7
-)
+calculateIIF(A = rep(1, length(B)), B, C = rep(0, length(B)), theta)
 }
 \arguments{
-\item{theta}{Vector of time intensity parameters.}
-
 \item{A}{Vector of discrimination parameters.}
 
 \item{B}{Vector of difficulty parameters.}
 
 \item{C}{Vector of guessing parameters.}
 
-\item{D}{A constant.}
+\item{theta}{Vector of time intensity parameters.}
 }
 \value{
 a matrix, with columns for different \code{theta} and rows for different items
 }
 \description{
 Calculate item information function given item parameters of the 1PL, 2PL or 3PL IRT model.
+}
+\examples{
+# TIF for a single item (2PL model)
+calculateIIF(A = 0.8, B = 1.1, theta = 0)
+
+# TIF for multiple items (1PL model)
+calculateIIF(B = c(1.1, 0.8, 0.5), theta = 0)
+
+# TIF for multiple items and multiple ability levels (1PL model)
+calculateIIF(A = c(0.7, 1.1, 0.8), B = c(1.1, 0.8, 0.5),
+            theta = c(-1, 0, 1))
+
+}
+\references{
+van der Linden, W. J. (2005). \emph{Linear models for optimal test design}. New York, NY: Springer.
 }

@@ -12,13 +12,13 @@
 #' first introduced by van der Linden (2011).
 #'
 #'@param lambda Vector of time intensity parameters.
-#'@param phi Vector of time sensitivity parameters.
+#'@param phi [optional] Vector of time sensitivity parameters.
 #'@param zeta Vector of person speed parameters.
 #'@param sdEpsi Vector of item specific residual variances.
 #'
 #'@return a matrix, with columns for different \code{zeta} and rows for different items
 #'
-#' @references Fenton, L. (1960). The sum of log-normal probability distributions in scatter transmission systems. \emph{IRE
+#'@references Fenton, L. (1960). The sum of log-normal probability distributions in scatter transmission systems. \emph{IRE
 #' Transactions on Communication Systems}, 8, 57-67.
 #'
 #' Klein Entink, R. H., Fox, J.-P., & van der Linden, W. J. (2009). A multivariate
@@ -32,8 +32,20 @@
 #'van der Linden, W. J. (2011). Test design and speededness. \emph{Journal of
 #'Educational Measurement}, 48(1), 44-60.
 #'
+#'@examples
+#'# expected RT for a single item (van der Linden model)
+#'calculateExpectedRT(lambda = 3.8, zeta = 0, sdEpsi = 0.3)
+#'
+#'# expected RT for multiple items (van der Linden model)
+#'calculateExpectedRT(lambda = c(4.1, 3.8, 3.5), zeta = 0,
+#'                    sdEpsi = c(0.3, 0.4, 0.2))
+#'
+#'# TIF for multiple items and multiple ability levels (1PL model)
+#'calculateExpectedRT(lambda = c(3.7, 4.1, 3.8), phi = c(1.1, 0.8, 0.5),
+#'                     zeta = c(-1, 0, 1), sdEpsi = c(0.3, 0.4, 0.2))
+#'
 #'@export
-calculateExpectedRT <- function(lambda, phi, zeta, sdEpsi) {
+calculateExpectedRT <- function(lambda, phi = rep(1, length(lambda)), zeta, sdEpsi) {
   if(!is.numeric(lambda)) stop("'lambda' must be a numeric vector.")
   if(!is.numeric(phi)) stop("'phi' must be a numeric vector.")
   if(!is.numeric(zeta)) stop("'zeta' must be a numeric vector.")
@@ -41,7 +53,7 @@ calculateExpectedRT <- function(lambda, phi, zeta, sdEpsi) {
   if(length(sdEpsi) != length(lambda) || length(sdEpsi) != length(phi)) stop("'lambda', 'phi', and 'sdEpsi' must be of the same length.")
 
   cumulants <- getCumulantRT(zeta, lambda, phi, sdEpsi)
-  return(t(cumulants[[1]]))
+  return(cumulants[[1]])
 }
 
 

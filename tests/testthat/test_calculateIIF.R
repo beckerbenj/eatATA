@@ -7,8 +7,6 @@ test_that("errors", {
                "'B' must be a numeric vector.")
   expect_error(calculateIIF(theta = 1, A = 1, B = 0, C = "0.5"),
                "'C' must be a numeric vector.")
-  expect_error(calculateIIF(theta = 1, A = 1, B = 0, C = 0.5, D = "a"),
-               "'D' must be a numeric vector.")
 
   expect_error(calculateIIF(theta = 1, A = 1:2, B = 0, C = 0.5),
                "'A', 'B', and 'C' must be of the same length.")
@@ -40,4 +38,5 @@ test_that("multiple items and multiple zetas", {
   expect_equal(as.numeric(round(out[1, 1], 2)), c(0.72))
   expect_equal(as.numeric(round(out[2, 1], 2)), c(0))
   expect_equal(as.numeric(round(out[1, 2], 2)), c(0.38))
+  expect_equal(colnames(out), c("theta=0", "theta=1"))
 })

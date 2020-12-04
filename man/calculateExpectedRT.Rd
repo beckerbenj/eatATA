@@ -4,12 +4,12 @@
 \alias{calculateExpectedRT}
 \title{Calculate Expected Response Times}
 \usage{
-calculateExpectedRT(lambda, phi, zeta, sdEpsi)
+calculateExpectedRT(lambda, phi = rep(1, length(lambda)), zeta, sdEpsi)
 }
 \arguments{
 \item{lambda}{Vector of time intensity parameters.}
 
-\item{phi}{Vector of time sensitivity parameters.}
+\item{phi}{[optional] Vector of time sensitivity parameters.}
 
 \item{zeta}{Vector of person speed parameters.}
 
@@ -29,6 +29,19 @@ can be supplied.
 
 The calculation is based on Fenton (1960). For the model by van der Linden (2006), the calculation was
 first introduced by van der Linden (2011).
+}
+\examples{
+# expected RT for a single item (van der Linden model)
+calculateExpectedRT(lambda = 3.8, zeta = 0, sdEpsi = 0.3)
+
+# expected RT for multiple items (van der Linden model)
+calculateExpectedRT(lambda = c(4.1, 3.8, 3.5), zeta = 0,
+                   sdEpsi = c(0.3, 0.4, 0.2))
+
+# TIF for multiple items and multiple ability levels (1PL model)
+calculateExpectedRT(lambda = c(3.7, 4.1, 3.8), phi = c(1.1, 0.8, 0.5),
+                    zeta = c(-1, 0, 1), sdEpsi = c(0.3, 0.4, 0.2))
+
 }
 \references{
 Fenton, L. (1960). The sum of log-normal probability distributions in scatter transmission systems. \emph{IRE
