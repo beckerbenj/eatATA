@@ -5,6 +5,7 @@ items_small <- data.frame(ID = paste0("item", 1:6),
 
 exclusionTuples <- data.frame(v1 = c("item1", "item3"),
                               v2 = c("item2", "item4"), stringsAsFactors = FALSE)
+exclusionTuples_mat <- as.matrix(exclusionTuples)
 excl <- itemExclusionConstraint(nForms = 3, exclusionTuples, itemIDs = items_small$ID)
 usage <- itemUsageConstraint(nForms = 3, nItems = 6, operator = "=", targetValue = 1)
 perForm <- itemsPerFormConstraint(nForms = 3, nItems = 6, operator = "=", targetValue = 2)
@@ -21,6 +22,15 @@ load("helper_BlockExclusions.RData")
 
 test_that("analyze block exclusions", {
   out <- analyzeBlockExclusion(sol, items = items_small, idCol = "ID", exclusionTuples)
+
+  expect_equal(names(out), c("Name 1", "Name 2"))
+  expect_equal(dim(out), c(2, 2))
+  expect_equal(as.character(out[2, ]), c("block_1", "block_2"))
+  expect_equal(as.character(out[1, ]), c("block_1", "block_3"))
+})
+
+test_that("analyze block exclusions if exclusions as matrix", {
+  out <- analyzeBlockExclusion(sol, items = items_small, idCol = "ID", exclusionTuples_mat)
 
   expect_equal(names(out), c("Name 1", "Name 2"))
   expect_equal(dim(out), c(2, 2))

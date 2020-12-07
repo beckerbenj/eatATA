@@ -85,6 +85,8 @@ nForms <- 2
 set.seed(144)
 items <- data.frame(ID = paste0("item_", 1:nItems),
                     itemValues = rnorm(nItems), stringsAsFactors = FALSE)
+#save(items, file = "tests/testthat/helper_glpk_timeLimit.RData")
+load("helper_glpk_timeLimit.RData")
 
 usage <- itemUsageConstraint(nForms = nForms, nItems = nItems, operator = "=", targetValue = 1)
 target <- itemTargetConstraint(nForms = nForms, nItems = nItems,
