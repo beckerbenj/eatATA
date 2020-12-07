@@ -43,6 +43,10 @@ test_that("analyze block exclusions errors", {
                "'items' must be a data.frame.")
   expect_error(analyzeBlockExclusion(sol, items = items_small, idCol = "lala", exclusionTuples),
                "'idCol' must be a column name in 'items'.")
+  expect_error(analyzeBlockExclusion(sol, items = items_small, idCol = "ID", exclusionTuples[, c(1, 1, 2)]),
+               "'exclusionTuples' must have two columns.")
+  expect_error(analyzeBlockExclusion(sol, items = items_small, idCol = "ID", exclusionTuples = "a"),
+               "'exclusionTuples' must be a data.frame.")
 })
 
 test_that("block exclusions without item pool depletion", {

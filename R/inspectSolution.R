@@ -41,6 +41,7 @@ inspectSolution <- function(solverOut, items, idCol, colNames, colSums = TRUE){
   if(!identical(nrow(solverOut$item_matrix), nrow(items))) stop("'items' and the solution in 'solverOut' have different numbers of rows.")
   if(!idCol %in% names(items)) stop("'idCol' is not a column in 'items'.")
   if(!identical(rownames(solverOut$item_matrix), as.character(items[, idCol]))) stop("'items' and the solution in 'solverOut' have different sets of itemIDs.")
+  check_solverOut(solverOut)
 
   new_items <- appendSolution(solverOut, items = items[, c(idCol, colNames), drop = FALSE], idCol = idCol)
 
