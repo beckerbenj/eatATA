@@ -1,4 +1,4 @@
-# eatATA 0.9.0
+# eatATA 0.9.1
 
 * `GLPK` and `lpSolve` solvers are now supported
 * `useSolver()` function implemented, which calls solver APIs directly

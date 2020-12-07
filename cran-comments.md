@@ -1,3 +1,9 @@
+## Resubmission 
+This is a resubmission. In this version I have
+
+* added a short explanation on the availability of the R package 'gurobi' in the description.
+Please note that 'gurobi' is distributed alongside the software 'Gurobi', which requires a license.
+
 ## Test environments
 * local windows x86_64-w64-mingw32, R 4.0.2
 * OS X (on travis-ci), release
