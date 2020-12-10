@@ -1,3 +1,7 @@
+# eatATA 0.9.1.9000
+
+* vignette with package overview
+
 # eatATA 0.9.1
 
 * `GLPK` and `lpSolve` solvers are now supported
