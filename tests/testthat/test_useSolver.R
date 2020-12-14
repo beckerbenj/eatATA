@@ -100,6 +100,19 @@ test_that("Solve problem with time limit using glpk", {
 })
 
 
+test_that("Use Solver returns errors", {
+  expect_error(out <- useSolver(allConstraints = list(usage, perForm, target),
+                                nForms = 2, solver = "lpSolve"),
+               "'nItems' and 'itemIDs' cannot be both 'NULL'.")
+  expect_error(out <- useSolver(allConstraints = list(usage, perForm, target),
+                                nForms = 2, nItems = 5, itemIDs = items$ID, solver = "lpSolve"),
+               "The length of 'itemIDs' should be equal to 'nItems'.")
+  expect_error(out <- useSolver(allConstraints = list(usage, perForm, target),
+                                nForms = 2, itemIDs = as.factor(items$ID), solver = "lpSolve"),
+               "'itemIDs' needs to be a numeric or character vector.")
+})
+
+
 
 
 

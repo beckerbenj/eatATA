@@ -15,6 +15,7 @@
 #'
 #'@param allConstraints List of constraints.
 #'@param nForms Number of forms to be created.
+#'@param nItems Number of items in the pool.
 #'@param itemIDs Character vector of item IDs.
 #'@param solver A character string indicating the solver to use.
 #'@param timeLimit The maximal runtime in seconds.
@@ -49,7 +50,7 @@
 #'
 #'
 #'@export
-useSolver <- function(allConstraints, nForms, itemIDs,
+useSolver <- function(allConstraints, nForms, nItems = NULL, itemIDs = NULL,
                       solver = c("GLPK", "lpSolve", "Gurobi"),
                       timeLimit = Inf,
                       modelSense = c("min", "max"),
@@ -61,8 +62,14 @@ useSolver <- function(allConstraints, nForms, itemIDs,
 
   # check inputs
   check_single_numeric(nForms)
+  if(is.null(nItems)) {
+    if(is.null(itemIDs)) stop("'nItems' and 'itemIDs' cannot be both 'NULL'.")
+    else nItems <- length(itemIDs)
+  } else {
+    if(is.null(itemIDs)) itemIDs <- sprintf(paste("item%0", nchar(nItem), "d", sep=''), seq_len(nItem))
+    if(length(itemIDs) != nItems) stop("The length of 'itemIDs' should be equal to 'nItems'.")
+  }
   if(!is.character(itemIDs) && !is.numeric(itemIDs)) stop("'itemIDs' needs to be a numeric or character vector.")
-  if(!is.character(solver) || length(solver) != 1 || !solver %in% c("GLPK", "lpSolve", "Gurobi")) stop("'solver' needs to be exactly one of 'GLPK', 'lpSolve', or 'Gurobi'.")
 
   # check constraints
   if(!is.list(allConstraints)) stop("allConstraints needs to be a list.")
