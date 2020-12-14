@@ -66,7 +66,7 @@ useSolver <- function(allConstraints, nForms, nItems = NULL, itemIDs = NULL,
     if(is.null(itemIDs)) stop("'nItems' and 'itemIDs' cannot be both 'NULL'.")
     else nItems <- length(itemIDs)
   } else {
-    if(is.null(itemIDs)) itemIDs <- sprintf(paste("item%0", nchar(nItem), "d", sep=''), seq_len(nItem))
+    if(is.null(itemIDs)) itemIDs <- sprintf(paste("item%0", nchar(nItems), "d", sep=''), seq_len(nItems))
     if(length(itemIDs) != nItems) stop("The length of 'itemIDs' should be equal to 'nItems'.")
   }
   if(!is.character(itemIDs) && !is.numeric(itemIDs)) stop("'itemIDs' needs to be a numeric or character vector.")
