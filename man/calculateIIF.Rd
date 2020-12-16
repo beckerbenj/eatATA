@@ -4,16 +4,18 @@
 \alias{calculateIIF}
 \title{Calculate Item Information Function}
 \usage{
-calculateIIF(A = rep(1, length(B)), B, C = rep(0, length(B)), theta)
+calculateIIF(A = rep(1, length(B)), B, C = rep(0, length(B)), theta, D = 1.7)
 }
 \arguments{
 \item{A}{Vector of discrimination parameters.}
 
 \item{B}{Vector of difficulty parameters.}
 
-\item{C}{Vector of guessing parameters.}
+\item{C}{Vector of pseudo-guessing parameters.}
 
 \item{theta}{Vector of time intensity parameters.}
+
+\item{D}{the constant that should be used. Defaults to 1.7.}
 }
 \value{
 a matrix, with columns for different \code{theta} and rows for different items
@@ -28,7 +30,10 @@ calculateIIF(A = 0.8, B = 1.1, theta = 0)
 # TIF for multiple items (1PL model)
 calculateIIF(B = c(1.1, 0.8, 0.5), theta = 0)
 
-# TIF for multiple items and multiple ability levels (1PL model)
+# TIF for multiple theta-values (3PL model)
+calculateIIF(B = -0.5, C = 0.25, theta = c(-1, 0, 1))
+
+# TIF for multiple items and multiple ability levels (2PL model)
 calculateIIF(A = c(0.7, 1.1, 0.8), B = c(1.1, 0.8, 0.5),
             theta = c(-1, 0, 1))
 

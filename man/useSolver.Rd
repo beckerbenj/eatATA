@@ -7,7 +7,8 @@
 useSolver(
   allConstraints,
   nForms,
-  itemIDs,
+  nItems = NULL,
+  itemIDs = NULL,
   solver = c("GLPK", "lpSolve", "Gurobi"),
   timeLimit = Inf,
   modelSense = c("min", "max"),
@@ -18,6 +19,8 @@ useSolver(
 \item{allConstraints}{List of constraints.}
 
 \item{nForms}{Number of forms to be created.}
+
+\item{nItems}{Number of items in the pool.}
 
 \item{itemIDs}{Character vector of item IDs.}
 

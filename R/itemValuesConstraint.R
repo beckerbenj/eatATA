@@ -34,7 +34,7 @@ itemValuesConstraint <- function(nForms, nItems, itemValues, operator = c("<=", 
   if(any(!check)) stop("The following arguments should have length 1: 'nForms', 'nItems', 'operator', 'targetValue'.")
 
   # itemValues should have length equal to nItems
-  if(length(itemValues) != nItems) stop("The lenght of 'itemValues' should be equal to 'nItems'.")
+  if(length(itemValues) != nItems) stop("The length of 'itemValues' should be equal to 'nItems'.")
 
 
   # the targetValue should be smaller than or equal to the sum of the itemValues
@@ -52,4 +52,5 @@ itemValuesConstraint <- function(nForms, nItems, itemValues, operator = c("<=", 
   Matrix::sparseMatrix(
     i = c(rep(1:nForms, each = nItems),     1:nForms,          1:nForms,                  1:nForms),
     j = c(1:M,                              rep(M+1, nForms),  rep(M+2, nForms),          rep(M+3, nForms)),
-    x = c(rep(itemValues, times = nForms),  rep(0, nForms),    rep(sign, each = nForms),  rep(targetValue, nForms)))}
+    x = c(rep(itemValues, times = nForms),  rep(0, nForms),    rep(sign, each = nForms),  rep(targetValue, nForms)))
+  }
