@@ -15,7 +15,8 @@ LazyData: true
 Depends: R (>= 3.5.0)
 Imports: Matrix, 
          Rglpk,
-         lpSolve
+         lpSolve,
+         Rsymphony
 RoxygenNote: 7.1.1
 Suggests: 
     testthat (>= 2.1.0),

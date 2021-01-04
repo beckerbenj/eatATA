@@ -9,7 +9,7 @@ useSolver(
   nForms,
   nItems = NULL,
   itemIDs = NULL,
-  solver = c("GLPK", "lpSolve", "Gurobi"),
+  solver = c("GLPK", "lpSolve", "Gurobi", "Symphony"),
   timeLimit = Inf,
   modelSense = c("min", "max"),
   ...
@@ -36,9 +36,9 @@ maximize the objective function.}
 \value{
 A list with the following elements:
 \describe{
-  \item{\code{solution}}{The object returned by the solver.}
-  \item{\code{solver_function}}{The solver function that was called, and can be called with the \code{objects_for_solver}.}
-  \item{\code{objects_for_solver}}{A list with the objects that are used in the call.}
+  \item{\code{solution_found}}{Was a solution found?}
+  \item{\code{solution}}{Numeric vector containing the found solution.}
+  \item{\code{solution_status}}{Was the solution optimal?}
 }
 }
 \description{

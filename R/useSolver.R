@@ -25,9 +25,9 @@
 #'
 #'@return A list with the following elements:
 #'\describe{
-#'   \item{\code{solution}}{The object returned by the solver.}
-#'   \item{\code{solver_function}}{The solver function that was called, and can be called with the \code{objects_for_solver}.}
-#'   \item{\code{objects_for_solver}}{A list with the objects that are used in the call.}
+#'   \item{\code{solution_found}}{Was a solution found?}
+#'   \item{\code{solution}}{Numeric vector containing the found solution.}
+#'   \item{\code{solution_status}}{Was the solution optimal?}
 #' }
 #'
 #'
@@ -51,7 +51,7 @@
 #'
 #'@export
 useSolver <- function(allConstraints, nForms, nItems = NULL, itemIDs = NULL,
-                      solver = c("GLPK", "lpSolve", "Gurobi"),
+                      solver = c("GLPK", "lpSolve", "Gurobi", "Symphony"),
                       timeLimit = Inf,
                       modelSense = c("min", "max"),
                       ...){
@@ -100,6 +100,8 @@ useSolver <- function(allConstraints, nForms, nItems = NULL, itemIDs = NULL,
     out <- useLpSolve(A, direction, d, c, modelSense, nBin, nVar, timeLimit, ...)
   } else if(solver == "Gurobi") {
     out <- useGurobi(A, direction, d, c, modelSense, nBin, nVar, timeLimit, ...)
+  } else if(solver == "Symphony") {
+    out <- useSymphony(A, direction, d, c, modelSense, nBin, nVar, timeLimit, ...)
   }
   if(out$solution_found) message("Optimal solution found.")
   else message('if'(is.null(out$solution_status),
@@ -225,7 +227,7 @@ useGurobi <- function(A, direction, d, c, modelSense, nBin, nVar,
 
   if(timeLimit == Inf) timeLimit <- 9999
 
-  # create list with all the objects for Rglpk::Rglpk_solve_LP()
+  # create list with all the objects for gurobi::gurobi()
   objects_for_solver <- list(model = c(
       list(A = A,
            rhs = d,
@@ -248,6 +250,43 @@ useGurobi <- function(A, direction, d, c, modelSense, nBin, nVar,
 
 }
 
+
+### wrapper around Rsymphony::Rsymphony_solve_LP() --------------------------------------------
+useSymphony <- function(A, direction, d, c, modelSense, nBin, nVar,
+                      timeLimit, bounds = NULL, ...){
+
+  # handle dots, make list
+  dots <- as.list(substitute(...()))
+
+  # Symphony uses "==" rather then "="
+  direction[direction == "="] <- "=="
+
+  if(timeLimit == Inf) timeLimit <- -1
+
+  # create solver function
+  solver_function <- Rsymphony::Rsymphony_solve_LP
+
+  # create list with all the objects for Rsymphony::Rsymphony_solve_LP()
+  objects_for_solver <- c(list(
+    obj = c,
+    mat = A,
+    dir = direction,
+    rhs = d,
+    bounds = bounds,
+    types = c(rep("B", nBin), "C"),
+    max = modelSense == "max",
+    time_limit = timeLimit,
+    verbosity = -2,
+    dots))
+
+  # compute solution
+  symphony_out <- do.call(solver_function, objects_for_solver)
+
+  # object to return
+  list(solution_found = symphony_out$status == 0,
+       solution = symphony_out$solution,
+       solution_status = "not yet researched, tbd")
+}
 
 # function that evaluates a call with a time limit
 eval_call_with_time_limit <- function(
