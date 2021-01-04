@@ -49,7 +49,6 @@ test_that("Solve problem using glpk", {
 })
 
 requireNamespace("gurobi", quietly = TRUE)
-
 if("gurobi" %in% rownames(installed.packages())){
   test_that("Solve problem using gurobi", {
     outp <- capture_output(out <- useSolver(allConstraints = list(usage, perForm, target),
@@ -71,6 +70,8 @@ if("gurobi" %in% rownames(installed.packages())){
   })
 }
 
+requireNamespace("Rsymphony", quietly = TRUE)
+if("Rsymphony" %in% rownames(installed.packages())){
 test_that("Solve problem using Symphony", {
   expect_message(out <- useSolver(allConstraints = list(usage, perForm, target),
                                   nForms = 2, itemIDs = items$ID, solver = "Symphony", verbose = FALSE),
@@ -89,7 +90,7 @@ test_that("Solve problem using Symphony", {
   }
   expect_equal(sol[21], 13)
 })
-
+}
 
 
 # -----------------------------------------------------------------------------------------------------------

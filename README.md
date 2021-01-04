@@ -3,6 +3,7 @@
 [![Travis build status](https://travis-ci.org/beckerbenj/eatATA.svg?branch=master)](https://travis-ci.org/beckerbenj/eatATA)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/beckerbenj/eatATA?branch=master&svg=true)](https://ci.appveyor.com/project/beckerbenj/eatATA)
 [![Codecov test coverage](https://codecov.io/gh/beckerbenj/eatATA/branch/master/graph/badge.svg)](https://codecov.io/gh/beckerbenj/eatATA?branch=master)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/eatATA?color=blue)](https://cran.r-project.org/package=eatATA)
 <!-- badges: end -->
 
 
