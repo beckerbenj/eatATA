@@ -10,25 +10,24 @@
 #'
 #' @inheritParams itemValuesConstraint
 #' @param itemCategories a factor representing the categories/grouping of the items
-#' @param operator a character indicating which operator should be used in the
-#'  constraints, with three possible values: \code{"<="}, \code{"="},
-#'  or \code{">="}. See details for more information.
 #' @param targetValues an integer vector representing the target number per category.
 #'  The order of the target values should correspond with the order of the levels
 #'  of the factor in \code{itemCategory}.
 #'
-#' @return A sparse matrix.
+#' @return A object of class \code{"constraint"}.
 #'
 #' @examples
 #' ## constraints to make sure that there are at least 3 items of each item type
 #' ## in each test form
 #' nItems <- 30
 #' item_type <- factor(sample(1:3, size = nItems, replace = TRUE))
-#' itemCategoryConstraint(2, nItems, item_type, ">=", targetValues = c(3, 3, 3))
-
+#' itemCategoryConstraint(2, nItems, item_type, ">=", targetValues = c(1, 3, 2))
 #'
 #'@export
-itemCategoryConstraint <- function(nForms, nItems, itemCategories, operator = c("<=", "=", ">="), targetValues){
+itemCategoryConstraint <- function(nForms, nItems, itemCategories,
+                                   operator = c("<=", "=", ">="), targetValues,
+                                   whichForms = seq_len(nForms),
+                                   info_text = NULL){
 
 
   operator <- match.arg(operator)
@@ -49,7 +48,15 @@ itemCategoryConstraint <- function(nForms, nItems, itemCategories, operator = c(
   if(nLevels != length(targetValues)) stop("The number of 'targetValues' should correspond with the number of levels in 'itemCategories'.")
 
 
-  do.call(rbind, lapply(seq_len(nLevels), function(levelNr){
-    itemValuesConstraint(nForms, nItems, 1 * (itemCategories == levels[levelNr]), operator, targetValues[levelNr])
+  # choose info_text for info
+  if(is.null(info_text)) info_text <- paste0(deparse(substitute(itemCategories)),
+                                             operator, targetValues)
+
+  if(length(info_text) == 1) info_text <- paste0(info_text, operator, targetValues)
+
+  if(length(info_text) != nLevels) stop("'info_text' should be a character string of length equal to to the number of levels in 'itemCategories'.")
+
+  do.call(combineConstraints, lapply(seq_len(nLevels), function(levelNr){
+    itemValuesConstraint(nForms, nItems, 1 * (itemCategories == levels[levelNr]), operator, targetValues[levelNr], whichForms, info_text[levelNr])
   }))
 }

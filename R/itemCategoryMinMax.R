@@ -32,7 +32,9 @@
 #' itemCategoryDeviation(2, nItems, item_type, targetValues = rep(3, 3), allowedDeviation = rep(4, 3))
 #'
 #' @export
-itemCategoryRange <- function(nForms, nItems, itemCategories, range){
+itemCategoryRange <- function(nForms, nItems, itemCategories, range,
+                              whichForms = seq_len(nForms),
+                              info_text = NULL){
 
   if(!is.matrix(range) || dim(range)[1] != nlevels(itemCategories) || dim(range)[2] != 2) stop("'range' should be a matrix with two columns (minimum and maximum frequencies) and the number of rows equal to the number of levels in 'itemCategories'.")
   range <- as.matrix(range, ncol = 2)
@@ -40,31 +42,65 @@ itemCategoryRange <- function(nForms, nItems, itemCategories, range){
   # min should be smaller than max
   if(any(range[,2] < range[,1])) stop("The values in the first column of 'range' should be smaller than the values in the second column of 'range'.")
 
-  rbind(
-    itemCategoryConstraint(nForms, nItems, itemCategories, operator = ">=", targetValues = range[,1]),
-    itemCategoryConstraint(nForms, nItems, itemCategories, operator = "<=", targetValues = range[,2])
+  # choose info_text for info
+  if(is.null(info_text)) info_text <- deparse(substitute(itemCategories))
+
+  combine2Constraints(
+    itemCategoryConstraint(nForms, nItems, itemCategories, operator = ">=",
+                           targetValues = range[,1], whichForms,
+                           info_text),
+    itemCategoryConstraint(nForms, nItems, itemCategories, operator = "<=",
+                           targetValues = range[,2], whichForms,
+                           info_text)
   )
 }
 
 #' @describeIn itemCategoryRange constrain minimum value
 #' @export
-itemCategoryMin <- function(nForms, nItems, itemCategories, min){
-  itemCategoryConstraint(nForms, nItems, itemCategories, operator = ">=", targetValues = min)
+itemCategoryMin <- function(nForms, nItems, itemCategories, min,
+                            whichForms = seq_len(nForms),
+                            info_text = NULL){
+
+  # choose info_text for info
+  if(is.null(info_text)) info_text <- deparse(substitute(itemCategories))
+
+  itemCategoryConstraint(nForms, nItems, itemCategories, operator = ">=",
+                         targetValues = min, whichForms,
+                         info_text)
 }
 
 
 #' @describeIn itemCategoryRange constrain maximum value
 #' @export
-itemCategoryMax <- function(nForms, nItems, itemCategories, max){
-  itemCategoryConstraint(nForms, nItems, itemCategories, operator = "<=", targetValues = max)
+itemCategoryMax <- function(nForms, nItems, itemCategories, max,
+                            whichForms = seq_len(nForms),
+                            info_text = NULL){
+
+  # choose info_text for info
+  if(is.null(info_text)) info_text <- deparse(substitute(itemCategories))
+
+  itemCategoryConstraint(nForms, nItems, itemCategories, operator = "<=",
+                         targetValues = max, whichForms,
+                         info_text)
 }
 
 
 #' @describeIn itemCategoryRange constrain the distance form the \code{targetValues}
 #' @export
-itemCategoryDeviation <- function(nForms, nItems, itemCategories, targetValues, allowedDeviation, relative = FALSE){
+itemCategoryDeviation <- function(nForms, nItems, itemCategories,
+                                  targetValues, allowedDeviation,
+                                  relative = FALSE,
+                                  whichForms = seq_len(nForms),
+                                  info_text = NULL){
+
+  # choose info_text for info
+  if(is.null(info_text)) info_text <- deparse(substitute(itemCategories))
 
   # if relative == TRUE, compute the absolute allowed Deviation
   allowedDeviation <- 'if'(relative, targetValues * allowedDeviation, allowedDeviation)
-  itemCategoryRange(nForms, nItems, itemCategories, range = cbind(targetValues - allowedDeviation, targetValues + allowedDeviation))
+  itemCategoryRange(nForms, nItems, itemCategories,
+                    range = cbind(targetValues - allowedDeviation,
+                                  targetValues + allowedDeviation),
+                    whichForms,
+                    info_text)
 }
