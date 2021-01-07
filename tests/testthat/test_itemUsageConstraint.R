@@ -25,7 +25,11 @@ test_that("Item Usage Constraint", {
 })
 
 test_that("Item Usage Constraint returns errors", {
-  expect_error(itemUsageConstraint(c(2, 4), 10), "All arguments should have length 1")
-  expect_error(itemUsageConstraint(2, 10, "=", 3), "'value' should be smaller than or equal to 'nForms'.")
+  expect_error(itemUsageConstraint(c(2, 4), 10), "The following arguments should have length 1: 'nForms', 'nItems', 'operator', 'targetValue'.")
+  expect_error(itemUsageConstraint(2, 10, operator = "=", targetValue = 3), "The 'targetValue' should be smaller than the sum of the 'formValues'.")
+  expect_error(itemUsageConstraint(2, 10, 1:3, operator = "=", targetValue = 1), "The length of 'formValues' should be equal to 'nForms'.")
+  expect_error(itemUsageConstraint(2, 10, rep(1, 2), operator = "=",
+                                   targetValue = 1, whichItems = c(1, 11)),
+               "'whichItems' should be a subset of all the possible test form numbers given 'nItems'.")
 })
 

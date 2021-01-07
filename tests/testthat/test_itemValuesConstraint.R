@@ -36,24 +36,24 @@ test_that("Item Values Constraint returns errors", {
 
 
 test_that("Item Values Min Max and Threshold", {
-  expect_equal(itemValuesRange(2, 4, 2:5, range = c(3, 5)),
+  minMax <- itemValuesRange(2, 4, 2:5, range = c(3, 5))
+  expect_equal(minMax,
                combineConstraints(
                  itemValuesConstraint(2, 4, 2:5, ">=", 3),
                  itemValuesConstraint(2, 4, 2:5, "<=", 5)))
-
-  expect_equal(minMax[1:2, ], itemValuesMin(2, 4, 2:5, min = 3))
-  expect_equal(minMax[3:4, ], itemValuesMax(2, 4, 2:5, 5))
   expect_equal(minMax, itemValuesDeviation(2, 4, 2:5, 4, 1))
 
   min <- itemValuesMin(3, 3, 1:3, 2)
-  expect_equal(min[1,], c(1:3, rep(0, 6), 0, 1, 2))
-  expect_equal(min[3,], c(rep(0, 6), 1:3, 0, 1, 2))
+  expect_equal(min$A_binary[1,], c(1:3, rep(0, 6)))
+  expect_equal(min$A_binary[3,], c(rep(0, 6), 1:3))
+  expect_equal(min$operator, rep(">=", 3))
+  expect_equal(min$d, rep(2, 3))
 
   max <- itemValuesMax(3, 3, 1:3, 4)
-  expect_equal(max[1,], c(1:3, rep(0, 6), 0, -1, 4))
-  expect_equal(max[3,], c(rep(0, 6), 1:3, 0, -1, 4))
+  expect_equal(max$operator, rep("<=", 3))
+  expect_equal(max$d, rep(4, 3))
 
-  expect_is(minMax, "Matrix")
+  expect_is(minMax, "constraint")
 })
 
 test_that("Item Min Max returns error", {
