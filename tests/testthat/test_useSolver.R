@@ -5,13 +5,13 @@ items <- data.frame(ID = paste0("item_", 1:10),
 
 usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 1)
 perForm <- itemsPerFormConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 5)
-target <- itemTargetConstraint(nForms = 2, nItems = 10,
+target <- miniMaxConstraint(nForms = 2, nItems = 10,
                                itemValues = items$itemValues,
                                targetValue = 0)
 
 test_that("Solve problem using lpsolve", {
   expect_message(out <- useSolver(allConstraints = list(usage, perForm, target),
-            nForms = 2, itemIDs = items$ID, solver = "lpSolve"),
+                                  itemIDs = items$ID, solver = "lpSolve"),
             "Optimal solution found.")
   expect_true(out$solution_found)
   sol <- out$solution
@@ -86,29 +86,26 @@ set.seed(144)
 items <- data.frame(ID = paste0("item_", 1:nItems),
                     itemValues = rnorm(nItems), stringsAsFactors = FALSE)
 #save(items, file = "tests/testthat/helper_glpk_timeLimit.RData")
-load("helper_glpk_timeLimit.RData")
+#load("helper_glpk_timeLimit.RData")
 
 usage <- itemUsageConstraint(nForms = nForms, nItems = nItems, operator = "=", targetValue = 1)
-target <- itemTargetConstraint(nForms = nForms, nItems = nItems,
+target <- miniMaxConstraint(nForms = nForms, nItems = nItems,
                                itemValues = items$itemValues,
                                targetValue = 0)
 test_that("Solve problem with time limit using glpk", {
   expect_message(out <- useSolver(allConstraints = list(usage, target),
-                                  nForms = nForms, itemIDs = items$ID, solver = "GLPK", timeLimit = 0.1, verbose = FALSE),
+                                  itemIDs = items$ID, solver = "GLPK", timeLimit = 0.1, verbose = FALSE),
                  "The solution is feasible, but may not be optimal.")
   expect_false(out$solution_found)
 })
 
 
 test_that("Use Solver returns errors", {
-  expect_error(out <- useSolver(allConstraints = list(usage, perForm, target),
-                                nForms = 2, solver = "lpSolve"),
-               "'nItems' and 'itemIDs' cannot be both 'NULL'.")
-  expect_error(out <- useSolver(allConstraints = list(usage, perForm, target),
-                                nForms = 2, nItems = 5, itemIDs = items$ID, solver = "lpSolve"),
+  expect_error(out <- useSolver(allConstraints = list(usage, target),
+                                itemIDs = items$ID[-1], solver = "lpSolve"),
                "The length of 'itemIDs' should be equal to 'nItems'.")
-  expect_error(out <- useSolver(allConstraints = list(usage, perForm, target),
-                                nForms = 2, itemIDs = as.factor(items$ID), solver = "lpSolve"),
+  expect_error(out <- useSolver(allConstraints = list(usage, target),
+                                itemIDs = as.factor(items$ID), solver = "lpSolve"),
                "'itemIDs' needs to be a numeric or character vector.")
 })
 
