@@ -25,13 +25,17 @@
 #' itemsPerFormConstraint(3, 20, operator = "=", targetValue = 5)
 #'
 #'@export
-itemsPerFormConstraint <- function(nForms, nItems, operator = c("<=", "=", ">="), targetValue){
+itemsPerFormConstraint <- function(nForms, nItems, operator = c("<=", "=", ">="),
+                                   targetValue, whichForms = seq_len(nForms)
+                                   ){
 
   operator <- match.arg(operator)
 
   # value cannot be greater than nForms
   if(targetValue > nItems) stop("'targetValue' should be smaller than or equal to 'nItems'.")
 
-  itemValuesConstraint(nForms, nItems, itemValues = rep(1, nItems), operator, targetValue)
+  itemValuesConstraint(nForms, nItems, itemValues = rep(1, nItems), operator,
+                       targetValue, whichForms = seq_len(nForms),
+                       info_text = paste0("itesmPerForm", operator, targetValue))
 
 }

@@ -1,15 +1,17 @@
 
 
-test_that("Items per Form Constraint", {
+test_that("Items per Form Constraint works", {
   out <- itemsPerFormConstraint(2, 4, operator = "=", targetValue = 2)
-  expect_equal(out[1, ], c(1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 2))
-  expect_equal(out[2, ], c(0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 2))
+  expect_equal(out$A_binary[1, ], c(1, 1, 1, 1, 0, 0, 0, 0))
+  expect_equal(out$A_binary[2, ], c(0, 0, 0, 0, 1, 1, 1, 1))
 
   out <- itemsPerFormConstraint(3, 9, targetValue = 5)
-  expect_equal(out[1, ], c(rep(c(1, 0, 0), each = 9), 0, -1, 5))
-  expect_equal(out[3, ], c(rep(c(0, 0, 1), each = 9), 0, -1, 5))
+  expect_equal(out$d, rep(5, 3))
+  expect_equal(out$operator, rep("<=", 3))
 
-  expect_is(out, "Matrix")
+  expect_equal(attr(out, "info"), make_info("itesmPerForm<=5", whichForms = 1:3))
+
+  expect_is(out, "constraint")
 })
 
 test_that("Items per Form Constraint returns errors", {
