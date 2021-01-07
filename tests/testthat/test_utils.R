@@ -74,7 +74,7 @@ test_that("newConstraint works", {
   itemValues <- rep(1:2, 5)
   whichForms <- c(2:4)
 
-  out <- newConstraint(get_A_binary(nForms, nItems, itemValues, whichForms),
+  out <- newConstraint(get_A_binary_forms(nForms, nItems, itemValues, whichForms),
                        A_real = NULL,
                        operators = rep("=", 3),
                        d = rep(0, 3),
@@ -97,7 +97,7 @@ test_that("makeFormConstraint works", {
   out <- makeFormConstraint(nForms, nItems, itemValues, realVar = NULL,
                             operator = "=", targetValue = 10,
                             whichForms, sense = NULL, info_text = NULL)
-  expect_equal(out$A_binary, get_A_binary(nForms, nItems, itemValues, whichForms))
+  expect_equal(out$A_binary, get_A_binary_forms(nForms, nItems, itemValues, whichForms))
   expect_equal(out$A_real, NULL)
   expect_equal(out$operator, rep("=", length(whichForms)))
   expect_equal(out$d, rep(10, length(whichForms)))

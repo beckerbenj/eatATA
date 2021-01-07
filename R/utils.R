@@ -208,13 +208,12 @@ combine2Constraints <- function(x, y){
       warning("Are you sure you want to combine the constraints? The number of real variables (in the objective function) differs.")
       nReal <- attr(x, "nReal")
       y$A_real <- cbind(y$A_real, matrix(0, nrow = dim(y$A_real)[1], ncol = nReal - attr(y, "nReal")))
-    }
-    if(attr(x, "nReal") > attr(y, "nReal")){
+    } else if(attr(x, "nReal") > attr(y, "nReal")){
       warning("Are you sure you want to combine the constraints? The number of real variables (in the objective function) differs.")
       nReal <- attr(y, "nReal")
       x$A_real <- cbind(x$A_real, matrix(0, nrow = dim(x$A_real)[1], ncol = nReal - attr(x, "nReal")))
-    }
-  } else nReal <- attr(x, "nReal")
+    } else nReal <- attr(x, "nReal")
+  } else nReal <- NULL
 
 
   # check if sense of constraints corresponds
@@ -253,7 +252,7 @@ combineConstraints <- function(...){
 
   if(length(dots) == 1){
     message("The one constraint that was given is simply returned")
-    return(dots)
+    return(dots[[1]])
   } else if (length(dots) == 2){
     return(combine2Constraints(dots[[1]], dots[[2]]))
   } else if (length(dots) > 2){
