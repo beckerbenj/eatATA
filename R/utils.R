@@ -73,7 +73,7 @@ make_info <- function(info_text, whichForms = NULL, whichItems = NULL){
 #### function that creates an S3 class 'constraint' ####
 newConstraint <- function(A_binary, A_real = NULL, operators, d,
                           nReal = NULL,
-                          nForms, nItems, sense = NULL, info){
+                          nForms, nItems, sense = NULL, info, itemIDs = NULL){
 
   ### check input
   # check if A_binary is a Matrix
@@ -104,13 +104,22 @@ newConstraint <- function(A_binary, A_real = NULL, operators, d,
               operators = operators,
               d = d)
 
+  # create itemIDs if not available
+  itemIDs <- 'if'(is.null(itemIDs),
+                  sprintf(paste("it%0", nchar(nItems), "d", sep=''), seq_len(nItems)),
+                  itemIDs)
+
+  # check length of itemIDs
+  if(length(itemIDs) != nItems) stop("The number of 'itemIDs' does not correspond to 'nItems'")
+
   structure(out,
             class = "constraint",
             nForms = nForms,
             nItems = nItems,
             nReal = nReal,
             sense = sense,
-            info = info)
+            info = info,
+            itemIDs = itemIDs)
 }
 
 
@@ -120,6 +129,8 @@ makeFormConstraint <- function(nForms, nItems, itemValues, realVar, operator,
                                targetValue, whichForms, sense,
                                info_text = NULL){
 
+  # whichForms should be a subset of 1:nForms
+  if(! all(whichForms %in% seq_len(nForms))) stop("'whichForms' should be a subset of all the possible test form numbers given 'nForms'.")
 
   # number of used forms in constraints
   nUsedForms <- length(whichForms)
@@ -144,7 +155,7 @@ makeFormConstraint <- function(nForms, nItems, itemValues, realVar, operator,
 
   # make constraint object
   newConstraint(A_binary, A_real, operators, d, nReal,
-                nForms, nItems, sense, info)
+                nForms, nItems, sense, info, itemIDs = names(itemValues))
 
 }
 
@@ -152,7 +163,18 @@ makeFormConstraint <- function(nForms, nItems, itemValues, realVar, operator,
 #### function that creates constraints per item - general ####
 makeItemConstraint <- function(nForms, nItems, formValues, realVar, operator,
                                targetValue, whichItems, sense,
-                               info_text = NULL){
+                               info_text = NULL,
+                               itemIDs = NULL){
+
+
+  if(!is.null(itemIDs) & is.character(whichItems)) {
+    if(!all(whichItems %in% itemIDs))
+      stop("The itemIDs in 'whichItems' do not correspond with the 'itemIDs'.")
+       whichItems <- which(itemIDs %in% whichItems)
+  }
+
+  # whichItems should be a subset of 1:nItems
+  if(! all(whichItems %in% seq_len(nItems))) stop("'whichItems' should be a subset of either all the possible items numbers given 'nItems', or of the 'itemIDs'.")
 
 
   # number of used forms in constraints
@@ -178,7 +200,7 @@ makeItemConstraint <- function(nForms, nItems, formValues, realVar, operator,
 
   # make constraint object
   newConstraint(A_binary, A_real, operators, d, nReal,
-                nForms, nItems, sense, info)
+                nForms, nItems, sense, info, itemIDs)
 
 }
 
@@ -194,6 +216,9 @@ combine2Constraints <- function(x, y){
   # check if nForms and nItems are the same
   if(attr(x, "nForms") != attr(y, "nForms")) stop("The constraints cannot be combined, the number of forms differs.")
   if(attr(x, "nItems") != attr(y, "nItems")) stop("The constraints cannot be combined, the number of items in the pool differs.")
+
+  # check if itemIDs are the same
+  if(!all(attr(x, "itemIDs") == attr(y, "itemIDs"))) stop("The constraints cannot be combined, the itemIDs differ.")
 
 
   # check nReal and adjust nReal and A_real where necessary
@@ -236,7 +261,8 @@ combine2Constraints <- function(x, y){
                 nForms = attr(x, "nForms"),
                 nItems = attr(x, "nItems"),
                 sense = sense,
-                info = info)
+                info = info,
+                itemIDs = attr(x, "itemIDs"))
 }
 
 

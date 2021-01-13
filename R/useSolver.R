@@ -14,7 +14,6 @@
 #' time limits can not be set for \code{lpSolve}.
 #'
 #'@param allConstraints List of constraints.
-#'@param itemIDs Character vector of item IDs.
 #'@param solver A character string indicating the solver to use.
 #'@param timeLimit The maximal runtime in seconds.
 #'@param modelSense A character string indicating whether to minimize or
@@ -66,12 +65,6 @@ useSolver <- function(allConstraints, itemIDs = NULL,
   nForms <- attr(allConstraints, "nForms")
   nBin <- nItems * nForms
 
-  # check inputs
-  if(is.null(itemIDs)) itemIDs <- sprintf(paste("item%0", nchar(nItems), "d", sep=''), seq_len(nItems))
-  if(length(itemIDs) != nItems) stop("The length of 'itemIDs' should be equal to 'nItems'.")
-  if(!is.character(itemIDs) && !is.numeric(itemIDs)) stop("'itemIDs' needs to be a numeric or character vector.")
-
-
   # call wrappers around solver
   if(solver == "GLPK") {
     out <- useGLPK(allConstraints, nBin, timeLimit, ...)
@@ -91,7 +84,7 @@ useSolver <- function(allConstraints, itemIDs = NULL,
     out$solution[ind]
   }))
   names(out$item_matrix) <- paste0("block_", seq(nForms))
-  rownames(out$item_matrix) <- itemIDs
+  rownames(out$item_matrix) <- attr(allConstraints, "itemIDs")
   #out[["nForms"]] <- nForms
   out
 }

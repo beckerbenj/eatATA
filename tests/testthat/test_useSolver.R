@@ -29,7 +29,7 @@ test_that("Solve problem using lpsolve", {
 
 test_that("Solve problem using glpk", {
   expect_message(out <- useSolver(allConstraints = list(usage, perForm, target),
-                   nForms = 2, itemIDs = items$ID, solver = "GLPK", verbose = FALSE),
+                   nForms = 2, solver = "GLPK", verbose = FALSE),
                   "Optimal solution found.")
 
   expect_true(out$solution_found)
@@ -45,7 +45,7 @@ test_that("Solve problem using glpk", {
   }
   expect_equal(sol[21], 13)
   expect_output(out <- useSolver(allConstraints = list(usage, perForm, target),
-                                  nForms = 2, itemIDs = items$ID, solver = "GLPK"))
+                                  nForms = 2, solver = "GLPK"))
 })
 
 requireNamespace("gurobi", quietly = TRUE)
@@ -53,7 +53,7 @@ requireNamespace("gurobi", quietly = TRUE)
 if("gurobi" %in% rownames(installed.packages())){
   test_that("Solve problem using gurobi", {
     outp <- capture_output(out <- useSolver(allConstraints = list(usage, perForm, target),
-                                            nForms = 2, itemIDs = items$ID, solver = "Gurobi"))
+                                            nForms = 2, solver = "Gurobi"))
 
     sol <- out$solution$x
     objval <- out$solution$objval
@@ -73,11 +73,13 @@ if("gurobi" %in% rownames(installed.packages())){
 
 test_that("Output format", {
   expect_message(out <- useSolver(allConstraints = list(usage, perForm, target),
-                                  nForms = 2, itemIDs = items$ID, solver = "GLPK", verbose = FALSE),
+                                  nForms = 2, solver = "GLPK", verbose = FALSE),
                  "Optimal solution found.")
 
+  nItems <- attr(usage, "nItems")
+
   expect_equal(names(out), c("solution_found", "solution", "solution_status", "item_matrix"))
-  expect_equal(rownames(out$item_matrix), paste0("item_", 1:10))
+  expect_equal(rownames(out$item_matrix), sprintf(paste("it%0", nchar(nItems), "d", sep=''), seq_len(nItems)))
 })
 
 nItems <- 100
@@ -88,26 +90,18 @@ items <- data.frame(ID = paste0("item_", 1:nItems),
 #save(items, file = "tests/testthat/helper_glpk_timeLimit.RData")
 #load("helper_glpk_timeLimit.RData")
 
-usage <- itemUsageConstraint(nForms = nForms, nItems = nItems, operator = "=", targetValue = 1)
+usage <- itemUsageConstraint(nForms = nForms, nItems = nItems, operator = "=", targetValue = 1, itemIDs = items$ID)
 target <- miniMaxConstraint(nForms = nForms, nItems = nItems,
-                               itemValues = items$itemValues,
+                               itemValues = with(items, structure(itemValues, names = ID)),
                                targetValue = 0)
 test_that("Solve problem with time limit using glpk", {
   expect_message(out <- useSolver(allConstraints = list(usage, target),
-                                  itemIDs = items$ID, solver = "GLPK", timeLimit = 0.1, verbose = FALSE),
+                                  solver = "GLPK", timeLimit = 0.1, verbose = FALSE),
                  "The solution is feasible, but may not be optimal.")
   expect_false(out$solution_found)
 })
 
 
-test_that("Use Solver returns errors", {
-  expect_error(out <- useSolver(allConstraints = list(usage, target),
-                                itemIDs = items$ID[-1], solver = "lpSolve"),
-               "The length of 'itemIDs' should be equal to 'nItems'.")
-  expect_error(out <- useSolver(allConstraints = list(usage, target),
-                                itemIDs = as.factor(items$ID), solver = "lpSolve"),
-               "'itemIDs' needs to be a numeric or character vector.")
-})
 
 
 

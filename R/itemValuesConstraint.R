@@ -14,7 +14,7 @@
 #'  or \code{">="}. See details for more information.
 #'@param targetValue the target test form value.
 #'@param whichForms An integer vector indicating which test forms should be constrained. Defaults to all the test forms.
-#'@param info_text a character string of length 1, to be used
+#'@param info_text a character string of length 1, to be used in the \code{"info"}-atribute of the resulting \code{constraint}-object.
 #'
 #'@return A object of class \code{"constraint"}.
 #'
@@ -42,10 +42,6 @@ itemValuesConstraint <- function(nForms, nItems, itemValues,
 
   # the targetValue should be smaller than or equal to the sum of the itemValues
   if(targetValue > sum(itemValues)) stop("The 'targetValue' should be smaller than the sum of the 'itemValues'.")
-
-  # whichForms should be a subset of 1:nForms
-  if(! all(whichForms %in% seq_len(nForms))) stop("'whichForms' should be a subset of all the possible test form numbers given 'nForms'.")
-
 
   # choose info_text for info
   if(is.null(info_text)) info_text <- paste0(deparse(substitute(itemValues)), operator, targetValue)

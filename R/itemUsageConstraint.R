@@ -18,6 +18,9 @@
 #'  constraints, with three possible values: \code{"<="}, \code{"="},
 #'  or \code{">="}. See details for more information.
 #'@param targetValue The value to be used in the constraints
+#'@param whichItems A vector indicating which items should be constrained. Defaults to all the items forms.
+#'@param itemIDs a character string indicating the itemIDs.
+#'@param info_text a character string of length 1, to be used in the \code{"info"}-atribute of the resulting \code{constraint}-object.
 #'
 #'@return A object of class \code{"constraint"}.
 #'
@@ -31,7 +34,8 @@
 itemUsageConstraint <- function(nForms, nItems, formValues = rep(1, nForms),
                                 operator = c("<=", "=", ">="),
                                 targetValue = 1, whichItems = seq_len(nItems),
-                                info_text = NULL){
+                                info_text = NULL,
+                                itemIDs = NULL){
 
   operator <- match.arg(operator)
 
@@ -45,9 +49,6 @@ itemUsageConstraint <- function(nForms, nItems, formValues = rep(1, nForms),
   # the targetValue should be smaller than or equal to the sum of the formValues
   if(targetValue > sum(formValues)) stop("The 'targetValue' should be smaller than the sum of the 'formValues'.")
 
-  # whichItems should be a subset of 1:nItems
-  if(! all(whichItems %in% seq_len(nItems))) stop("'whichItems' should be a subset of all the possible test form numbers given 'nItems'.")
-
 
   # choose info_text for info
   if(is.null(info_text)) info_text <- paste0(deparse(substitute(formValues)), operator, targetValue)
@@ -55,5 +56,6 @@ itemUsageConstraint <- function(nForms, nItems, formValues = rep(1, nForms),
   makeItemConstraint(nForms, nItems, formValues, realVar = NULL,
                      operator, targetValue,
                      whichItems, sense = NULL,
-                     info_text = info_text)
+                     info_text = info_text,
+                     itemIDs = itemIDs)
 }
