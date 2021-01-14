@@ -9,15 +9,11 @@
 #' (\code{operator = "="}), or (c) greater or equal than
 #' (\code{operator = ">="}) the chosen \code{value}.
 #'
-#'@param nForms Number of forms to be created.
-#'@param nItems Number of items in the item pool.
-#'@param operator a character indicating which operator should be used in the
-#'  constraints, with three possible values: \code{"<="}, \code{"="},
-#'  or \code{">="}. See details for more information.
+#'@inheritParams itemValuesConstraints
 #'@param targetValue The target value to be used in the constraints. That is,
 #'  the number of items per form.
 #'
-#'@return A sparse matrix.
+#'@return An object of class \code{"constraint"}.
 #'
 #'
 #'@examples
@@ -26,8 +22,8 @@
 #'
 #'@export
 itemsPerFormConstraint <- function(nForms, nItems, operator = c("<=", "=", ">="),
-                                   targetValue, whichForms = seq_len(nForms)
-                                   ){
+                                   targetValue, whichForms = seq_len(nForms),
+                                   itemIDs = NULL){
 
   operator <- match.arg(operator)
 
@@ -36,6 +32,7 @@ itemsPerFormConstraint <- function(nForms, nItems, operator = c("<=", "=", ">=")
 
   itemValuesConstraint(nForms, nItems, itemValues = rep(1, nItems), operator,
                        targetValue, whichForms = seq_len(nForms),
-                       info_text = paste0("itesmPerForm", operator, targetValue))
+                       info_text = paste0("itemsPerForm", operator, targetValue),
+                       itemIDs)
 
 }

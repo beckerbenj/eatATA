@@ -9,7 +9,7 @@ test_that("Items per Form Constraint works", {
   expect_equal(out$d, rep(5, 3))
   expect_equal(out$operator, rep("<=", 3))
 
-  expect_equal(attr(out, "info"), make_info("itesmPerForm<=5", whichForms = 1:3))
+  expect_equal(attr(out, "info"), make_info("itemsPerForm<=5", whichForms = 1:3))
 
   expect_is(out, "constraint")
 })
