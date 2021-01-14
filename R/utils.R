@@ -72,8 +72,8 @@ make_info <- function(info_text, whichForms = NULL, whichItems = NULL){
 
 #### function that creates an S3 class 'constraint' ####
 newConstraint <- function(A_binary, A_real = NULL, operators, d,
-                          nReal = NULL,
-                          nForms, nItems, sense = NULL, info, itemIDs = NULL){
+                          nForms, nItems, sense = NULL,
+                          c_binary = NULL, c_real = NULL,info, itemIDs = NULL){
 
   ### check input
   # check if A_binary is a Matrix
@@ -84,14 +84,27 @@ newConstraint <- function(A_binary, A_real = NULL, operators, d,
   stopifnot(all(c(length(operators), length(d), dim(info)[1]) == nRow))
 
   # check if A_binary corresponds with nForms and nItems
-  stopifnot(dim(A_binary)[2] == (nForms * nItems))
+  nBin <- nForms * nItems
+  stopifnot(dim(A_binary)[2] == nBin)
+
+  # check c_binary
+  if(!is.null(c_binary)) stopifnot(length(c_binary) == nBin)
 
   # check dims of A_real
-  if(is.null(nReal)) {
-    stopifnot(is.null(A_real))
-    stopifnot(is.null(sense))
+  if(is.null(A_real)) {
+    stopifnot(is.null(c_real))
+  } else {
+    stopifnot(dim(A_real)[1] == nRow)
+    if(is.null(c_real))
+    {
+      if(dim(A_real)[2] == 1) {
+        c_real <- 1
+      } else stop("Check 'A_real' and 'c_real'.")
     }
-  else stopifnot(all(dim(A_real) == c(nRow, nReal)))
+    stopifnot(dim(A_real)[2] == length(c_real))
+  }
+
+
 
   # check sense
   if(!is.null(sense)) sense <- match.arg(sense, choices = c("min", "max"))
@@ -102,7 +115,9 @@ newConstraint <- function(A_binary, A_real = NULL, operators, d,
   out <- list(A_binary = A_binary,
               A_real = A_real,
               operators = operators,
-              d = d)
+              d = d,
+              c_binary = c_binary,
+              c_real = c_real)
 
   # create itemIDs if not available
   itemIDs <- 'if'(is.null(itemIDs),
@@ -116,7 +131,6 @@ newConstraint <- function(A_binary, A_real = NULL, operators, d,
             class = "constraint",
             nForms = nForms,
             nItems = nItems,
-            nReal = nReal,
             sense = sense,
             info = info,
             itemIDs = itemIDs)
@@ -126,8 +140,8 @@ newConstraint <- function(A_binary, A_real = NULL, operators, d,
 
 #### function that creates constraints per form - general ####
 makeFormConstraint <- function(nForms, nItems, itemValues, realVar, operator,
-                               targetValue, whichForms, sense,
-                               info_text = NULL){
+                               targetValue, whichForms, sense, c_binary = NULL,
+                               c_real = NULL, info_text = NULL, itemIDs = NULL){
 
   # whichForms should be a subset of 1:nForms
   if(! all(whichForms %in% seq_len(nForms))) stop("'whichForms' should be a subset of all the possible test form numbers given 'nForms'.")
@@ -140,7 +154,6 @@ makeFormConstraint <- function(nForms, nItems, itemValues, realVar, operator,
 
   # A matrix with weights - only for real variables
   A_real <- 'if'(is.null(realVar), realVar, matrix(rep(realVar, each = nUsedForms), nrow = nUsedForms))
-  nReal <- 'if'(is.null(A_real), NULL, dim(A_real)[2])
 
   # vector with operators
   operators <- rep(operator, nUsedForms)
@@ -154,17 +167,17 @@ makeFormConstraint <- function(nForms, nItems, itemValues, realVar, operator,
                          info_text), whichForms = whichForms)
 
   # make constraint object
-  newConstraint(A_binary, A_real, operators, d, nReal,
-                nForms, nItems, sense, info, itemIDs = names(itemValues))
+  newConstraint(A_binary, A_real, operators, d,
+                nForms, nItems, sense, c_binary, c_real, info,
+                itemIDs = itemIDs)
 
 }
 
 
 #### function that creates constraints per item - general ####
 makeItemConstraint <- function(nForms, nItems, formValues, realVar, operator,
-                               targetValue, whichItems, sense,
-                               info_text = NULL,
-                               itemIDs = NULL){
+                               targetValue, whichItems, sense, c_binary = NULL,
+                               c_real = NULL, info_text = NULL, itemIDs = NULL){
 
 
   if(!is.null(itemIDs) & is.character(whichItems)) {
@@ -185,7 +198,6 @@ makeItemConstraint <- function(nForms, nItems, formValues, realVar, operator,
 
   # A matrix with weights - only for real variables
   A_real <- 'if'(is.null(realVar), realVar, matrix(rep(realVar, each = nUsedItems), nrow = nUsedItems))
-  nReal <- 'if'(is.null(A_real), NULL, dim(A_real)[2])
 
   # vector with operators
   operators <- rep(operator, nUsedItems)
@@ -199,8 +211,9 @@ makeItemConstraint <- function(nForms, nItems, formValues, realVar, operator,
                          info_text), whichItems = whichItems)
 
   # make constraint object
-  newConstraint(A_binary, A_real, operators, d, nReal,
-                nForms, nItems, sense, info, itemIDs)
+  newConstraint(A_binary, A_real, operators, d,
+                nForms, nItems, sense, c_binary, c_real, info,
+                itemIDs = itemIDs)
 
 }
 
@@ -221,24 +234,30 @@ combine2Constraints <- function(x, y){
   if(!all(attr(x, "itemIDs") == attr(y, "itemIDs"))) stop("The constraints cannot be combined, the itemIDs differ.")
 
 
-  # check nReal and adjust nReal and A_real where necessary
-  if(is.null(attr(x, "nReal")) & !is.null(attr(y, "nReal"))){
-    nReal <- attr(y, "nReal")
-    x$A_real <- matrix(0, nrow = dim(x$A_binary)[1], ncol = nReal)
-  } else if(is.null(attr(y, "nReal")) & !is.null(attr(x, "nReal"))){
-    nReal <- attr(x, "nReal")
-    y$A_real <- matrix(0, nrow = dim(y$A_binary)[1], ncol = nReal)
-  } else if(!is.null(attr(x, "nReal")) & !is.null(attr(y, "nReal"))){
-    if(attr(x, "nReal") > attr(y, "nReal")){
-      warning("Are you sure you want to combine the constraints? The number of real variables (in the objective function) differs.")
-      nReal <- attr(x, "nReal")
-      y$A_real <- cbind(y$A_real, matrix(0, nrow = dim(y$A_real)[1], ncol = nReal - attr(y, "nReal")))
-    } else if(attr(x, "nReal") > attr(y, "nReal")){
-      warning("Are you sure you want to combine the constraints? The number of real variables (in the objective function) differs.")
-      nReal <- attr(y, "nReal")
-      x$A_real <- cbind(x$A_real, matrix(0, nrow = dim(x$A_real)[1], ncol = nReal - attr(x, "nReal")))
-    } else nReal <- attr(x, "nReal")
-  } else nReal <- NULL
+  # check c_real and adjust c_real and A_real where necessary
+  if(is.null(x$c_real) & !is.null(y$c_real)){
+    c_real <- y$c_real
+    x$A_real <- matrix(0, nrow = dim(x$A_binary)[1], ncol = length(c_real))
+  } else if(is.null(y$c_real) & !is.null(x$c_real)){
+    c_real <- x$c_real
+    y$A_real <- matrix(0, nrow = dim(y$A_binary)[1], ncol = length(c_real))
+  } else if(!is.null(x$c_real) & !is.null(y$c_real)){
+    if(!all(x$c_real == y$c_real)){
+      stop("The weights of the real variables in the objective function ('c_real') differ.")
+    } else c_real <- x$c_real
+  } else c_real <- NULL
+
+
+  # check c_binary and adjust c_binary
+  if(is.null(x$c_binary) & !is.null(y$c_binary)){
+    c_binary <- y$c_binary
+  } else if(is.null(y$c_binary) & !is.null(x$c_binary)){
+    c_binary <- x$c_binary
+  } else if(!is.null(x$c_binary) & !is.null(y$c_binary)){
+    if(x$c_binary != y$c_binary){
+      stop("The weights of the binary variables in the objective function ('c_binary') differ.")
+    } else c_binary <- x$c_binary
+  } else c_binary <- NULL
 
 
   # check if sense of constraints corresponds
@@ -257,7 +276,8 @@ combine2Constraints <- function(x, y){
                 A_real = rbind(x$A_real, y$A_real),
                 operators = c(x$operators, y$operators),
                 d = c(x$d, y$d),
-                nReal = nReal,
+                c_binary = c_binary,
+                c_real = c_real,
                 nForms = attr(x, "nForms"),
                 nItems = attr(x, "nItems"),
                 sense = sense,
