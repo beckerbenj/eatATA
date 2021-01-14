@@ -5,7 +5,7 @@ items <- data.frame(ID = paste0("item_", 1:10),
 
 usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 1)
 perForm <- itemsPerFormConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 5)
-target <- miniMaxConstraint(nForms = 2, nItems = 10,
+target <- minimaxConstraint(nForms = 2, nItems = 10,
                                itemValues = items$itemValues,
                                targetValue = 0)
 
@@ -91,7 +91,7 @@ items <- data.frame(ID = paste0("item_", 1:nItems),
 #load("helper_glpk_timeLimit.RData")
 
 usage <- itemUsageConstraint(nForms = nForms, nItems = nItems, operator = "=", targetValue = 1, itemIDs = items$ID)
-target <- miniMaxConstraint(nForms = nForms, nItems = nItems,
+target <- minimaxConstraint(nForms = nForms, nItems = nItems,
                                itemValues = with(items, structure(itemValues, names = ID)),
                                targetValue = 0)
 test_that("Solve problem with time limit using glpk", {
@@ -99,6 +99,14 @@ test_that("Solve problem with time limit using glpk", {
                                   solver = "GLPK", timeLimit = 0.1, verbose = FALSE),
                  "The solution is feasible, but may not be optimal.")
   expect_false(out$solution_found)
+})
+
+test_that("useSolver returns errors", {
+  expect_error(useSolver(allConstraints = list(usage, target),
+                         solver = "G", timeLimit = 0.1, verbose = FALSE))
+  expect_error(useSolver(allConstraints = list(usage, target),
+                         solver = "GL", timeLimit = 0.1, verbose = FALSE,
+                         formNames = c("to", "many", "names")), "'formNames' should be a character string of length 1 or of lenght 'nForms'.")
 })
 
 
@@ -117,16 +125,16 @@ test_that("Solve problem with time limit using glpk", {
 
 fun <- function(x){
   for(i in seq_len(x)){
-    Sys.sleep(.5)
+    Sys.sleep(.05)
     cat(i)
   }
 }
 call <- substitute(fun(6))
 
 test_that("eval_with_time_limit works", {
-  expect_equal(eval_call_with_time_limit(call, elapsed = .1, on_time_out = mean, x = c(1:3)),
+  expect_equal(eval_call_with_time_limit(call, elapsed = .01, on_time_out = mean, x = c(1:3)),
                2)
-  expect_error(eval_call_with_time_limit(call, elapsed = .1), "reached elapsed time limit")
-  expect_equal(eval_call_with_time_limit(call, elapsed = .1, on_time_out = "OK"), "OK")
+  expect_error(eval_call_with_time_limit(call, elapsed = .01), "reached elapsed time limit")
+  expect_equal(eval_call_with_time_limit(call, elapsed = .01, on_time_out = "OK"), "OK")
 
 })
