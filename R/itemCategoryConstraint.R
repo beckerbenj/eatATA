@@ -27,7 +27,8 @@
 itemCategoryConstraint <- function(nForms, nItems, itemCategories,
                                    operator = c("<=", "=", ">="), targetValues,
                                    whichForms = seq_len(nForms),
-                                   info_text = NULL){
+                                   info_text = NULL,
+                                   itemIDs = names(itemCategories)){
 
 
   operator <- match.arg(operator)
@@ -57,6 +58,8 @@ itemCategoryConstraint <- function(nForms, nItems, itemCategories,
   if(length(info_text) != nLevels) stop("'info_text' should be a character string of length equal to to the number of levels in 'itemCategories'.")
 
   do.call(combineConstraints, lapply(seq_len(nLevels), function(levelNr){
-    itemValuesConstraint(nForms, nItems, 1 * (itemCategories == levels[levelNr]), operator, targetValues[levelNr], whichForms, info_text[levelNr])
+    itemValuesConstraint(nForms, nItems, 1 * (itemCategories == levels[levelNr]),
+                         operator, targetValues[levelNr], whichForms, info_text[levelNr],
+                         itemIDs)
   }))
 }

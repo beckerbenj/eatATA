@@ -34,7 +34,8 @@
 #' @export
 itemCategoryRange <- function(nForms, nItems, itemCategories, range,
                               whichForms = seq_len(nForms),
-                              info_text = NULL){
+                              info_text = NULL,
+                              itemIDs = names(itemCategories)){
 
   if(!is.matrix(range) || dim(range)[1] != nlevels(itemCategories) || dim(range)[2] != 2) stop("'range' should be a matrix with two columns (minimum and maximum frequencies) and the number of rows equal to the number of levels in 'itemCategories'.")
   range <- as.matrix(range, ncol = 2)
@@ -48,10 +49,10 @@ itemCategoryRange <- function(nForms, nItems, itemCategories, range,
   combine2Constraints(
     itemCategoryConstraint(nForms, nItems, itemCategories, operator = ">=",
                            targetValues = range[,1], whichForms,
-                           info_text),
+                           info_text, itemIDs),
     itemCategoryConstraint(nForms, nItems, itemCategories, operator = "<=",
                            targetValues = range[,2], whichForms,
-                           info_text)
+                           info_text, itemIDs)
   )
 }
 
@@ -59,14 +60,15 @@ itemCategoryRange <- function(nForms, nItems, itemCategories, range,
 #' @export
 itemCategoryMin <- function(nForms, nItems, itemCategories, min,
                             whichForms = seq_len(nForms),
-                            info_text = NULL){
+                            info_text = NULL,
+                            itemIDs = names(itemCategories)){
 
   # choose info_text for info
   if(is.null(info_text)) info_text <- deparse(substitute(itemCategories))
 
   itemCategoryConstraint(nForms, nItems, itemCategories, operator = ">=",
                          targetValues = min, whichForms,
-                         info_text)
+                         info_text, itemIDs)
 }
 
 
@@ -74,14 +76,15 @@ itemCategoryMin <- function(nForms, nItems, itemCategories, min,
 #' @export
 itemCategoryMax <- function(nForms, nItems, itemCategories, max,
                             whichForms = seq_len(nForms),
-                            info_text = NULL){
+                            info_text = NULL,
+                            itemIDs = names(itemCategories)){
 
   # choose info_text for info
   if(is.null(info_text)) info_text <- deparse(substitute(itemCategories))
 
   itemCategoryConstraint(nForms, nItems, itemCategories, operator = "<=",
                          targetValues = max, whichForms,
-                         info_text)
+                         info_text, itemIDs)
 }
 
 
@@ -91,7 +94,8 @@ itemCategoryDeviation <- function(nForms, nItems, itemCategories,
                                   targetValues, allowedDeviation,
                                   relative = FALSE,
                                   whichForms = seq_len(nForms),
-                                  info_text = NULL){
+                                  info_text = NULL,
+                                  itemIDs = names(itemCategories)){
 
   # choose info_text for info
   if(is.null(info_text)) info_text <- deparse(substitute(itemCategories))
@@ -102,5 +106,5 @@ itemCategoryDeviation <- function(nForms, nItems, itemCategories,
                     range = cbind(targetValues - allowedDeviation,
                                   targetValues + allowedDeviation),
                     whichForms,
-                    info_text)
+                    info_text, itemIDs)
 }

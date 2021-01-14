@@ -11,7 +11,7 @@
 #'@param exclusionTuples \code{data.frame} with two columns, containing tuples with item IDs which should be in test forms exclusively.
 #'@param itemIDs Character vector of item IDs in correct ordering.
 #'
-#'@return A sparse matrix.
+#'@return An object of class \code{"constraint"}.
 #'
 #'@examples
 #' ## item-IDs

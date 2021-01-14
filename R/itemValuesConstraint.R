@@ -15,21 +15,25 @@
 #'@param targetValue the target test form value.
 #'@param whichForms An integer vector indicating which test forms should be constrained. Defaults to all the test forms.
 #'@param info_text a character string of length 1, to be used in the \code{"info"}-atribute of the resulting \code{constraint}-object.
+#'@param itemIDs a character vector of item IDs in correct ordering, or NULL.
 #'
-#'@return A object of class \code{"constraint"}.
+#'@return An object of class \code{"constraint"}.
 #'
 #'@examples
 #' ## constraints to make sure that the sum of the item values (1:10) is between
 #' ## 4 and 6
-#' rbind(
+#' combineConstraints(
 #'   itemValuesConstraint(2, 10, 1:10, operator = ">=", targetValue = 4),
-#'   itemValuesConstraint(2, 10, 1:10, operator = "<=", targetValue = 6))
+#'   itemValuesConstraint(2, 10, 1:10, operator = "<=", targetValue = 6)
+#' )
+
 #'
 #'@export
 itemValuesConstraint <- function(nForms, nItems, itemValues,
                                  operator = c("<=", "=", ">="),
                                  targetValue, whichForms = seq_len(nForms),
-                                 info_text = NULL){
+                                 info_text = NULL,
+                                 itemIDs = names(itemValues)){
 
   operator <- match.arg(operator)
 
@@ -51,5 +55,6 @@ itemValuesConstraint <- function(nForms, nItems, itemValues,
   makeFormConstraint(nForms, nItems, itemValues, realVar = NULL,
                      operator, targetValue,
                      whichForms, sense = NULL,
-                     info_text = info_text)
+                     info_text = info_text,
+                     itemIDs = itemIDs)
 }

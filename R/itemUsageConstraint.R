@@ -11,18 +11,12 @@
 #' each item is used exactly once, which corresponds to no item-overlap and
 #' complete item pool depletion.
 #'
-#'@param nForms Number of forms to be created.
-#'@param nItems Number of items in the item pool.
+#'@inheritParams itemValuesConstraint
 #'@param formValues vector with values or weights for each form. Defaults to 1 for each form.
-#'@param operator a character indicating which operator should be used in the
-#'  constraints, with three possible values: \code{"<="}, \code{"="},
-#'  or \code{">="}. See details for more information.
 #'@param targetValue The value to be used in the constraints
 #'@param whichItems A vector indicating which items should be constrained. Defaults to all the items forms.
-#'@param itemIDs a character string indicating the itemIDs.
-#'@param info_text a character string of length 1, to be used in the \code{"info"}-atribute of the resulting \code{constraint}-object.
 #'
-#'@return A object of class \code{"constraint"}.
+#'@return An object of class \code{"constraint"}.
 #'
 #'@examples
 #' ## create no-item overlap constraints with item pool depletion

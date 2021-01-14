@@ -18,7 +18,7 @@
 #' @param relative a logical expressing whether or not the \code{allowedDeviation}
 #'        should be interpreted as a proportion of the \code{targetValue}
 #'
-#' @return A object of class \code{"constraint"}.
+#' @return An object of class \code{"constraint"}.
 #'
 #' @examples
 #' ## constraints to make sure that the sum of the item values (1:10) is between
@@ -31,7 +31,8 @@
 #' @export
 itemValuesRange <- function(nForms, nItems, itemValues, range,
                             whichForms = seq_len(nForms),
-                            info_text = NULL){
+                            info_text = NULL,
+                            itemIDs = names(itemValues)){
 
   # min should be smaller than max
   if(range[2] < range[1]) stop("The first value of 'range' should be smaller than second value of 'range'.")
@@ -42,10 +43,12 @@ itemValuesRange <- function(nForms, nItems, itemValues, range,
   combineConstraints(
     itemValuesConstraint(nForms, nItems, itemValues, operator = ">=",
                          targetValue = range[1], whichForms,
-                         info_text = paste0(info_text, ">=", range[1])),
+                         info_text = paste0(info_text, ">=", range[1]),
+                         itemIDs),
     itemValuesConstraint(nForms, nItems, itemValues, operator = "<=",
                          targetValue = range[2], whichForms,
-                         info_text = paste0(info_text, "<=", range[2]))
+                         info_text = paste0(info_text, "<=", range[2]),
+                         itemIDs)
   )
 }
 
@@ -53,13 +56,15 @@ itemValuesRange <- function(nForms, nItems, itemValues, range,
 #' @export
 itemValuesMin <- function(nForms, nItems, itemValues, min,
                           whichForms = seq_len(nForms),
-                          info_text = NULL){
+                          info_text = NULL,
+                          itemIDs = names(itemValues)){
   # choose info_text for info
   if(is.null(info_text)) info_text <- deparse(substitute(itemValues))
 
   itemValuesConstraint(nForms, nItems, itemValues, operator = ">=",
                        targetValue = min, whichForms = whichForms,
-                       info_text = paste0(info_text, ">=", min))
+                       info_text = paste0(info_text, ">=", min),
+                       itemIDs)
 }
 
 
@@ -67,13 +72,15 @@ itemValuesMin <- function(nForms, nItems, itemValues, min,
 #' @export
 itemValuesMax <- function(nForms, nItems, itemValues, max,
                           whichForms = seq_len(nForms),
-                          info_text = NULL){
+                          info_text = NULL,
+                          itemIDs = names(itemValues)){
   # choose info_text for info
   if(is.null(info_text)) info_text <- deparse(substitute(itemValues))
 
   itemValuesConstraint(nForms, nItems, itemValues, operator = "<=",
                        targetValue = max, whichForms = whichForms,
-                       info_text = paste0(info_text, "<=", max))
+                       info_text = paste0(info_text, "<=", max),
+                       itemIDs)
 }
 
 
@@ -83,7 +90,8 @@ itemValuesDeviation <- function(nForms, nItems, itemValues,
                                 targetValue, allowedDeviation,
                                 relative = FALSE,
                                 whichForms = seq_len(nForms),
-                                info_text = NULL){
+                                info_text = NULL,
+                                itemIDs = names(itemValues)){
 
   # if relative == TRUE, compute the absolute allowed Deviation
   allowedDeviation <- 'if'(relative, targetValue * allowedDeviation, allowedDeviation)
@@ -94,7 +102,8 @@ itemValuesDeviation <- function(nForms, nItems, itemValues,
   itemValuesRange(nForms, nItems, itemValues,
                   range = c(targetValue - allowedDeviation,
                             targetValue + allowedDeviation),
-                  whichForms = whichForms, info_text = info_text)
+                  whichForms = whichForms, info_text = info_text,
+                  itemIDs)
 }
 
 
