@@ -7,11 +7,35 @@
 \alias{itemValuesDeviation}
 \title{Create single value constraints with minimum and maximum.}
 \usage{
-itemValuesRange(nForms, nItems, itemValues, range)
+itemValuesRange(
+  nForms,
+  nItems,
+  itemValues,
+  range,
+  whichForms = seq_len(nForms),
+  info_text = NULL,
+  itemIDs = names(itemValues)
+)
 
-itemValuesMin(nForms, nItems, itemValues, min)
+itemValuesMin(
+  nForms,
+  nItems,
+  itemValues,
+  min,
+  whichForms = seq_len(nForms),
+  info_text = NULL,
+  itemIDs = names(itemValues)
+)
 
-itemValuesMax(nForms, nItems, itemValues, max)
+itemValuesMax(
+  nForms,
+  nItems,
+  itemValues,
+  max,
+  whichForms = seq_len(nForms),
+  info_text = NULL,
+  itemIDs = names(itemValues)
+)
 
 itemValuesDeviation(
   nForms,
@@ -19,7 +43,10 @@ itemValuesDeviation(
   itemValues,
   targetValue,
   allowedDeviation,
-  relative = FALSE
+  relative = FALSE,
+  whichForms = seq_len(nForms),
+  info_text = NULL,
+  itemIDs = names(itemValues)
 )
 }
 \arguments{
@@ -32,11 +59,17 @@ itemValuesDeviation(
 \item{range}{a vector with two values, the the minimal and the maximum sum of
 the \code{itemValues} per test form, respectively}
 
+\item{whichForms}{An integer vector indicating which test forms should be constrained. Defaults to all the test forms.}
+
+\item{info_text}{a character string of length 1, to be used in the \code{"info"}-atribute of the resulting \code{constraint}-object.}
+
+\item{itemIDs}{a character vector of item IDs in correct ordering, or NULL.}
+
 \item{min}{the minimal sum of the \code{itemValues} per test form}
 
 \item{max}{the minimal sum of the \code{itemValues} per test form}
 
-\item{targetValue}{the target test form value}
+\item{targetValue}{the target test form value.}
 
 \item{allowedDeviation}{the maximum allowed deviation from the \code{targetValue}}
 
@@ -44,7 +77,7 @@ the \code{itemValues} per test form, respectively}
 should be interpreted as a proportion of the \code{targetValue}}
 }
 \value{
-A sparse matrix.
+An object of class \code{"constraint"}.
 }
 \description{
 \code{itemValuesRange}, \code{itemValuesMin}, and \code{itemValuesMax}

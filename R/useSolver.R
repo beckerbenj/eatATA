@@ -32,7 +32,7 @@
 #' nItems <- 4
 #'
 #' # create constraits
-#' target <- itemTargetConstraint(nForms = nForms, nItems = nItems,
+#' target <- minimaxConstraint(nForms = nForms, nItems = nItems,
 #'   c(1, 0.5, 1.5, 2), targetValue = 2)
 #' noItemOverlap <- itemUsageConstraint(nForms, nItems = nItems, operator = "=")
 #' testLength <- itemsPerFormConstraint(nForms = nForms, nItems = nItems,
@@ -46,7 +46,7 @@
 #'
 #'
 #'@export
-useSolver <- function(allConstraints, itemIDs = NULL,
+useSolver <- function(allConstraints,
                       solver = c("GLPK", "lpSolve", "Gurobi"),
                       timeLimit = Inf,
                       formNames = NULL,
@@ -56,7 +56,7 @@ useSolver <- function(allConstraints, itemIDs = NULL,
   solver <- match.arg(solver)
 
   # combine all constraints
-  if(!inherits(allConstraints, "constraint")) allConstraints <- combineConstraints(allConstraints)
+  allConstraints <- combineConstraints(allConstraints, message = FALSE)
 
   # extract info
   nItems <- attr(allConstraints, "nItems")
@@ -74,7 +74,7 @@ useSolver <- function(allConstraints, itemIDs = NULL,
   } else if(solver == "lpSolve") {
     out <- useLpSolve(allConstraints, nBin, timeLimit, ...)
   } else if(solver == "Gurobi") {
-    out <- useGurobi(A, direction, d, c, modelSense, nBin, nVar, timeLimit, ...)
+    out <- useGurobi(allConstraints, nBim, timeLimit, ...)
   }
   if(out$solution_found) message("Optimal solution found.")
   else message('if'(is.null(out$solution_status),
@@ -197,7 +197,7 @@ useLpSolve <- function(allConstraints, nBin,
 
 
 ### wrapper around gurobi::gurobi() --------------------------------------------
-useGurobi <- function(A, direction, d, c, modelSense, nBin, nVar,
+useGurobi <- function(allConstraints, nBin,
                       timeLimit, ...){
 
   # handle dots, make list

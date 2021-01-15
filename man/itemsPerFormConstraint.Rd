@@ -8,7 +8,9 @@ itemsPerFormConstraint(
   nForms,
   nItems,
   operator = c("<=", "=", ">="),
-  targetValue
+  targetValue,
+  whichForms = seq_len(nForms),
+  itemIDs = NULL
 )
 }
 \arguments{
@@ -16,15 +18,19 @@ itemsPerFormConstraint(
 
 \item{nItems}{Number of items in the item pool.}
 
-\item{operator}{a character indicating which operator should be used in the
+\item{operator}{A character indicating which operator should be used in the
 constraints, with three possible values: \code{"<="}, \code{"="},
 or \code{">="}. See details for more information.}
 
 \item{targetValue}{The target value to be used in the constraints. That is,
 the number of items per form.}
+
+\item{whichForms}{An integer vector indicating which test forms should be constrained. Defaults to all the test forms.}
+
+\item{itemIDs}{a character vector of item IDs in correct ordering, or NULL.}
 }
 \value{
-A sparse matrix.
+An object of class \code{"constraint"}.
 }
 \description{
 Creates constraints related to the number of items in each test form.

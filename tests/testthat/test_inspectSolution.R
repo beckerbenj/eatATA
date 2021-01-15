@@ -4,17 +4,19 @@ items <- data.frame(ID = paste0("item_", 1:10),
                     itemValues = c(-4, -4, -2, -2, -1, -1, 20, 20, 0, 0),
                     stringsAsFactors = FALSE)
 
-usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 1)
-perForm <- itemsPerFormConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 5)
-target <- itemTargetConstraint(nForms = 2, nItems = 10,
+usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=",
+                             targetValue = 1, itemIDs = items$ID)
+perForm <- itemsPerFormConstraint(nForms = 2, nItems = 10, operator = "=",
+                                  targetValue = 5, itemIDs = items$ID)
+target <- minimaxConstraint(nForms = 2, nItems = 10,
                                itemValues = items$itemValues,
-                               targetValue = 0)
+                               targetValue = 0, itemIDs = items$ID)
 
 suppressMessages(sol <- useSolver(allConstraints = list(usage, perForm, target),
-                 nForms = 2, itemIDs = items$ID, solver = "lpSolve"))
+                 solver = "lpSolve", formNames = "block"))
 
 suppressMessages(sol_empty <- useSolver(allConstraints = list(target),
-                                  nForms = 2, itemIDs = items$ID, solver = "lpSolve"))
+                                  solver = "lpSolve"))
 
 
 test_that("inspect solution", {
@@ -40,7 +42,7 @@ test_that("inspect solution for empty test forms", {
   out <- inspectSolution(sol_empty, items = items, idCol = "ID", colNames = names(items), colSums = FALSE)
 
   expect_equal(length(out), 2)
-  expect_equal(names(out), paste0("block_", 1:2))
+  expect_equal(names(out), paste0("form_", 1:2))
   expect_equal(nrow(out[[1]]), 0)
 })
 

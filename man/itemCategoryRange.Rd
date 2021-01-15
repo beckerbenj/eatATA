@@ -7,11 +7,35 @@
 \alias{itemCategoryDeviation}
 \title{Create item category constraints with minimum and maximum.}
 \usage{
-itemCategoryRange(nForms, nItems, itemCategories, range)
+itemCategoryRange(
+  nForms,
+  nItems,
+  itemCategories,
+  range,
+  whichForms = seq_len(nForms),
+  info_text = NULL,
+  itemIDs = names(itemCategories)
+)
 
-itemCategoryMin(nForms, nItems, itemCategories, min)
+itemCategoryMin(
+  nForms,
+  nItems,
+  itemCategories,
+  min,
+  whichForms = seq_len(nForms),
+  info_text = NULL,
+  itemIDs = names(itemCategories)
+)
 
-itemCategoryMax(nForms, nItems, itemCategories, max)
+itemCategoryMax(
+  nForms,
+  nItems,
+  itemCategories,
+  max,
+  whichForms = seq_len(nForms),
+  info_text = NULL,
+  itemIDs = names(itemCategories)
+)
 
 itemCategoryDeviation(
   nForms,
@@ -19,7 +43,10 @@ itemCategoryDeviation(
   itemCategories,
   targetValues,
   allowedDeviation,
-  relative = FALSE
+  relative = FALSE,
+  whichForms = seq_len(nForms),
+  info_text = NULL,
+  itemIDs = names(itemCategories)
 )
 }
 \arguments{
@@ -31,6 +58,12 @@ itemCategoryDeviation(
 
 \item{range}{a matrix with two columns representing the the minimal and the
 maximum frequency of the items from each level/category \code{itemCategories}}
+
+\item{whichForms}{An integer vector indicating which test forms should be constrained. Defaults to all the test forms.}
+
+\item{info_text}{a character string of length 1, to be used in the \code{"info"}-atribute of the resulting \code{constraint}-object.}
+
+\item{itemIDs}{a character vector of item IDs in correct ordering, or NULL.}
 
 \item{min}{the minimal sum of the \code{itemValues} per test form}
 

@@ -8,12 +8,11 @@
 #' item blocks might also be exclusive. Using the initially used item exclusion tuples and the optimal solution
 #' given by \code{useSolver} this function determines, which item blocks are exclusive and can not be together in an
 #' assembled test form.
-#'
-#'@param solverOut Object created by \code{useSolver}.
-#'@param items Original \code{data.frame} containing information on item level.
-#'@param idCol Column name with item IDs in the \code{items} \code{data.frames}.
-#'@param exclusionTuples \code{data.frame} with two columns, containing tuples with item IDs which should be in test
+#'@inheritParams inspectSolution
+#'@param exclusionTuples \code{data.frame} with two columns, containing tuples with
+#'item IDs which should be in test
 #'forms exclusively. Must be the same object as used in \code{\link{itemExclusionConstraint}}.
+#'@param formName A character vector with names to give to the forms.
 #'
 #'@return A \code{data.frame} of block exclusions.
 #'
@@ -31,22 +30,29 @@
 #' #' ## Create constraints
 #' exclusion_constraint <- itemExclusionConstraint(nForms = 2, exclusionTuples = exTuples2,
 #'                                                 itemIDs = items$ID)
-#' depletion_constraint <- depletePoolConstraint(2, nItems = 4)
-#' target_constraint <- itemTargetConstraint(nForms = 2, nItems = 4,
-#'                                           itemValues = c(3, 1.5, 2, 4), targetValue = 1)
+#' depletion_constraint <- depletePoolConstraint(2, nItems = 4,
+#'                                                 itemIDs = items$ID)
+#' target_constraint <- minimaxConstraint(nForms = 2, nItems = 4,
+#'                                           itemValues = c(3, 1.5, 2, 4),
+#'                                           targetValue = 1,
+#'                                           itemIDs = items$ID)
 #'
 #' opt_solution <- useSolver(list(exclusion_constraint, target_constraint,
-#'                                         depletion_constraint),
-#'                                    nForms = 2, nItems = 4, itemIDs = items$ID)
+#'                                         depletion_constraint))
 #'
 #' analyzeBlockExclusion(opt_solution, items = items, idCol = "ID",
 #'                        exclusionTuples = exTuples2)
 #'
 #'
 #'@export
-analyzeBlockExclusion <- function(solverOut, items, idCol, exclusionTuples){
+analyzeBlockExclusion <- function(solverOut, items, idCol, exclusionTuples, formName = "form"){
   if(!is.data.frame(items)) stop("'items' must be a data.frame.")
-  if(!idCol %in% names(items)) stop("'idCol' must be a column name in 'items'.")
+  if(is.character(idCol)){
+    if(!idCol %in% names(items)) stop("'idCol' is not a column in 'items'.")
+  } else {
+    if(!idCol %in% seq_len(dim(items)[2])) stop("'idCol' is not a column number in 'items'.")
+    idCol <- names(items)[idCol]
+  }
   if(!(is.data.frame(exclusionTuples) || is.matrix(exclusionTuples))) stop("'exclusionTuples' must be a data.frame or matrix.")
   if(ncol(exclusionTuples) != 2) stop("'exclusionTuples' must have two columns.")
   check_solverOut(solverOut)
@@ -54,15 +60,15 @@ analyzeBlockExclusion <- function(solverOut, items, idCol, exclusionTuples){
   processedObj <- inspectSolution(solverOut, items, idCol = idCol, colNames = names(items), colSums = FALSE)
 
   #names(processedObj) <- paste0("block ", seq(length(processedObj)))
-  match_df <- do_call_rbind_withName(processedObj, colName = "block")[, c(idCol, "block")]
+  match_df <- do_call_rbind_withName(processedObj, colName = formName)[, c(idCol, formName)]
   #if(!all(unlist(exclusionTuples) %in% match_df[, idCol])) browser()
 
   exclusionTuples <- exclusionTuples[exclusionTuples[, 1] %in% match_df[, idCol], ]
   exclusionTuples <- exclusionTuples[exclusionTuples[, 2] %in% match_df[, idCol], ]
 
   exclusionOut <- exclusionTuples
-  exclusionOut[, 1] <- match_df$block[match(exclusionOut[, 1], match_df[, idCol])]
-  exclusionOut[, 2] <- match_df$block[match(exclusionOut[, 2], match_df[, idCol])]
+  exclusionOut[, 1] <- match_df[match(exclusionOut[, 1], match_df[, idCol]), formName]
+  exclusionOut[, 2] <- match_df[match(exclusionOut[, 2], match_df[, idCol]), formName]
 
   out <- do.call(rbind, lapply(seq(nrow(exclusionOut)), function(row_no) {
     sorted_vec <- sort(as.character(exclusionOut[row_no, ]))

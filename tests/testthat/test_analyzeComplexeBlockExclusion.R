@@ -8,17 +8,24 @@ suppressWarnings(exclusionTuples2 <- data.frame(v1 = c("item5", "item6"),
 
 suppressWarnings(excl1 <- itemExclusionConstraint(nForms = 2, exclusionTuples1, itemIDs = items1$ID))
 suppressWarnings(excl2 <- itemExclusionConstraint(nForms = 2, exclusionTuples2, itemIDs = items2$ID))
-usage <- itemUsageConstraint(nForms = 2, nItems = 4, operator = "=", targetValue = 1)
-perForm <- itemsPerFormConstraint(nForms = 2, nItems = 4, operator = "=", targetValue = 2)
+usage1 <- itemUsageConstraint(nForms = 2, nItems = 4, operator = "=", targetValue = 1, itemIDs = items1$ID)
+perForm1 <- itemsPerFormConstraint(nForms = 2, nItems = 4, operator = "=", targetValue = 2, itemIDs = items1$ID)
 
-target <- itemTargetConstraint(nForms = 2, nItems = 4,
+target1 <- minimaxConstraint(nForms = 2, nItems = 4,
                                itemValues = items1$itemValues,
-                               targetValue = 0)
+                               targetValue = 0, itemIDs = items1$ID)
 
-#suppressMessages(sol1 <- useSolver(allConstraints = list(usage, excl1, target, perForm),
-#                                  nForms = 2, itemIDs = items1$ID, solver = "GLPK"))
-#suppressMessages(sol2 <- useSolver(allConstraints = list(usage, excl2, target, perForm),
-#                                   nForms = 2, itemIDs = items2$ID, solver = "GLPK"))
+usage2 <- itemUsageConstraint(nForms = 2, nItems = 4, operator = "=", targetValue = 1, itemIDs = items2$ID)
+perForm2 <- itemsPerFormConstraint(nForms = 2, nItems = 4, operator = "=", targetValue = 2, itemIDs = items2$ID)
+
+target2 <- minimaxConstraint(nForms = 2, nItems = 4,
+                             itemValues = items2$itemValues,
+                             targetValue = 0, itemIDs = items2$ID)
+
+#suppressMessages(sol1 <- useSolver(allConstraints = list(usage1, excl1, target1, perForm1),
+#                                  solver = "GLPK", formNames = "block"))
+#suppressMessages(sol2 <- useSolver(allConstraints = list(usage2, excl2, target2, perForm2),
+#                                   solver = "GLPK", formNames = "block"))
 #save(sol1, sol2, file = "tests/testthat/helper_complexBlockExclusions.RData")
 #load("tests/testthat/helper_complexBlockExclusions.RData")
 load("helper_complexBlockExclusions.RData")
@@ -26,7 +33,7 @@ load("helper_complexBlockExclusions.RData")
 test_that("analyze block exclusions", {
   out <- analyzeComplexBlockExclusion(solverOut_list = list(sol1, sol2),
                                       items_list = list(items1, items2),
-                                      idCol = "ID",
+                                      idCol = 1,
                                       exclusionTuples_list = list(exclusionTuples1, exclusionTuples2))
 
   expect_equal(names(out), c("Name 1", "Name 2"))

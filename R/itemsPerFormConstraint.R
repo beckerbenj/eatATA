@@ -9,7 +9,7 @@
 #' (\code{operator = "="}), or (c) greater or equal than
 #' (\code{operator = ">="}) the chosen \code{value}.
 #'
-#'@inheritParams itemValuesConstraints
+#'@inheritParams itemValuesConstraint
 #'@param targetValue The target value to be used in the constraints. That is,
 #'  the number of items per form.
 #'

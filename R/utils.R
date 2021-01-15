@@ -284,28 +284,3 @@ combine2Constraints <- function(x, y){
                 info = info,
                 itemIDs = attr(x, "itemIDs"))
 }
-
-
-
-#### function to combine multiple constraints ####
-combineConstraints <- function(...){
-
-  dots <- list(...)
-  dots <- 'if'(length(dots) == 1 && !inherits(dots[[1]], "constraint"), dots[[1]], dots)
-
-  # check if all objects are of class constraints
-  if(!all(sapply(dots, inherits, what = "constraint"))) stop("All arguments should be of the 'constraint'-class.")
-
-  if(length(dots) == 1){
-    message("The one constraint that was given is simply returned")
-    return(dots[[1]])
-  } else if (length(dots) == 2){
-    return(combine2Constraints(dots[[1]], dots[[2]]))
-  } else if (length(dots) > 2){
-    c12 <- combine2Constraints(dots[[1]], dots[[2]])
-    dots <- append(dots[-c(1:2)], list(c12), after = 0)
-    return(combineConstraints(dots))
-  } else stop("No constraints were included")
-}
-
-

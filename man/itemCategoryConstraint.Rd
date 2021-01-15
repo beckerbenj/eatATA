@@ -9,7 +9,10 @@ itemCategoryConstraint(
   nItems,
   itemCategories,
   operator = c("<=", "=", ">="),
-  targetValues
+  targetValues,
+  whichForms = seq_len(nForms),
+  info_text = NULL,
+  itemIDs = names(itemCategories)
 )
 }
 \arguments{
@@ -19,16 +22,22 @@ itemCategoryConstraint(
 
 \item{itemCategories}{a factor representing the categories/grouping of the items}
 
-\item{operator}{a character indicating which operator should be used in the
+\item{operator}{A character indicating which operator should be used in the
 constraints, with three possible values: \code{"<="}, \code{"="},
 or \code{">="}. See details for more information.}
 
 \item{targetValues}{an integer vector representing the target number per category.
 The order of the target values should correspond with the order of the levels
 of the factor in \code{itemCategory}.}
+
+\item{whichForms}{An integer vector indicating which test forms should be constrained. Defaults to all the test forms.}
+
+\item{info_text}{a character string of length 1, to be used in the \code{"info"}-atribute of the resulting \code{constraint}-object.}
+
+\item{itemIDs}{a character vector of item IDs in correct ordering, or NULL.}
 }
 \value{
-A sparse matrix.
+A object of class \code{"constraint"}.
 }
 \description{
 Create constraints related to item categories/groupings (as
@@ -43,6 +52,6 @@ the corresponding \code{targetValues}.
 ## in each test form
 nItems <- 30
 item_type <- factor(sample(1:3, size = nItems, replace = TRUE))
-itemCategoryConstraint(2, nItems, item_type, ">=", targetValues = c(3, 3, 3))
+itemCategoryConstraint(2, nItems, item_type, ">=", targetValues = c(1, 3, 2))
 
 }

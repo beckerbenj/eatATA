@@ -2,14 +2,17 @@
 % Please edit documentation in R/itemValuesConstraint.R
 \name{itemValuesConstraint}
 \alias{itemValuesConstraint}
-\title{Create single value constraints.}
+\title{Constrain the sum of item values per form.}
 \usage{
 itemValuesConstraint(
   nForms,
   nItems,
   itemValues,
   operator = c("<=", "=", ">="),
-  targetValue
+  targetValue,
+  whichForms = seq_len(nForms),
+  info_text = NULL,
+  itemIDs = names(itemValues)
 )
 }
 \arguments{
@@ -23,10 +26,16 @@ itemValuesConstraint(
 constraints, with three possible values: \code{"<="}, \code{"="},
 or \code{">="}. See details for more information.}
 
-\item{targetValue}{the target test form value}
+\item{targetValue}{the target test form value.}
+
+\item{whichForms}{An integer vector indicating which test forms should be constrained. Defaults to all the test forms.}
+
+\item{info_text}{a character string of length 1, to be used in the \code{"info"}-atribute of the resulting \code{constraint}-object.}
+
+\item{itemIDs}{a character vector of item IDs in correct ordering, or NULL.}
 }
 \value{
-A sparse matrix.
+An object of class \code{"constraint"}.
 }
 \description{
 Create constraints related to an item parameter/value. That is, the created
@@ -38,8 +47,9 @@ the chosen \code{targetValue}.
 \examples{
 ## constraints to make sure that the sum of the item values (1:10) is between
 ## 4 and 6
-rbind(
+combineConstraints(
   itemValuesConstraint(2, 10, 1:10, operator = ">=", targetValue = 4),
-  itemValuesConstraint(2, 10, 1:10, operator = "<=", targetValue = 6))
+  itemValuesConstraint(2, 10, 1:10, operator = "<=", targetValue = 6)
+)
 
 }

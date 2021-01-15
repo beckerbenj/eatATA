@@ -16,7 +16,7 @@ analyzeComplexBlockExclusion(
 
 \item{items_list}{List of original \code{data.frame} containing information on item level.}
 
-\item{idCol}{Column name with item IDs in the \code{items} \code{data.frames}.}
+\item{idCol}{Column name in \code{items} containing item IDs. These will be used for matching to the solver output.}
 
 \item{exclusionTuples_list}{List of \code{data.frames} with two columns, containing tuples with item IDs which
 should be in test forms exclusively. Must be the same objects as used in \code{\link{itemExclusionConstraint}}.}

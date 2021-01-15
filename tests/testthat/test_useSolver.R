@@ -11,7 +11,7 @@ target <- minimaxConstraint(nForms = 2, nItems = 10,
 
 test_that("Solve problem using lpsolve", {
   expect_message(out <- useSolver(allConstraints = list(usage, perForm, target),
-                                  itemIDs = items$ID, solver = "lpSolve"),
+                                  solver = "lpSolve"),
             "Optimal solution found.")
   expect_true(out$solution_found)
   sol <- out$solution
@@ -29,7 +29,7 @@ test_that("Solve problem using lpsolve", {
 
 test_that("Solve problem using glpk", {
   expect_message(out <- useSolver(allConstraints = list(usage, perForm, target),
-                   nForms = 2, solver = "GLPK", verbose = FALSE),
+                   solver = "GLPK", verbose = FALSE),
                   "Optimal solution found.")
 
   expect_true(out$solution_found)
@@ -45,7 +45,7 @@ test_that("Solve problem using glpk", {
   }
   expect_equal(sol[21], 13)
   expect_output(out <- useSolver(allConstraints = list(usage, perForm, target),
-                                  nForms = 2, solver = "GLPK"))
+                                  solver = "GLPK"))
 })
 
 requireNamespace("gurobi", quietly = TRUE)
@@ -53,7 +53,7 @@ requireNamespace("gurobi", quietly = TRUE)
 if("gurobi" %in% rownames(installed.packages())){
   test_that("Solve problem using gurobi", {
     outp <- capture_output(out <- useSolver(allConstraints = list(usage, perForm, target),
-                                            nForms = 2, solver = "Gurobi"))
+                                            solver = "Gurobi"))
 
     sol <- out$solution$x
     objval <- out$solution$objval
@@ -73,7 +73,7 @@ if("gurobi" %in% rownames(installed.packages())){
 
 test_that("Output format", {
   expect_message(out <- useSolver(allConstraints = list(usage, perForm, target),
-                                  nForms = 2, solver = "GLPK", verbose = FALSE),
+                                  solver = "GLPK", verbose = FALSE),
                  "Optimal solution found.")
 
   nItems <- attr(usage, "nItems")
@@ -125,17 +125,17 @@ test_that("useSolver returns errors", {
 
 fun <- function(x){
   for(i in seq_len(x)){
-    Sys.sleep(.1)
+    Sys.sleep(.5)
     cat(i)
   }
 }
 call <- substitute(fun(6))
 
 test_that("eval_with_time_limit works", {
-  expect_equal(eval_call_with_time_limit(call, elapsed = .01, on_time_out = mean, x = c(1:3)),
+  expect_equal(eval_call_with_time_limit(call, elapsed = .5, on_time_out = mean, x = c(1:3)),
                2)
-  expect_error(eval_call_with_time_limit(call, elapsed = .01), "reached elapsed time limit")
-  expect_equal(eval_call_with_time_limit(call, elapsed = .01, on_time_out = "OK"), "OK")
+  expect_error(eval_call_with_time_limit(call, elapsed = .5), "reached elapsed time limit")
+  expect_equal(eval_call_with_time_limit(call, elapsed = .5, on_time_out = "OK"), "OK")
 
 })
 

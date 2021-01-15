@@ -3,8 +3,7 @@
 #' Creates constraints that assure that every item in the item pool is used
 #' (at least) once. Essentially a wrapper around \code{itemUsageConstraint}.
 #'
-#'@param nForms Number of forms to be created.
-#'@param nItems Number of items in the item pool.
+#'@inheritParams itemValuesConstraint
 #'
 #'@return A sparse matrix.
 #'
@@ -12,6 +11,6 @@
 #' depletePoolConstraint(2, 10)
 #'
 #'@export
-depletePoolConstraint <- function(nForms, nItems){
-  itemUsageConstraint(nForms, nItems, operator = ">=", targetValue = 1)
+depletePoolConstraint <- function(nForms, nItems, itemIDs = NULL){
+  itemUsageConstraint(nForms, nItems, operator = ">=", targetValue = 1, itemIDs = itemIDs)
 }

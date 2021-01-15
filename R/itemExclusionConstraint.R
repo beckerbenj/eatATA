@@ -7,7 +7,7 @@
 #'
 #' Item exclusion pairs can, for example, be created by the function \code{\link{itemExclusionTuples}}.
 #'
-#'@inheritParams itemValuesConstraints
+#'@inheritParams itemValuesConstraint
 #'@param exclusionTuples \code{data.frame} with two columns, containing tuples with item IDs which should be in test forms exclusively.
 #'@param itemIDs Character vector of item IDs in correct ordering.
 #'
@@ -59,7 +59,7 @@ itemExclusionConstraint <- function(nForms, exclusionTuples, itemIDs,
     itemValuesConstraint(nForms, nItems, itemValues, targetValue = 1,
                          info_text = paste0(exclusion_row, collapse = "_excludes_"))
   })
-  combineConstraints(constr_list)
+  combineConstraints(constr_list, message = FALSE)
 }
 
 

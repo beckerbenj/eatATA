@@ -22,16 +22,18 @@
 #' itemValues = c(-4, -4, -2, -2, -1, -1, 20, 20, 0, 0))
 #'
 #' ## Test Assembly
-#' usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 1)
-#' perForm <- itemsPerFormConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 5)
-#' target <- itemTargetConstraint(nForms = 2, nItems = 10,
+#' usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=",
+#'                              targetValue = 1, itemIDs = items$ID)
+#' perForm <- itemsPerFormConstraint(nForms = 2, nItems = 10, operator = "=",
+#'                                   targetValue = 5, itemIDs = items$ID)
+#' target <- minimaxConstraint(nForms = 2, nItems = 10,
 #'                                itemValues = items$itemValues,
-#'                                targetValue = 0)
+#'                                targetValue = 0, itemIDs = items$ID)
 #' sol <- useSolver(allConstraints = list(usage, perForm, target),
-#'                                   nForms = 2, itemIDs = items$ID, solver = "lpSolve")
+#'                                   solver = "lpSolve")
 #'
 #' ## Inspect Solution
-#' out <- inspectSolution(sol, items = items, idCol = "ID", colNames = "itemValues")
+#' out <- inspectSolution(sol, items = items, idCol = 1, colNames = "itemValues")
 #'
 #'@export
 inspectSolution <- function(solverOut, items, idCol, colNames, colSums = TRUE){
@@ -39,13 +41,20 @@ inspectSolution <- function(solverOut, items, idCol, colNames, colSums = TRUE){
   if(length(illegal_names) > 0) stop("The following 'colNames' are not columns in 'items': ",
                                      paste(illegal_names, collapse = ", "))
   if(!identical(nrow(solverOut$item_matrix), nrow(items))) stop("'items' and the solution in 'solverOut' have different numbers of rows.")
-  if(!idCol %in% names(items)) stop("'idCol' is not a column in 'items'.")
+  if(is.character(idCol)){
+    if(!idCol %in% names(items)) stop("'idCol' is not a column in 'items'.")
+  } else {
+    if(!idCol %in% seq_len(dim(items)[2])) stop("'idCol' is not a column number in 'items'.")
+    idCol <- names(items)[idCol]
+  }
+
   if(!identical(rownames(solverOut$item_matrix), as.character(items[, idCol]))) stop("'items' and the solution in 'solverOut' have different sets of itemIDs.")
   check_solverOut(solverOut)
 
   new_items <- appendSolution(solverOut, items = items[, c(idCol, colNames), drop = FALSE], idCol = idCol)
 
-  block_list <- lapply(paste0("block_", seq(ncol(solverOut$item_matrix))), function(nam) {
+  formNames <- colnames(solverOut$item_matrix)
+  block_list <- lapply(formNames, function(nam) {
     #browser()
     sep_rows <- new_items[new_items[, nam] == 1, colNames, drop = FALSE]
     if(nrow(sep_rows) == 0) return(sep_rows)
@@ -56,6 +65,6 @@ inspectSolution <- function(solverOut, items, idCol, colNames, colSums = TRUE){
     rownames(out)[nrow(out)] <- "Sum"
     out
   })
-  names(block_list) <- paste0("block_", seq(ncol(solverOut$item_matrix)))
+  names(block_list) <- formNames
   block_list
 }

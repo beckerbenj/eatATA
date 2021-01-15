@@ -4,12 +4,14 @@
 \alias{depletePoolConstraint}
 \title{Use complete item pool.}
 \usage{
-depletePoolConstraint(nForms, nItems)
+depletePoolConstraint(nForms, nItems, itemIDs = NULL)
 }
 \arguments{
 \item{nForms}{Number of forms to be created.}
 
 \item{nItems}{Number of items in the item pool.}
+
+\item{itemIDs}{a character vector of item IDs in correct ordering, or NULL.}
 }
 \value{
 A sparse matrix.

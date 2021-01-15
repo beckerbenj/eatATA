@@ -6,30 +6,20 @@
 \usage{
 useSolver(
   allConstraints,
-  nForms,
-  nItems = NULL,
-  itemIDs = NULL,
   solver = c("GLPK", "lpSolve", "Gurobi"),
   timeLimit = Inf,
-  modelSense = c("min", "max"),
+  formNames = NULL,
   ...
 )
 }
 \arguments{
 \item{allConstraints}{List of constraints.}
 
-\item{nForms}{Number of forms to be created.}
-
-\item{nItems}{Number of items in the pool.}
-
-\item{itemIDs}{Character vector of item IDs.}
-
 \item{solver}{A character string indicating the solver to use.}
 
 \item{timeLimit}{The maximal runtime in seconds.}
 
-\item{modelSense}{A character string indicating whether to minimize or
-maximize the objective function.}
+\item{formNames}{A character vector with names to give to the forms.}
 
 \item{...}{Additional arguments for the solver.}
 }
@@ -59,7 +49,7 @@ nForms <- 2
 nItems <- 4
 
 # create constraits
-target <- itemTargetConstraint(nForms = nForms, nItems = nItems,
+target <- minimaxConstraint(nForms = nForms, nItems = nItems,
   c(1, 0.5, 1.5, 2), targetValue = 2)
 noItemOverlap <- itemUsageConstraint(nForms, nItems = nItems, operator = "=")
 testLength <- itemsPerFormConstraint(nForms = nForms, nItems = nItems,
@@ -67,7 +57,7 @@ testLength <- itemsPerFormConstraint(nForms = nForms, nItems = nItems,
 
 # use a solver
 result <- useSolver(list(target, noItemOverlap, testLength),
-  nForms = nForms, itemIDs = paste0("Item_", 1:4),
+  itemIDs = paste0("Item_", 1:4),
   solver = "GLPK")
 
 
