@@ -30,7 +30,7 @@ or \code{">="}. See details for more information.}
 
 \item{whichItems}{A vector indicating which items should be constrained. Defaults to all the items forms.}
 
-\item{info_text}{a character string of length 1, to be used in the \code{"info"}-atribute of the resulting \code{constraint}-object.}
+\item{info_text}{a character string of length 1, to be used in the \code{"info"}-attribute of the resulting \code{constraint}-object.}
 
 \item{itemIDs}{a character vector of item IDs in correct ordering, or NULL.}
 }

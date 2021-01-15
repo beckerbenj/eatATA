@@ -14,7 +14,7 @@
 #'  or \code{">="}. See details for more information.
 #'@param targetValue the target test form value.
 #'@param whichForms An integer vector indicating which test forms should be constrained. Defaults to all the test forms.
-#'@param info_text a character string of length 1, to be used in the \code{"info"}-atribute of the resulting \code{constraint}-object.
+#'@param info_text a character string of length 1, to be used in the \code{"info"}-attribute of the resulting \code{constraint}-object.
 #'@param itemIDs a character vector of item IDs in correct ordering, or NULL.
 #'
 #'@return An object of class \code{"constraint"}.

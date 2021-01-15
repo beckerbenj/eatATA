@@ -16,7 +16,7 @@ maxConstraint(
 
 \item{itemValues}{Item parameter/values for which the sum per test form should be constrained.}
 
-\item{info_text}{a character string of length 1, to be used in the \code{"info"}-atribute of the resulting \code{constraint}-object.}
+\item{info_text}{a character string of length 1, to be used in the \code{"info"}-attribute of the resulting \code{constraint}-object.}
 
 \item{itemIDs}{a character vector of item IDs in correct ordering, or NULL.}
 }
