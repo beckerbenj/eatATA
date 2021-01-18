@@ -31,7 +31,7 @@ itemsPerFormConstraint <- function(nForms, nItems, operator = c("<=", "=", ">=")
   if(targetValue > nItems) stop("'targetValue' should be smaller than or equal to 'nItems'.")
 
   itemValuesConstraint(nForms, nItems, itemValues = rep(1, nItems), operator,
-                       targetValue, whichForms = seq_len(nForms),
+                       targetValue, whichForms = whichForms,
                        info_text = paste0("itemsPerForm", operator, targetValue),
                        itemIDs)
 
