@@ -67,7 +67,11 @@ Constraints controlling metric properties of items across test forms:
 
 Constraints defining the optimization goal of the automated test assembly:
 
-* `itemTargetConstraint()`
+* `maxConstraint()`
+* `minConstraint()`
+* `maximinConstraint()`
+* `minimaxConstraint()`
+* `cappedMaximinConstraint()`
 
 ## Solver function
 After defining all required constraints using the functions above, `useSolver()` can be used to call the desired solver.

@@ -10,6 +10,7 @@ Description: Provides simple functions to create constraints for small test asse
     'GLPK', 'lpSolve', 'Symphony', and 'Gurobi' are supported as solvers. The 'gurobi' package is not available from 
     any mainstream repository; see <https://www.gurobi.com/downloads/>.
 License: GPL
+URL: https://github.com/beckerbenj/eatATA
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.5.0)
