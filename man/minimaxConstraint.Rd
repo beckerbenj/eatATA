@@ -9,6 +9,7 @@ minimaxConstraint(
   nItems,
   itemValues,
   targetValue,
+  weight = 1,
   whichForms = seq_len(nForms),
   info_text = NULL,
   itemIDs = names(itemValues)
@@ -22,6 +23,8 @@ minimaxConstraint(
 \item{itemValues}{Item parameter/values for which the sum per test form should be constrained.}
 
 \item{targetValue}{the target test form value.}
+
+\item{weight}{a weight for the real-valued variable(s). Usefull when multiple constraints are combined. Should only be used if the implications are well understood.}
 
 \item{whichForms}{An integer vector indicating which test forms should be constrained. Defaults to all the test forms.}
 

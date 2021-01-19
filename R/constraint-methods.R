@@ -38,7 +38,7 @@ combineConstraints <- function(..., message = TRUE){
 ### S3 methods for constraint object
 #'@export
 c.constraint <- function(...){
-  message("'combineConstraints()' is used. Please use 'combineConstraints' directly.")
+  message("'combineConstraints()' is used under the hood. Please use 'combineConstraints' directly.")
   combineConstraints(...)
 }
 

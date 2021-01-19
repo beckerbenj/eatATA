@@ -120,9 +120,10 @@ newConstraint <- function(A_binary, A_real = NULL, operators, d,
               c_real = c_real)
 
   # create itemIDs if not available
-  itemIDs <- 'if'(is.null(itemIDs),
-                  sprintf(paste("it%0", nchar(nItems), "d", sep=''), seq_len(nItems)),
-                  itemIDs)
+  if(is.null(itemIDs)) {
+    # message("Default item IDs were created. Inspect the constraint-object to view the item IDs.")
+    itemIDs <- sprintf(paste("it%0", nchar(nItems), "d", sep=''), seq_len(nItems))
+  }
 
   # check length of itemIDs
   if(length(itemIDs) != nItems) stop("The number of 'itemIDs' does not correspond to 'nItems'")
@@ -242,9 +243,20 @@ combine2Constraints <- function(x, y){
     c_real <- x$c_real
     y$A_real <- matrix(0, nrow = dim(y$A_binary)[1], ncol = length(c_real))
   } else if(!is.null(x$c_real) & !is.null(y$c_real)){
-    if(!all(x$c_real == y$c_real)){
-      stop("The weights of the real variables in the objective function ('c_real') differ.")
-    } else c_real <- x$c_real
+    n_c_x <- length(x$c_real)
+    n_c_y <- length(y$c_real)
+    if(n_c_x == n_c_y) {
+      if(!all(x$c_real == y$c_real)) stop("The weights of the real variables in the objective function ('c_real') differ.")
+      c_real <- x$c_real
+    } else if(n_c_x > n_c_y){
+      if(!all(x$c_real[n_c_y] == y$c_real)) stop("The weights of the real variables in the objective function ('c_real') differ.")
+      c_real <- x$c_real
+      y$A_real <- cbind(y$A_real, matrix(0, nrow = nrow(y$A_real), ncol = (n_c_x - n_c_y)))
+    } else if(n_c_y > n_c_x){
+      if(!all(x$c_real == y$c_real[n_c_x])) stop("The weights of the real variables in the objective function ('c_real') differ.")
+      c_real <- y$c_real
+      x$A_real <- cbind(x$A_real, matrix(0, nrow = nrow(x$A_real), ncol = (n_c_y - n_c_x)))
+    }
   } else c_real <- NULL
 
 
