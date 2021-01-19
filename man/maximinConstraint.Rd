@@ -9,6 +9,7 @@ maximinConstraint(
   nItems,
   itemValues,
   allowedDeviation,
+  weight = 1,
   whichForms = seq_len(nForms),
   info_text = NULL,
   itemIDs = names(itemValues)
@@ -22,6 +23,8 @@ maximinConstraint(
 \item{itemValues}{Item parameter/values for which the sum per test form should be constrained.}
 
 \item{allowedDeviation}{the maximum allowed deviation between the sum of the target values.}
+
+\item{weight}{a weight for the real-valued variable(s). Usefull when multiple constraints are combined. Should only be used if the implications are well understood.}
 
 \item{whichForms}{An integer vector indicating which test forms should be constrained. Defaults to all the test forms.}
 

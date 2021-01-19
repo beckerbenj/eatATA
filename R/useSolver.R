@@ -119,7 +119,7 @@ useGLPK <- function(allConstraints, nBin,
     bounds = bounds,
     types = c(rep("B", nBin), 'if'(is.null(allConstraints$c_real),
                                    NULL, rep("C", length(allConstraints$c_real)))),
-    max = attr(allConstraints, "sense") == "max",
+    max = 'if'(is.null(attr(allConstraints, "sense")), FALSE, attr(allConstraints, "sense") == "max"),
     # Avoid warning when timeLimit == Inf
     control = list(
       canonicalize_status = FALSE,
@@ -156,7 +156,7 @@ useLpSolve <- function(allConstraints, nBin,
 
     # create list with all the objects for lpSolve::lp()
   objects_for_solver <- c(list(
-      direction = attr(allConstraints, "sense"),
+      direction = 'if'(is.null(attr(allConstraints, "sense")), "min", attr(allConstraints, "sense")),
       objective.in = c('if'(is.null(allConstraints$c_binary),
                             rep(0, nBin),
                             allConstraints$c_binary),
