@@ -9,7 +9,8 @@ autoItemValuesMinMax(
   itemValues,
   allowedDeviation = NULL,
   relative = FALSE,
-  verbose = TRUE
+  verbose = TRUE,
+  itemIDs = NULL
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ autoItemValuesMinMax(
 \item{relative}{Is the \code{allowedDeviation} expressed as a proportion?}
 
 \item{verbose}{Should calculated values be reported?}
+
+\item{itemIDs}{a character vector of item IDs in correct ordering, or NULL.}
 }
 \value{
 A sparse matrix.

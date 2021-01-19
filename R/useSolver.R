@@ -74,7 +74,7 @@ useSolver <- function(allConstraints,
   } else if(solver == "lpSolve") {
     out <- useLpSolve(allConstraints, nBin, timeLimit, ...)
   } else if(solver == "Gurobi") {
-    out <- useGurobi(allConstraints, nBim, timeLimit, ...)
+    out <- useGurobi(allConstraints, nBin, timeLimit, ...)
   }
   if(out$solution_found) message("Optimal solution found.")
   else message('if'(is.null(out$solution_status),
@@ -210,12 +210,16 @@ useGurobi <- function(allConstraints, nBin,
 
   # create list with all the objects for Rglpk::Rglpk_solve_LP()
   objects_for_solver <- list(model = c(
-      list(A = A,
-           rhs = d,
-           sense = direction,
-           obj = c,
-           modelsense = modelSense,
-           vtype = c(rep("B", nBin), "C")),
+      list(A = as.matrix(cbind(allConstraints$A_binary, allConstraints$A_real)),
+           rhs = allConstraints$d,
+           sense = allConstraints$operators,
+           obj = c('if'(is.null(allConstraints$c_binary),
+                        rep(0, nBin),
+                        allConstraints$c_binary),
+                   allConstraints$c_real),
+           modelsense = attr(allConstraints, "sense"),
+           vtype = c(rep("B", nBin), 'if'(is.null(allConstraints$c_real),
+                                          NULL, rep("C", length(allConstraints$c_real))))),
       dots),
     params = c(TimeLimit = timeLimit, dots))
 
@@ -227,7 +231,8 @@ useGurobi <- function(allConstraints, nBin,
 
   # object to return
   list(solution_found = gurobi_out$status %in% c("OPTIMAL"),
-       solution = gurobi_out$x)
+       solution = gurobi_out$x,
+       solution_status = gurobi_out$status)
 
 }
 
