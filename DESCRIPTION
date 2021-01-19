@@ -7,7 +7,7 @@ Authors@R: c(
     person("Dries", "Debeer", email = "dries.debeer@kuleuven.be", role = c("aut")))
 Description: Provides simple functions to create constraints for small test assembly problems 
     (e.g. van der Linden (2005, ISBN: 978-0-387-29054-6)) using sparse matrices. Currently, 
-    'GLPK', 'lpSolve', and 'Gurobi' are supported as solvers. The 'gurobi' package is not available from 
+    'GLPK', 'lpSolve', 'Symphony', and 'Gurobi' are supported as solvers. The 'gurobi' package is not available from 
     any mainstream repository; see <https://www.gurobi.com/downloads/>.
 License: GPL
 Encoding: UTF-8

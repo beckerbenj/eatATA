@@ -74,7 +74,9 @@ useSolver <- function(allConstraints,
   } else if(solver == "lpSolve") {
     out <- useLpSolve(allConstraints, nBin, timeLimit, ...)
   } else if(solver == "Gurobi") {
-    out <- useGurobi(A, direction, d, c, modelSense, nBin, nVar, timeLimit, ...)
+    out <- useGurobi(allConstraints, nBin, timeLimit, ...)
+  } else if(solver == "Symphony") {
+    out <- useSymphony(allConstraints, nBin, timeLimit, ...)
   }
   if(out$solution_found) message("Optimal solution found.")
   else message('if'(is.null(out$solution_status),
@@ -238,14 +240,14 @@ useGurobi <- function(allConstraints, nBin,
 
 
 ### wrapper around Rsymphony::Rsymphony_solve_LP() --------------------------------------------
-useSymphony <- function(A, direction, d, c, modelSense, nBin, nVar,
-                      timeLimit, bounds = NULL, ...){
+useSymphony <- function(allConstraints, nBin,
+                        timeLimit, bounds = NULL, ...){
 
   # handle dots, make list
   dots <- as.list(substitute(...()))
 
   # Symphony uses "==" rather then "="
-  direction[direction == "="] <- "=="
+  allConstraints$operators[allConstraints$operators == "="] <- "=="
 
   if(timeLimit == Inf) timeLimit <- -1
 
@@ -254,16 +256,19 @@ useSymphony <- function(A, direction, d, c, modelSense, nBin, nVar,
 
   # create list with all the objects for Rsymphony::Rsymphony_solve_LP()
   objects_for_solver <- c(list(
-    obj = c,
-    mat = A,
-    dir = direction,
-    rhs = d,
+    obj = c('if'(is.null(allConstraints$c_binary),
+                 rep(0, nBin),
+                 allConstraints$c_binary),
+            allConstraints$c_real),
+    mat = cbind(allConstraints$A_binary, allConstraints$A_real),
+    dir = allConstraints$operators,
+    rhs = allConstraints$d,
     bounds = bounds,
-    types = c(rep("B", nBin), "C"),
-    max = modelSense == "max",
+    types = c(rep("B", nBin), 'if'(is.null(allConstraints$c_real),
+                                   NULL, rep("C", length(allConstraints$c_real)))),
+    max = attr(allConstraints, "sense") == "max",
     time_limit = timeLimit,
-    verbosity = -2,
-    dots))
+    verbosity = -2))
 
   # compute solution
   symphony_out <- do.call(solver_function, objects_for_solver)
