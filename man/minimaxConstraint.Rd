@@ -33,7 +33,7 @@ minimaxConstraint(
 An object of class \code{"constraint"}.
 }
 \description{
-Create a minimax-constraints related to an item parameter/value. That is, the created
+Create \code{minimax}-constraints related to an item parameter/value. That is, the created
 constraints can be used to minimize the maximum distance between the sum of the
 item values (\code{itemValues}) per test form and the chosen \code{targetValue}.
 }

@@ -1,6 +1,12 @@
 # eatATA 0.9.1.9000
 
+* `itemTargetConstraint()` substituted by `minimaxConstraint()`, `maximinConstraint()`, `maxConstraint()`, `minConstraint()`, `cappedMaximinConstraint()` which allow for different types of optimization goals
+* `Symphony` added as available solver (via `Rsymphony`)
 * vignette with package overview
+
+## Internal Changes
+
+* introduction of `constraint`-class with specific methods and constructor functions
 
 # eatATA 0.9.1
 

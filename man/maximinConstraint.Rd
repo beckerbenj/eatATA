@@ -33,7 +33,7 @@ maximinConstraint(
 An object of class \code{"constraint"}.
 }
 \description{
-Create a maximin-constraints related to an item parameter/value. That is, the created
+Create \code{maximin}-constraints related to an item parameter/value. That is, the created
 constraints can be used to maximize the minimal sum of the
 item values (\code{itemValues}), while at the same time setting an upper limit to the
 overflow by means of a maximally allowed deviation \code{allowedDeviation}.

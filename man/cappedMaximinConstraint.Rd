@@ -30,7 +30,7 @@ cappedMaximinConstraint(
 An object of class \code{"constraint"}.
 }
 \description{
-Create a maximin-constraints related to an item parameter/value. That is, the created
+Create \code{maximin}-constraints related to an item parameter/value. That is, the created
 constraints can be used to maximize the minimal sum of the
 item values (\code{itemValues}), while at the same time automatically setting
 an ideal upper limit to the overflow.

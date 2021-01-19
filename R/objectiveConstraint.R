@@ -1,6 +1,6 @@
 #' Minimax Constraint.
 #'
-#' Create a minimax-constraints related to an item parameter/value. That is, the created
+#' Create \code{minimax}-constraints related to an item parameter/value. That is, the created
 #' constraints can be used to minimize the maximum distance between the sum of the
 #' item values (\code{itemValues}) per test form and the chosen \code{targetValue}.
 #'
@@ -42,7 +42,7 @@ minimaxConstraint <- function(nForms, nItems, itemValues, targetValue,
 
 #' Maximin Constraint.
 #'
-#' Create a maximin-constraints related to an item parameter/value. That is, the created
+#' Create \code{maximin}-constraints related to an item parameter/value. That is, the created
 #' constraints can be used to maximize the minimal sum of the
 #' item values (\code{itemValues}), while at the same time setting an upper limit to the
 #' overflow by means of a maximally allowed deviation \code{allowedDeviation}.
@@ -90,7 +90,7 @@ maximinConstraint <- function(nForms, nItems, itemValues, allowedDeviation,
 
 #' CappedMaximin Constraint.
 #'
-#' Create a maximin-constraints related to an item parameter/value. That is, the created
+#' Create \code{maximin}-constraints related to an item parameter/value. That is, the created
 #' constraints can be used to maximize the minimal sum of the
 #' item values (\code{itemValues}), while at the same time automatically setting
 #' an ideal upper limit to the overflow.
@@ -135,7 +135,7 @@ cappedMaximinConstraint <- function(nForms, nItems, itemValues,
 
 #' Max Constraint.
 #'
-#' Create max-constraints related to an item parameter/value. That is, the created
+#' Create \code{max}-constraints related to an item parameter/value. That is, the created
 #' constraints can be used to maximize the sum of the
 #' item values (\code{itemValues}) of the test form.
 #' Note that this constraint can only be used when only one test form has to be assembled.
@@ -165,7 +165,7 @@ maxConstraint <- function(nItems, itemValues, info_text = NULL,
 
 #' Min Constraint.
 #'
-#' Create min-constraints related to an item parameter/value. That is, the created
+#' Create \code{min}-constraints related to an item parameter/value. That is, the created
 #' constraints can be used to minimize the sum of the
 #' item values (\code{itemValues}) of the test form.
 #' Note that this constraint can only be used when only one test form has to be assembled.

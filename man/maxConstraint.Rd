@@ -24,7 +24,7 @@ maxConstraint(
 An object of class \code{"constraint"}.
 }
 \description{
-Create max-constraints related to an item parameter/value. That is, the created
+Create \code{max}-constraints related to an item parameter/value. That is, the created
 constraints can be used to maximize the sum of the
 item values (\code{itemValues}) of the test form.
 Note that this constraint can only be used when only one test form has to be assembled.
