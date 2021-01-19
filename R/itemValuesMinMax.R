@@ -18,7 +18,7 @@
 #' @param relative a logical expressing whether or not the \code{allowedDeviation}
 #'        should be interpreted as a proportion of the \code{targetValue}
 #'
-#' @return A sparse matrix.
+#' @return An object of class \code{"constraint"}.
 #'
 #' @examples
 #' ## constraints to make sure that the sum of the item values (1:10) is between
@@ -29,40 +29,81 @@
 #' itemValuesDeviation (2, 10, 1:10, targetValue = 5, allowedDeviation = 1)
 #'
 #' @export
-itemValuesRange <- function(nForms, nItems, itemValues, range){
+itemValuesRange <- function(nForms, nItems, itemValues, range,
+                            whichForms = seq_len(nForms),
+                            info_text = NULL,
+                            itemIDs = names(itemValues)){
 
   # min should be smaller than max
   if(range[2] < range[1]) stop("The first value of 'range' should be smaller than second value of 'range'.")
 
-  rbind(
-    itemValuesConstraint(nForms, nItems, itemValues, operator = ">=", targetValue = range[1]),
-    itemValuesConstraint(nForms, nItems, itemValues, operator = "<=", targetValue = range[2])
+  # choose info_text for info
+  if(is.null(info_text)) info_text <- deparse(substitute(itemValues))
+
+  combineConstraints(
+    itemValuesConstraint(nForms, nItems, itemValues, operator = ">=",
+                         targetValue = range[1], whichForms,
+                         info_text = paste0(info_text, ">=", range[1]),
+                         itemIDs),
+    itemValuesConstraint(nForms, nItems, itemValues, operator = "<=",
+                         targetValue = range[2], whichForms,
+                         info_text = paste0(info_text, "<=", range[2]),
+                         itemIDs)
   )
 }
 
 #' @describeIn itemValuesRange constrain minimum value
 #' @export
-itemValuesMin <- function(nForms, nItems, itemValues, min){
-  itemValuesConstraint(nForms, nItems, itemValues, operator = ">=", targetValue = min)
+itemValuesMin <- function(nForms, nItems, itemValues, min,
+                          whichForms = seq_len(nForms),
+                          info_text = NULL,
+                          itemIDs = names(itemValues)){
+  # choose info_text for info
+  if(is.null(info_text)) info_text <- deparse(substitute(itemValues))
+
+  itemValuesConstraint(nForms, nItems, itemValues, operator = ">=",
+                       targetValue = min, whichForms = whichForms,
+                       info_text = paste0(info_text, ">=", min),
+                       itemIDs)
 }
 
 
 #' @describeIn itemValuesRange constrain maximum value
 #' @export
-itemValuesMax <- function(nForms, nItems, itemValues, max){
-  itemValuesConstraint(nForms, nItems, itemValues, operator = "<=", targetValue = max)
+itemValuesMax <- function(nForms, nItems, itemValues, max,
+                          whichForms = seq_len(nForms),
+                          info_text = NULL,
+                          itemIDs = names(itemValues)){
+  # choose info_text for info
+  if(is.null(info_text)) info_text <- deparse(substitute(itemValues))
+
+  itemValuesConstraint(nForms, nItems, itemValues, operator = "<=",
+                       targetValue = max, whichForms = whichForms,
+                       info_text = paste0(info_text, "<=", max),
+                       itemIDs)
 }
 
 
 #' @describeIn itemValuesRange constrain the distance form the \code{targetValue}
 #' @export
-itemValuesDeviation <- function(nForms, nItems, itemValues, targetValue, allowedDeviation, relative = FALSE){
+itemValuesDeviation <- function(nForms, nItems, itemValues,
+                                targetValue, allowedDeviation,
+                                relative = FALSE,
+                                whichForms = seq_len(nForms),
+                                info_text = NULL,
+                                itemIDs = names(itemValues)){
 
   # if relative == TRUE, compute the absolute allowed Deviation
   allowedDeviation <- 'if'(relative, targetValue * allowedDeviation, allowedDeviation)
+
+  # choose info_text for info
+  if(is.null(info_text)) info_text <- deparse(substitute(itemValues))
+
   itemValuesRange(nForms, nItems, itemValues,
                   range = c(targetValue - allowedDeviation,
-                            targetValue + allowedDeviation))
+                            targetValue + allowedDeviation),
+                  whichForms = whichForms, info_text = info_text,
+                  itemIDs)
 }
 
 

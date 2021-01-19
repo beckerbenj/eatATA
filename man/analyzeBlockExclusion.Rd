@@ -4,17 +4,26 @@
 \alias{analyzeBlockExclusion}
 \title{Analyze block exclusiveness}
 \usage{
-analyzeBlockExclusion(solverOut, items, idCol, exclusionTuples)
+analyzeBlockExclusion(
+  solverOut,
+  items,
+  idCol,
+  exclusionTuples,
+  formName = "form"
+)
 }
 \arguments{
-\item{solverOut}{Object created by \code{useSolver}.}
+\item{solverOut}{Object created by \code{useSolver} function.}
 
 \item{items}{Original \code{data.frame} containing information on item level.}
 
-\item{idCol}{Column name with item IDs in the \code{items} \code{data.frames}.}
+\item{idCol}{Column name in \code{items} containing item IDs. These will be used for matching to the solver output.}
 
-\item{exclusionTuples}{\code{data.frame} with two columns, containing tuples with item IDs which should be in test
+\item{exclusionTuples}{\code{data.frame} with two columns, containing tuples with
+item IDs which should be in test
 forms exclusively. Must be the same object as used in \code{\link{itemExclusionConstraint}}.}
+
+\item{formName}{A character vector with names to give to the forms.}
 }
 \value{
 A \code{data.frame} of block exclusions.
@@ -43,13 +52,15 @@ exTuples2 <- itemExclusionTuples(items = items, idCol = "ID", exclusions = "excl
 #' ## Create constraints
 exclusion_constraint <- itemExclusionConstraint(nForms = 2, exclusionTuples = exTuples2,
                                                 itemIDs = items$ID)
-depletion_constraint <- depletePoolConstraint(2, nItems = 4)
-target_constraint <- itemTargetConstraint(nForms = 2, nItems = 4,
-                                          itemValues = c(3, 1.5, 2, 4), targetValue = 1)
+depletion_constraint <- depletePoolConstraint(2, nItems = 4,
+                                                itemIDs = items$ID)
+target_constraint <- minimaxConstraint(nForms = 2, nItems = 4,
+                                          itemValues = c(3, 1.5, 2, 4),
+                                          targetValue = 1,
+                                          itemIDs = items$ID)
 
 opt_solution <- useSolver(list(exclusion_constraint, target_constraint,
-                                        depletion_constraint),
-                                   nForms = 2, nItems = 4, itemIDs = items$ID)
+                                        depletion_constraint))
 
 analyzeBlockExclusion(opt_solution, items = items, idCol = "ID",
                        exclusionTuples = exTuples2)

@@ -35,15 +35,17 @@ items <- data.frame(ID = 1:10,
 itemValues = c(-4, -4, -2, -2, -1, -1, 20, 20, 0, 0))
 
 ## Test Assembly
-usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 1)
-perForm <- itemsPerFormConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 5)
-target <- itemTargetConstraint(nForms = 2, nItems = 10,
+usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=",
+                             targetValue = 1, itemIDs = items$ID)
+perForm <- itemsPerFormConstraint(nForms = 2, nItems = 10, operator = "=",
+                                  targetValue = 5, itemIDs = items$ID)
+target <- minimaxConstraint(nForms = 2, nItems = 10,
                                itemValues = items$itemValues,
-                               targetValue = 0)
+                               targetValue = 0, itemIDs = items$ID)
 sol <- useSolver(allConstraints = list(usage, perForm, target),
-                                  nForms = 2, itemIDs = items$ID, solver = "lpSolve")
+                                  solver = "lpSolve")
 
 ## Inspect Solution
-out <- inspectSolution(sol, items = items, idCol = "ID", colNames = "itemValues")
+out <- inspectSolution(sol, items = items, idCol = 1, colNames = "itemValues")
 
 }

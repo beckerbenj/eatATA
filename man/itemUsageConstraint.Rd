@@ -7,8 +7,12 @@
 itemUsageConstraint(
   nForms,
   nItems,
+  formValues = rep(1, nForms),
   operator = c("<=", "=", ">="),
-  targetValue = 1
+  targetValue = 1,
+  whichItems = seq_len(nItems),
+  info_text = NULL,
+  itemIDs = NULL
 )
 }
 \arguments{
@@ -16,14 +20,22 @@ itemUsageConstraint(
 
 \item{nItems}{Number of items in the item pool.}
 
-\item{operator}{a character indicating which operator should be used in the
+\item{formValues}{vector with values or weights for each form. Defaults to 1 for each form.}
+
+\item{operator}{A character indicating which operator should be used in the
 constraints, with three possible values: \code{"<="}, \code{"="},
 or \code{">="}. See details for more information.}
 
 \item{targetValue}{The value to be used in the constraints}
+
+\item{whichItems}{A vector indicating which items should be constrained. Defaults to all the items forms.}
+
+\item{info_text}{a character string of length 1, to be used in the \code{"info"}-attribute of the resulting \code{constraint}-object.}
+
+\item{itemIDs}{a character vector of item IDs in correct ordering, or NULL.}
 }
 \value{
-A sparse matrix.
+An object of class \code{"constraint"}.
 }
 \description{
 Creates constraints related to item usage. That is, the number of times an item

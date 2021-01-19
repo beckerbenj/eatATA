@@ -11,14 +11,12 @@
 #' each item is used exactly once, which corresponds to no item-overlap and
 #' complete item pool depletion.
 #'
-#'@param nForms Number of forms to be created.
-#'@param nItems Number of items in the item pool.
-#'@param operator a character indicating which operator should be used in the
-#'  constraints, with three possible values: \code{"<="}, \code{"="},
-#'  or \code{">="}. See details for more information.
+#'@inheritParams itemValuesConstraint
+#'@param formValues vector with values or weights for each form. Defaults to 1 for each form.
 #'@param targetValue The value to be used in the constraints
+#'@param whichItems A vector indicating which items should be constrained. Defaults to all the items forms.
 #'
-#'@return A sparse matrix.
+#'@return An object of class \code{"constraint"}.
 #'
 #'@examples
 #' ## create no-item overlap constraints with item pool depletion
@@ -26,31 +24,32 @@
 #' itemUsageConstraint(2, 20, operator = "=", targetValue = 1)
 #'
 #'@export
-itemUsageConstraint <- function(nForms, nItems, operator = c("<=", "=", ">="), targetValue = 1){
+# constraints sum of item values over forms
+itemUsageConstraint <- function(nForms, nItems, formValues = rep(1, nForms),
+                                operator = c("<=", "=", ">="),
+                                targetValue = 1, whichItems = seq_len(nItems),
+                                info_text = NULL,
+                                itemIDs = NULL){
 
   operator <- match.arg(operator)
 
-  # all arguments should be of length 1
+  # all arguments should be of lenght 1
   check <- sapply(list(nForms, nItems, operator, targetValue), length) == 1
-  if(any(!check)) stop("All arguments should have length 1.")
+  if(any(!check)) stop("The following arguments should have length 1: 'nForms', 'nItems', 'operator', 'targetValue'.")
 
-  # value cannot be greater than nForms
-  if(targetValue > nForms) stop("'value' should be smaller than or equal to 'nForms'.")
+  # formValues should have length equal to nForms
+  if(length(formValues) != nForms) stop("The length of 'formValues' should be equal to 'nForms'.")
 
-  # change operator to sign (numeric and character vectors cannot be combined in Matrix)
-  sign <- switch(operator,
-                 "<=" = -1,
-                 "=" = 0,
-                 ">=" = 1)
-
-  # number of binary decision variables
-  M <- nForms*nItems
+  # the targetValue should be smaller than or equal to the sum of the formValues
+  if(targetValue > sum(formValues)) stop("The 'targetValue' should be smaller than the sum of the 'formValues'.")
 
 
-  # return sparse matrix
-  Matrix::sparseMatrix(
-    # A matrix in constraints           operator-indicator    d vector
-    i = c(rep(1:nItems, times = nForms), 1:nItems           , 1:nItems),
-    j = c(1:(M)                        , rep(M+2, nItems)   , rep(M+3, nItems)),
-    x = c(rep(1, M)                    , rep(sign, nItems)  , rep(targetValue, nItems)))
+  # choose info_text for info
+  if(is.null(info_text)) info_text <- paste0(deparse(substitute(formValues)), operator, targetValue)
+
+  makeItemConstraint(nForms, nItems, formValues, realVar = NULL,
+                     operator, targetValue,
+                     whichItems, sense = NULL,
+                     info_text = info_text,
+                     itemIDs = itemIDs)
 }

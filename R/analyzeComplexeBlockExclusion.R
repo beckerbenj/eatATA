@@ -10,10 +10,9 @@
 #' given by \code{useSolver} this function determines, which item blocks are exclusive and can not be together in an
 #' assembled test form. \code{analyzeComplexBlockExclusion} allows analyzing block exclusiveness from separate test
 #' assembly problems. This can be useful if test forms consist of blocks containing different domains or dimensions.
-#'
+#'@inheritParams inspectSolution
 #'@param solverOut_list List of objects created by \code{useSolver}.
 #'@param items_list List of original \code{data.frame} containing information on item level.
-#'@param idCol Column name with item IDs in the \code{items} \code{data.frames}.
 #'@param exclusionTuples_list List of \code{data.frames} with two columns, containing tuples with item IDs which
 #'should be in test forms exclusively. Must be the same objects as used in \code{\link{itemExclusionConstraint}}.
 #'
@@ -29,6 +28,8 @@ analyzeComplexBlockExclusion <- function(solverOut_list, items_list, idCol, excl
   ## to do: implement input checks
   #browser()
 
+
+
   ### restructure all in one big object
   processedObj <- Map(function(solverOut, items){
     inspectSolution(solverOut, items, idCol = idCol, colNames = names(items_list[[1]]), colSums = FALSE)
@@ -38,6 +39,8 @@ analyzeComplexBlockExclusion <- function(solverOut_list, items_list, idCol, excl
 
   items <- do.call(rbind, items_list)
   exclusionTuples <- do.call(rbind, exclusionTuples_list)
+
+  if(is.numeric(idCol)) idCol <- names(items)[idCol]
 
   match_df <- do_call_rbind_withName(processedObj, colName = "block")[, c(idCol, "block")]
   #if(!all(unlist(exclusionTuples) %in% match_df[, idCol])) browser()

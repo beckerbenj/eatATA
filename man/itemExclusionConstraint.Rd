@@ -4,7 +4,13 @@
 \alias{itemExclusionConstraint}
 \title{Create item exclusion constraints.}
 \usage{
-itemExclusionConstraint(nForms, exclusionTuples, itemIDs)
+itemExclusionConstraint(
+  nForms,
+  exclusionTuples,
+  itemIDs,
+  whichForms = seq_len(nForms),
+  info_text = NULL
+)
 }
 \arguments{
 \item{nForms}{Number of forms to be created.}
@@ -12,9 +18,13 @@ itemExclusionConstraint(nForms, exclusionTuples, itemIDs)
 \item{exclusionTuples}{\code{data.frame} with two columns, containing tuples with item IDs which should be in test forms exclusively.}
 
 \item{itemIDs}{Character vector of item IDs in correct ordering.}
+
+\item{whichForms}{An integer vector indicating which test forms should be constrained. Defaults to all the test forms.}
+
+\item{info_text}{a character string of length 1, to be used in the \code{"info"}-attribute of the resulting \code{constraint}-object.}
 }
 \value{
-A sparse matrix.
+An object of class \code{"constraint"}.
 }
 \description{
 Create constraints that prohibit that item pairs occur in the same test forms.

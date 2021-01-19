@@ -20,7 +20,7 @@
 #'
 #' @export
 autoItemValuesMinMax <- function(nForms, itemValues, allowedDeviation = NULL,
-                                 relative = FALSE, verbose = TRUE){
+                                 relative = FALSE, verbose = TRUE, itemIDs = NULL){
 
   # compute the minimum and maximum values
   min_max <- computeTargetValues(itemValues, nForms, testLength = NULL,
@@ -35,7 +35,7 @@ autoItemValuesMinMax <- function(nForms, itemValues, allowedDeviation = NULL,
   # if itemValues are actually categories (i.e., a factor)
   if(is.factor(itemValues)){
     out <- itemCategoryRange(nForms, nItems, itemCategories = itemValues,
-                       range = min_max)
+                       range = min_max, itemIDs = itemIDs)
 
     if(verbose){
       message("The minimum and maximum frequences per test form for each item category are")
@@ -47,14 +47,14 @@ autoItemValuesMinMax <- function(nForms, itemValues, allowedDeviation = NULL,
                                     # thus equality constraints are used rather than
                                     # inequality constraints
       out <- itemValuesConstraint(nForms, nItems, itemValues,
-                           operator = "=", targetValue = min_max)
+                           operator = "=", targetValue = min_max, itemIDs = itemIDs)
       if(verbose){
         message("The target value per test form is: ", min_max)
         }
 
     } else {  # constraints with respect to a minimum and maximum
       out <- itemValuesRange(nForms, nItems, itemValues,
-                       range = min_max)
+                       range = min_max, itemIDs = itemIDs)
       if(verbose){
         message("The minimum and maximum values per test form are: min = ",
                 paste(min_max, collapse = " - max = "))

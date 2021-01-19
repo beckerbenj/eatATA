@@ -11,7 +11,7 @@ appendSolution(solverOut, items, idCol)
 
 \item{items}{Original \code{data.frame} containing information on item level.}
 
-\item{idCol}{Column name in \code{items} containing item IDs. These will be used for matching to the solver output.}
+\item{idCol}{Column name or column number in \code{items} containing item IDs. These will be used for matching to the solver output.}
 }
 \value{
 A \code{data.frame}.
@@ -28,15 +28,17 @@ items <- data.frame(ID = 1:10,
 itemValues = c(-4, -4, -2, -2, -1, -1, 20, 20, 0, 0))
 
 ## Test Assembly
-usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 1)
-perForm <- itemsPerFormConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 5)
-target <- itemTargetConstraint(nForms = 2, nItems = 10,
+usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=",
+                             targetValue = 1, itemIDs = items$ID)
+perForm <- itemsPerFormConstraint(nForms = 2, nItems = 10, operator = "=",
+                                  targetValue = 5, itemIDs = items$ID)
+target <- minimaxConstraint(nForms = 2, nItems = 10,
                                itemValues = items$itemValues,
-                               targetValue = 0)
+                               targetValue = 0, itemIDs = items$ID)
 sol <- useSolver(allConstraints = list(usage, perForm, target),
-                                  nForms = 2, itemIDs = items$ID, solver = "lpSolve")
+                                  solver = "lpSolve")
 
 ## Append Solution to existing item information
-out <- appendSolution(sol, items = items, idCol = "ID")
+out <- appendSolution(sol, items = items, idCol = 1)
 
 }
