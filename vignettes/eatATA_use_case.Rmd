@@ -116,7 +116,7 @@ nForms <- 14           # number of blocks
 The first two constraints (no item overlap and item pool depletion) can be implemented by a single function: `itemUsageConstraint()`. To achieve this, the `operator` argument should be set to `"="`. 
 
 ```{r item usage constraints}
-itemOverlap <- itemUsageConstraint(nForms, nItems = nItems, operator = "=") 
+itemOverlap <- itemUsageConstraint(nForms, nItems = nItems, operator = "=", itemIDs = items$Item_ID) 
 ```
 
 Constraints with respect to categorical variables or factors (like `MC_open_none`) or numerical variables (like `short_answer`), can be easily implemented using the `autoItemValuesMinMax()` function. The result of this function depends on whether a factor or a numerical variable is used. That is, `autoItemValuesMinMax()` automatically determines the minimum and maximum frequency of each category of a factor. But for numerical variables, it automatically determines the target value. 
@@ -125,16 +125,23 @@ The `allowedDeviation` argument specifies the allowed range between booklets reg
 
 ```{r categorical constraints}
 # item formats
-mc_openItems <- autoItemValuesMinMax(nForms = nForms, itemValues = items$MC_open_none)
-cmcItems <- autoItemValuesMinMax(nForms = nForms, itemValues = items$f_CMC)
-saItems <- autoItemValuesMinMax(nForms = nForms, itemValues = items$short_answer, allowedDeviation = 1)
+mc_openItems <- autoItemValuesMinMax(nForms = nForms, itemValues = items$MC_open_none, 
+                                     itemIDs = items$Item_ID)
+cmcItems <- autoItemValuesMinMax(nForms = nForms, itemValues = items$f_CMC, itemIDs = items$Item_ID)
+saItems <- autoItemValuesMinMax(nForms = nForms, itemValues = items$short_answer, 
+                                allowedDeviation = 1, itemIDs = items$Item_ID)
 
 # difficulty categories
-Items1 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_1, allowedDeviation = 1)
-Items2 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_2, allowedDeviation = 1)
-Items3 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_3, allowedDeviation = 1)
-Items4 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_4, allowedDeviation = 1)
-Items5 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_5, allowedDeviation = 1)
+Items1 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_1, 
+                               allowedDeviation = 1, itemIDs = items$Item_ID)
+Items2 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_2, 
+                               allowedDeviation = 1, itemIDs = items$Item_ID)
+Items3 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_3, 
+                               allowedDeviation = 1, itemIDs = items$Item_ID)
+Items4 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_4, 
+                               allowedDeviation = 1, itemIDs = items$Item_ID)
+Items5 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_5, 
+                               allowedDeviation = 1, itemIDs = items$Item_ID)
 ```
 
 To implement item exclusion constraints, two function can be used: `itemExclusionTuples()` and `itemExclusionConstraint()`. When item exclusions are supplied as a single character string for each item, with item identifiers separated by `", "`, they should be transformed first.
@@ -160,7 +167,7 @@ Another helpful function is the `itemsPerFormConstraint()` function, which const
 # number of items per test form
 min_Nitems <- floor(nItems / nForms) - 3
 noItems <- itemsPerFormConstraint(nForms = nForms, nItems = nItems, 
-                                  operator = ">=", min_Nitems)
+                                  operator = ">=", min_Nitems, itemIDs = items$Item_ID)
 
 ```
 
@@ -168,7 +175,8 @@ Finally, I am setting up an optimization constraint. This constraint is not a cl
 
 ```{r target constraints}
 # optimize average time
-av_time <- itemTargetConstraint(nForms, nItems = nItems, itemValues = items$RT_in_min, targetValue = 10)
+av_time <- minimaxConstraint(nForms, nItems = nItems, itemValues = items$RT_in_min, targetValue = 10,
+                             itemIDs = items$Item_ID)
 ```
 
 
@@ -178,7 +186,8 @@ Before calling the optimization algorithm the specified constraints are collecte
 ```{r prepare constraints, eval = T}
 # Prepare constraints
 constr_list <- list(itemOverlap, mc_openItems, cmcItems, saItems, 
-                      Items1, Items2, Items3, Items4, Items5, excl_constraints,
+                      Items1, Items2, Items3, Items4, Items5, 
+                      excl_constraints,
                       av_time)
 ```
 
