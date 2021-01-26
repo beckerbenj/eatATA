@@ -2,7 +2,7 @@
 #'
 #' \code{\link{itemValuesDeviation}} creates constraints related to an item parameter/value. \code{autoItemValuesMixMax} automatically
 #' determines the appropriate \code{targetValue} and then calls \code{\link{itemValuesDeviation}}. The function only works for
-#' (dichotomous) dummy indicators with values 0 and 1.
+#' (dichotomous) dummy indicators with values 0 or 1 and if the item pool is fully depleted in the test assembly.
 #'
 #' Two scenarios are possible when automatically determining the target value: (a) Either items with the selected property could be exactly
 #' distributed across test forms or (b) this is not possible. An example would be 2 test forms and 4 multiple choice items (a) or 2 test
