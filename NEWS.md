@@ -2,6 +2,11 @@
 
 * `itemTargetConstraint()` substituted by `minimaxConstraint()`, `maximinConstraint()`, `maxConstraint()`, `minConstraint()`, `cappedMaximinConstraint()` which allow for different types of optimization goals
 * `Symphony` added as available solver (via `Rsymphony`)
+* `inspectSolution()` now allows character variables in the input if sums are calculated
+
+## Documentation
+
+* minimal example vignette
 * vignette with package overview
 
 ## Internal Changes
