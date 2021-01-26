@@ -1,0 +1,64 @@
+---
+title: "Minimal Automated Test Assembly Example"
+author: "Benjamin Becker"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Minimal Automated Test Assembly Example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+`eatATA` efficiently translates test design requirements for Automated Test Assembly (`ATA`) into constraints for a Mixed Integer Linear Programming Model (MILP). A number of efficient and user-friendly functions are available, and the resulting matrix of constrains can be easily transformed to be in line with a MILP solver, like the `GLPK` solver. In the remainder of this vignette we will illustrate the use of `eatATA` using a minimal example.
+
+## Setup
+The `eatATA` package can be installed from `CRAN`.  
+
+```{r installation, eval = FALSE}
+install.packages("eatATA")
+```
+
+As a default solver, we recommend `GLPK`, which is automatically installed alongside this package. If you want to use `Gurobi` as a solver (the most powerful and efficient solver currently implemented in `eatATA`), an external software installation and licensing is required. This means, you need to install the `Gurobi` solver and its corresponding `R` package. A detailed vignette on the installation process can be found [here](https://CRAN.R-project.org/package=prioritizr/vignettes/gurobi_installation.html). 
+
+First, `eatATA` is loaded into your `R` session.
+
+## Example Code
+```{r library, message = FALSE}
+# loading eatATA
+library(eatATA)
+
+items_sim
+
+items_sim[, "IIF"] <- calculateIIF(B = items_sim$difficulty, theta = 0)
+nItems <- nrow(items_sim)
+
+itemNumber <- itemsPerFormConstraint(nForms = 1, nItems = nItems,
+                       operator = "=", targetValue = 10, itemIDs = items_sim$id)
+
+itemUsage <- itemUsageConstraint(nForms = 1, nItems = nItems,
+                       operator = "<=", targetValue = 1, itemIDs = items_sim$id)
+
+testTime <- itemValuesDeviation(nForms = 1, nItems = nItems, itemValues = items_sim$mean_time,
+                    targetValue = 8 * 60, allowedDeviation = 5,
+                    relative = FALSE, itemIDs = items_sim$id)
+
+
+testInfo <- maxConstraint(nForms = 1, nItems = nItems, itemValues = items_sim$IIF,
+                          itemIDs = items_sim$id)
+
+
+solver_out <- useSolver(list(itemNumber, itemUsage, testTime, testInfo),
+                        solver = "GLPK")
+
+inspectSolution(solver_out, items = items_sim, idCol = "id")
+
+```
+
+
