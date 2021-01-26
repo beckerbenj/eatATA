@@ -4,7 +4,13 @@
 \alias{inspectSolution}
 \title{Inspect a \code{useSolver} output}
 \usage{
-inspectSolution(solverOut, items, idCol, colNames, colSums = TRUE)
+inspectSolution(
+  solverOut,
+  items,
+  idCol,
+  colNames = names(items),
+  colSums = TRUE
+)
 }
 \arguments{
 \item{solverOut}{Object created by \code{useSolver} function.}
