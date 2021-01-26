@@ -42,6 +42,7 @@ appendSolution <- function(solverOut, items, idCol){
 
   new_items <- data.frame(items, solverOut$item_matrix)
   names(new_items) <- c(names(items), names(solverOut$item_matrix))
+  row.names(new_items) <- NULL
 
   new_items
 }

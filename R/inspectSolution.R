@@ -36,7 +36,7 @@
 #' out <- inspectSolution(sol, items = items, idCol = 1, colNames = "itemValues")
 #'
 #'@export
-inspectSolution <- function(solverOut, items, idCol, colNames, colSums = TRUE){
+inspectSolution <- function(solverOut, items, idCol, colNames = names(items), colSums = TRUE){
   illegal_names <- colNames[!colNames %in% names(items)]
   if(length(illegal_names) > 0) stop("The following 'colNames' are not columns in 'items': ",
                                      paste(illegal_names, collapse = ", "))
@@ -51,7 +51,7 @@ inspectSolution <- function(solverOut, items, idCol, colNames, colSums = TRUE){
   if(!identical(rownames(solverOut$item_matrix), as.character(items[, idCol]))) stop("'items' and the solution in 'solverOut' have different sets of itemIDs.")
   check_solverOut(solverOut)
 
-  new_items <- appendSolution(solverOut, items = items[, c(idCol, colNames), drop = FALSE], idCol = idCol)
+  new_items <- appendSolution(solverOut, items = items[, unique(c(idCol, colNames)), drop = FALSE], idCol = idCol)
 
   formNames <- colnames(solverOut$item_matrix)
   block_list <- lapply(formNames, function(nam) {
@@ -60,7 +60,11 @@ inspectSolution <- function(solverOut, items, idCol, colNames, colSums = TRUE){
     if(nrow(sep_rows) == 0) return(sep_rows)
     #rownames(sep_rows) <- paste0("Item ", seq(nrow(sep_rows)))
     if(!colSums) return(sep_rows)
-    sums <- colSums(sep_rows)
+
+    sums <- rep(NA, ncol(sep_rows))
+    for(i in seq(ncol(sep_rows))) {
+      if(is.numeric(sep_rows[, i])) sums[i] <- sum(sep_rows[, i])
+    }
     out <- rbind(sep_rows, sums)
     rownames(out)[nrow(out)] <- "Sum"
     out

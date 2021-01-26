@@ -2,6 +2,7 @@
 
 items <- data.frame(ID = paste0("item_", 1:10),
                     itemValues = c(-4, -4, -2, -2, -1, -1, 20, 20, 0, 0),
+                    format = c(rep("mc", 5), rep("open", 5)),
                     stringsAsFactors = FALSE)
 
 usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=",
@@ -20,12 +21,12 @@ suppressMessages(sol_empty <- useSolver(allConstraints = list(target),
 
 
 test_that("inspect solution", {
-  out <- inspectSolution(sol, items = items, idCol = "ID", colNames = "itemValues")
+  out <- inspectSolution(sol, items = items, idCol = "ID")
 
   expect_equal(length(out), 2)
   expect_equal(names(out), paste0("block_", 1:2))
-  expect_equal(rownames(out[[1]]), c(paste0("item_", c(1, 3, 5, 8, 10)), "Sum"))
-  expect_equal(dim(out[[1]]), c(6, 1))
+  expect_equal(out[[1]]$ID, c(paste0("item_", c(1, 3, 5, 8, 10)), NA))
+  expect_equal(dim(out[[1]]), c(6, 3))
 })
 
 
@@ -34,8 +35,8 @@ test_that("inspect solution complete items data.frame", {
 
   expect_equal(length(out), 2)
   expect_equal(names(out), paste0("block_", 1:2))
-  expect_equal(rownames(out[[1]]), paste0("item_", c(1, 3, 5, 8, 10)))
-  expect_equal(dim(out[[1]]), c(5, 2))
+  expect_equal(out[[1]]$ID, paste0("item_", c(1, 3, 5, 8, 10)))
+  expect_equal(dim(out[[1]]), c(5, 3))
 })
 
 test_that("inspect solution for empty test forms", {

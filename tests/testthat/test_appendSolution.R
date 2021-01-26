@@ -24,13 +24,14 @@ test_that("append solution", {
 
   expect_equal(dim(out), c(10, 4))
   expect_equal(names(out), c(names(items), paste0("block_", 1:2)))
-  expect_equal(rownames(out), paste0("item_", 1:10))
+  expect_equal(out$ID, paste0("item_", 1:10))
+  expect_equal(rownames(out), as.character(1:10))
 
   out <- appendSolution(sol, items = items, idCol = 1)
 
   expect_equal(dim(out), c(10, 4))
   expect_equal(names(out), c(names(items), paste0("block_", 1:2)))
-  expect_equal(rownames(out), paste0("item_", 1:10))
+  expect_equal(out$ID, paste0("item_", 1:10))
 })
 
 
