@@ -12,6 +12,7 @@
 #' complete item pool depletion.
 #'
 #'@inheritParams itemValuesConstraint
+#'@param nItems Number of items in the item pool [optional to create \code{itemIDs} automatically].
 #'@param formValues vector with values or weights for each form. Defaults to 1 for each form.
 #'@param targetValue The value to be used in the constraints
 #'@param whichItems A vector indicating which items should be constrained. Defaults to all the items forms.
@@ -21,17 +22,20 @@
 #'@examples
 #' ## create no-item overlap constraints with item pool depletion
 #' ##  for 2 test forms with an item pool of 20 items
-#' itemUsageConstraint(2, 20, operator = "=", targetValue = 1)
+#' itemUsageConstraint(2, operator = "=", targetValue = 1,
+#'                     itemIDs = 1:20)
 #'
 #'@export
 # constraints sum of item values over forms
-itemUsageConstraint <- function(nForms, nItems, formValues = rep(1, nForms),
+itemUsageConstraint <- function(nForms, nItems = NULL, formValues = rep(1, nForms),
                                 operator = c("<=", "=", ">="),
                                 targetValue = 1, whichItems = seq_len(nItems),
                                 info_text = NULL,
                                 itemIDs = NULL){
 
   operator <- match.arg(operator)
+
+  nItems <- comb_itemIDs_nItems(itemIDs, nItems = nItems)
 
   # all arguments should be of lenght 1
   check <- sapply(list(nForms, nItems, operator, targetValue), length) == 1

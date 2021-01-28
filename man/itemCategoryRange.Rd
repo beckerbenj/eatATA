@@ -9,7 +9,6 @@
 \usage{
 itemCategoryRange(
   nForms,
-  nItems,
   itemCategories,
   range,
   whichForms = seq_len(nForms),
@@ -19,7 +18,6 @@ itemCategoryRange(
 
 itemCategoryMin(
   nForms,
-  nItems,
   itemCategories,
   min,
   whichForms = seq_len(nForms),
@@ -29,7 +27,6 @@ itemCategoryMin(
 
 itemCategoryMax(
   nForms,
-  nItems,
   itemCategories,
   max,
   whichForms = seq_len(nForms),
@@ -39,7 +36,6 @@ itemCategoryMax(
 
 itemCategoryDeviation(
   nForms,
-  nItems,
   itemCategories,
   targetValues,
   allowedDeviation,
@@ -51,8 +47,6 @@ itemCategoryDeviation(
 }
 \arguments{
 \item{nForms}{Number of forms to be created.}
-
-\item{nItems}{Number of items in the item pool.}
 
 \item{itemCategories}{a factor representing the categories/grouping of the items}
 
@@ -109,9 +103,9 @@ from those \code{targetValues}.
 ##  items of each item type in each test form
 nItems <- 30
 item_type <- factor(sample(1:3, size = nItems, replace = TRUE))
-itemCategoryRange(2, nItems, item_type, range = cbind(min = rep(2, 3), max = rep(4, 3)))
+itemCategoryRange(2, item_type, range = cbind(min = rep(2, 3), max = rep(4, 3)))
 
 ## or alternatively
-itemCategoryDeviation(2, nItems, item_type, targetValues = rep(3, 3), allowedDeviation = rep(4, 3))
+itemCategoryDeviation(2, item_type, targetValues = rep(3, 3), allowedDeviation = rep(4, 3))
 
 }

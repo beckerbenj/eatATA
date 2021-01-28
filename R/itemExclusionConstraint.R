@@ -48,7 +48,6 @@ itemExclusionConstraint <- function(nForms, exclusionTuples, itemIDs,
   exclusionTuples <- exclusionTuples[exclusionTuples[, 2] %in% itemIDs, ]
 
   nItems <- length(itemIDs)
-
   id_df <- data.frame(no = seq(nItems), ID = itemIDs)
 
   ## tuples into constraints
@@ -56,7 +55,7 @@ itemExclusionConstraint <- function(nForms, exclusionTuples, itemIDs,
     itemValues <- structure(rep(0, nItems), names = itemIDs)
     itemValues[which(itemIDs %in% exclusion_row)] <- 1
 
-    itemValuesConstraint(nForms, nItems, itemValues, targetValue = 1,
+    itemValuesConstraint(nForms, itemValues, targetValue = 1,
                          info_text = paste0(exclusion_row, collapse = "_excludes_"))
   })
   combineConstraints(constr_list, message = FALSE)

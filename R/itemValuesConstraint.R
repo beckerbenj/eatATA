@@ -7,7 +7,6 @@
 #' the chosen \code{targetValue}.
 #'
 #'@param nForms Number of forms to be created.
-#'@param nItems Number of items in the item pool.
 #'@param itemValues Item parameter/values for which the sum per test form should be constrained.
 #'@param operator A character indicating which operator should be used in the
 #'  constraints, with three possible values: \code{"<="}, \code{"="},
@@ -23,13 +22,13 @@
 #' ## constraints to make sure that the sum of the item values (1:10) is between
 #' ## 4 and 6
 #' combineConstraints(
-#'   itemValuesConstraint(2, 10, 1:10, operator = ">=", targetValue = 4),
-#'   itemValuesConstraint(2, 10, 1:10, operator = "<=", targetValue = 6)
+#'   itemValuesConstraint(2, 1:10, operator = ">=", targetValue = 4),
+#'   itemValuesConstraint(2, 1:10, operator = "<=", targetValue = 6)
 #' )
 
 #'
 #'@export
-itemValuesConstraint <- function(nForms, nItems, itemValues,
+itemValuesConstraint <- function(nForms, itemValues,
                                  operator = c("<=", "=", ">="),
                                  targetValue, whichForms = seq_len(nForms),
                                  info_text = NULL,
@@ -38,11 +37,11 @@ itemValuesConstraint <- function(nForms, nItems, itemValues,
   operator <- match.arg(operator)
 
   # all arguments should be of lenght 1
-  check <- sapply(list(nForms, nItems, operator, targetValue), length) == 1
-  if(any(!check)) stop("The following arguments should have length 1: 'nForms', 'nItems', 'operator', 'targetValue'.")
+  check <- sapply(list(nForms, operator, targetValue), length) == 1
+  if(any(!check)) stop("The following arguments should have length 1: 'nForms', 'operator', 'targetValue'.")
 
-  # itemValues should have length equal to nItems
-  if(length(itemValues) != nItems) stop("The length of 'itemValues' should be equal to 'nItems'.")
+  # itemValues should have length equal to itemIDs
+  if(!is.null(itemIDs) && length(itemValues) != length(itemIDs)) stop("The length of 'itemValues' should be equal to 'itemIDs'.")
 
   # the targetValue should be smaller than or equal to the sum of the itemValues
   if(targetValue > sum(itemValues)) stop("The 'targetValue' should be smaller than the sum of the 'itemValues'.")
@@ -52,7 +51,9 @@ itemValuesConstraint <- function(nForms, nItems, itemValues,
 
   if(length(info_text) > 1) stop("'info_text' should be a character string of length 1.")
 
-  makeFormConstraint(nForms, nItems, itemValues, realVar = NULL,
+  check_itemIDs(itemIDs)
+
+  makeFormConstraint(nForms, itemValues, realVar = NULL,
                      operator, targetValue,
                      whichForms, sense = NULL,
                      info_text = info_text,

@@ -1,13 +1,13 @@
 
 items <- data.frame(ID = paste0("item_", 1:10),
                     itemValues = c(-4, -4, -2, -2, -1, -1, 20, 20, 0, 0),
+                    itemIDs = paste0("it", 1:10),
                     stringsAsFactors = FALSE)
 
-usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 1)
-perForm <- itemsPerFormConstraint(nForms = 2, nItems = 10, operator = "=", targetValue = 5)
-target <- minimaxConstraint(nForms = 2, nItems = 10,
-                               itemValues = items$itemValues,
-                               targetValue = 0)
+usage <- itemUsageConstraint(nForms = 2, operator = "=", targetValue = 1, itemIDs = items$itemIDs)
+perForm <- itemsPerFormConstraint(nForms = 2, operator = "=", targetValue = 5, itemIDs = items$itemIDs)
+target <- minimaxConstraint(nForms = 2, itemValues = items$itemValues,
+                               targetValue = 0, itemIDs = items$itemIDs)
 
 test_that("Solve problem using lpsolve", {
   expect_message(out <- useSolver(allConstraints = list(usage, perForm, target),
@@ -101,7 +101,8 @@ test_that("Output format", {
   nItems <- attr(usage, "nItems")
 
   expect_equal(names(out), c("solution_found", "solution", "solution_status", "item_matrix"))
-  expect_equal(rownames(out$item_matrix), sprintf(paste("it%0", nchar(nItems), "d", sep=''), seq_len(nItems)))
+  #expect_equal(rownames(out$item_matrix), sprintf(paste("it%0", nchar(nItems), "d", sep=''), seq_len(nItems)))
+  expect_equal(rownames(out$item_matrix), paste0("it", seq_len(nItems)))
 })
 
 nItems <- 100
@@ -113,9 +114,8 @@ items <- data.frame(ID = paste0("item_", 1:nItems),
 #load("helper_glpk_timeLimit.RData")
 
 usage <- itemUsageConstraint(nForms = nForms, nItems = nItems, operator = "=", targetValue = 1, itemIDs = items$ID)
-target <- minimaxConstraint(nForms = nForms, nItems = nItems,
-                               itemValues = with(items, structure(itemValues, names = ID)),
-                               targetValue = 0)
+target <- minimaxConstraint(nForms = nForms, itemValues = with(items, structure(itemValues, names = ID)),
+                               targetValue = 0, itemIDs = items$ID)
 test_that("Solve problem with time limit using glpk", {
   expect_message(out <- useSolver(allConstraints = list(usage, target),
                                   solver = "GLPK", timeLimit = 0.1, verbose = FALSE),

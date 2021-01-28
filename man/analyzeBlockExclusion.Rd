@@ -54,7 +54,7 @@ exclusion_constraint <- itemExclusionConstraint(nForms = 2, exclusionTuples = ex
                                                 itemIDs = items$ID)
 depletion_constraint <- depletePoolConstraint(2, nItems = 4,
                                                 itemIDs = items$ID)
-target_constraint <- minimaxConstraint(nForms = 2, nItems = 4,
+target_constraint <- minimaxConstraint(nForms = 2,
                                           itemValues = c(3, 1.5, 2, 4),
                                           targetValue = 1,
                                           itemIDs = items$ID)

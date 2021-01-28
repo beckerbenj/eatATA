@@ -6,7 +6,6 @@
 \usage{
 itemCategoryConstraint(
   nForms,
-  nItems,
   itemCategories,
   operator = c("<=", "=", ">="),
   targetValues,
@@ -17,8 +16,6 @@ itemCategoryConstraint(
 }
 \arguments{
 \item{nForms}{Number of forms to be created.}
-
-\item{nItems}{Number of items in the item pool.}
 
 \item{itemCategories}{a factor representing the categories/grouping of the items}
 
@@ -52,6 +49,6 @@ the corresponding \code{targetValues}.
 ## in each test form
 nItems <- 30
 item_type <- factor(sample(1:3, size = nItems, replace = TRUE))
-itemCategoryConstraint(2, nItems, item_type, ">=", targetValues = c(1, 3, 2))
+itemCategoryConstraint(2, item_type, ">=", targetValues = c(1, 3, 2))
 
 }

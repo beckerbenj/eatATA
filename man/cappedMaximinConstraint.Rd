@@ -6,7 +6,6 @@
 \usage{
 cappedMaximinConstraint(
   nForms,
-  nItems,
   itemValues,
   weight = 1,
   whichForms = seq_len(nForms),
@@ -17,11 +16,9 @@ cappedMaximinConstraint(
 \arguments{
 \item{nForms}{Number of forms to be created.}
 
-\item{nItems}{Number of items in the item pool.}
-
 \item{itemValues}{Item parameter/values for which the sum per test form should be constrained.}
 
-\item{weight}{a weight for the real-valued variable(s). Usefull when multiple constraints are combined. Should only be used if the implications are well understood.}
+\item{weight}{a weight for the real-valued variable(s). Useful when multiple constraints are combined. Should only be used if the implications are well understood.}
 
 \item{whichForms}{An integer vector indicating which test forms should be constrained. Defaults to all the test forms.}
 
@@ -41,7 +38,6 @@ an ideal upper limit to the overflow.
 \examples{
 # constraint that minimizes the maximum difference per test form value and a
 #   target value of 0
-cappedMaximinConstraint(nForms = 2, nItems = 10,
-                 itemValues = rep(-2:2, 2))
+cappedMaximinConstraint(nForms = 2, itemValues = rep(-2:2, 2))
 
 }

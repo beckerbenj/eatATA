@@ -3,9 +3,9 @@ test_that("maxConstraint works", {
   nForms <- 1
   itemValues <- c(rep(0, nItems)[-c(1:2)], rep(10, 2))
 
-  testLength <- itemsPerFormConstraint(nForms, nItems, targetValue = 2)
-  objective <- maxConstraint(nForms, nItems, itemValues)
-  allConstraints <- c(testLength, objective)
+  testLength <- itemsPerFormConstraint(nForms, targetValue = 2, itemIDs = 1:nItems)
+  objective <- maxConstraint(nForms, itemValues, itemIDs = 1:nItems)
+  allConstraints <- combine2Constraints(testLength, objective)
   solution <- useSolver(allConstraints, solver = "GL", verbose = FALSE)
   expect_equal(solution$item_matrix$form_1[19:20], c(1, 1))
   expect_equal(solution$solution[nItems + 1], sum(itemValues))
@@ -18,9 +18,9 @@ test_that("minConstraint works", {
   nForms <- 1
   itemValues <- seq_len(nItems)
 
-  testLength <- itemsPerFormConstraint(nForms, nItems, operator = ">=", targetValue = 3)
-  objective <- minConstraint(nForms, nItems, itemValues)
-  allConstraints <- c(testLength, objective)
+  testLength <- itemsPerFormConstraint(nForms, nItems, operator = ">=", targetValue = 3, itemIDs = 1:nItems)
+  objective <- minConstraint(nForms, itemValues, itemIDs = 1:nItems)
+  allConstraints <- combine2Constraints(testLength, objective)
   solution <- useSolver(allConstraints, solver = "GL", verbose = FALSE)
   expect_equal(solution$item_matrix$form_1[1:3], c(1, 1, 1))
   expect_equal(solution$solution[nItems + 1], sum(itemValues[1:3]))
@@ -34,15 +34,15 @@ itemValues <- seq(1, 15, length.out = nItems)
 itemCategory <- factor(sample(1:3, size = nItems, replace = TRUE))
 itemsPerForm <- floor(nItems/nForms) - 4
 
-testLength <- itemsPerFormConstraint(nForms, nItems, operator = "=", targetValue = itemsPerForm)
-noOverlap <- itemUsageConstraint(nForms, nItems)
+testLength <- itemsPerFormConstraint(nForms, operator = "=", targetValue = itemsPerForm, itemIDs = 1:nItems)
+noOverlap <- itemUsageConstraint(nForms, nItems, itemIDs = 1:nItems)
 target <- computeTargetValues(itemCategory, nForms, testLength = itemsPerForm)
-catConstraints <- itemCategoryRange(nForms, nItems, itemCategory, target)
+catConstraints <- itemCategoryRange(nForms, itemCategory, target, itemIDs = 1:nItems)
 
 
 test_that("maximinConstraint works", {
-  objective <- maximinConstraint(nForms, nItems, itemValues, allowedDeviation = 0.05)
-  allConstraints <- c(testLength, objective, noOverlap)
+  objective <- maximinConstraint(nForms, itemValues, allowedDeviation = 0.05, itemIDs = 1:nItems)
+  allConstraints <- combineConstraints(testLength, objective, noOverlap)
   solution <- useSolver(allConstraints, solver = "GL", verbose = FALSE)
   expect_equal(unname(rowSums(solution$item_matrix)),
                rep(c(0, 1), c(nItems - nForms * itemsPerForm, nForms * itemsPerForm)))
@@ -53,9 +53,9 @@ test_that("maximinConstraint works", {
 
 
 test_that("cappedMaximinConstraint works", {
-  objective <- cappedMaximinConstraint(nForms, nItems, itemValues)
+  objective <- cappedMaximinConstraint(nForms, itemValues, itemIDs = 1:nItems)
 
-  allConstraints <- c(testLength, objective, noOverlap,  catConstraints)
+  allConstraints <- combineConstraints(testLength, objective, noOverlap,  catConstraints)
   solution <- useSolver(allConstraints, solver = "GL", verbose = FALSE)
   expect_equal(unname(rowSums(solution$item_matrix)),
                rep(c(0, 1), c(nItems - nForms * itemsPerForm, nForms * itemsPerForm)))

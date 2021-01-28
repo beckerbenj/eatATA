@@ -1,6 +1,6 @@
 # unexported utility functions
 
-#### function that creates the A-matrix for binary decision variables - for form constrainst ####
+#### function that creates the A-matrix for binary decision variables - for form constraints ####
 get_A_binary_forms <- function(nForms, nItems,
                                itemValues,
                                whichForms = seq_len(nForms)){
@@ -25,7 +25,7 @@ get_A_binary_forms <- function(nForms, nItems,
 }
 
 
-#### function that creates the A-matrix for binary decision variables - for item constrainst ####
+#### function that creates the A-matrix for binary decision variables - for item constraints ####
 get_A_binary_items <- function(nForms, nItems,
                                formValues,
                                whichItems = seq_len(nItems)){
@@ -140,12 +140,15 @@ newConstraint <- function(A_binary, A_real = NULL, operators, d,
 
 
 #### function that creates constraints per form - general ####
-makeFormConstraint <- function(nForms, nItems, itemValues, realVar, operator,
+makeFormConstraint <- function(nForms, itemValues, realVar, operator,
                                targetValue, whichForms, sense, c_binary = NULL,
                                c_real = NULL, info_text = NULL, itemIDs = NULL){
 
   # whichForms should be a subset of 1:nForms
   if(! all(whichForms %in% seq_len(nForms))) stop("'whichForms' should be a subset of all the possible test form numbers given 'nForms'.")
+
+  # number of items
+  nItems <- length(itemValues)
 
   # number of used forms in constraints
   nUsedForms <- length(whichForms)

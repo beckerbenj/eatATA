@@ -6,7 +6,6 @@
 \usage{
 itemValuesConstraint(
   nForms,
-  nItems,
   itemValues,
   operator = c("<=", "=", ">="),
   targetValue,
@@ -17,8 +16,6 @@ itemValuesConstraint(
 }
 \arguments{
 \item{nForms}{Number of forms to be created.}
-
-\item{nItems}{Number of items in the item pool.}
 
 \item{itemValues}{Item parameter/values for which the sum per test form should be constrained.}
 
@@ -48,8 +45,8 @@ the chosen \code{targetValue}.
 ## constraints to make sure that the sum of the item values (1:10) is between
 ## 4 and 6
 combineConstraints(
-  itemValuesConstraint(2, 10, 1:10, operator = ">=", targetValue = 4),
-  itemValuesConstraint(2, 10, 1:10, operator = "<=", targetValue = 6)
+  itemValuesConstraint(2, 1:10, operator = ">=", targetValue = 4),
+  itemValuesConstraint(2, 1:10, operator = "<=", targetValue = 6)
 )
 
 }

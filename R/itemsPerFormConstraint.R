@@ -10,6 +10,7 @@
 #' (\code{operator = ">="}) the chosen \code{value}.
 #'
 #'@inheritParams itemValuesConstraint
+#'@inheritParams itemUsageConstraint
 #'@param targetValue The target value to be used in the constraints. That is,
 #'  the number of items per form.
 #'
@@ -18,19 +19,22 @@
 #'
 #'@examples
 #' ## Constrain the test forms to have exactly five items
-#' itemsPerFormConstraint(3, 20, operator = "=", targetValue = 5)
+#' itemsPerFormConstraint(3, operator = "=", targetValue = 5,
+#'                        itemIDs = 1:20)
 #'
 #'@export
-itemsPerFormConstraint <- function(nForms, nItems, operator = c("<=", "=", ">="),
+itemsPerFormConstraint <- function(nForms, nItems = NULL, operator = c("<=", "=", ">="),
                                    targetValue, whichForms = seq_len(nForms),
                                    itemIDs = NULL){
 
   operator <- match.arg(operator)
+  suppressWarnings(nItems <- comb_itemIDs_nItems(itemIDs, nItems))
 
   # value cannot be greater than nForms
   if(targetValue > nItems) stop("'targetValue' should be smaller than or equal to 'nItems'.")
 
-  itemValuesConstraint(nForms, nItems, itemValues = rep(1, nItems), operator,
+
+  itemValuesConstraint(nForms, itemValues = rep(1, nItems), operator,
                        targetValue, whichForms = whichForms,
                        info_text = paste0("itemsPerForm", operator, targetValue),
                        itemIDs)

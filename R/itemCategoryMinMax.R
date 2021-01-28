@@ -26,13 +26,13 @@
 #' ##  items of each item type in each test form
 #' nItems <- 30
 #' item_type <- factor(sample(1:3, size = nItems, replace = TRUE))
-#' itemCategoryRange(2, nItems, item_type, range = cbind(min = rep(2, 3), max = rep(4, 3)))
+#' itemCategoryRange(2, item_type, range = cbind(min = rep(2, 3), max = rep(4, 3)))
 #'
 #' ## or alternatively
-#' itemCategoryDeviation(2, nItems, item_type, targetValues = rep(3, 3), allowedDeviation = rep(4, 3))
+#' itemCategoryDeviation(2, item_type, targetValues = rep(3, 3), allowedDeviation = rep(4, 3))
 #'
 #' @export
-itemCategoryRange <- function(nForms, nItems, itemCategories, range,
+itemCategoryRange <- function(nForms, itemCategories, range,
                               whichForms = seq_len(nForms),
                               info_text = NULL,
                               itemIDs = names(itemCategories)){
@@ -47,10 +47,10 @@ itemCategoryRange <- function(nForms, nItems, itemCategories, range,
   if(is.null(info_text)) info_text <- deparse(substitute(itemCategories))
 
   combine2Constraints(
-    itemCategoryConstraint(nForms, nItems, itemCategories, operator = ">=",
+    itemCategoryConstraint(nForms, itemCategories, operator = ">=",
                            targetValues = range[,1], whichForms,
                            info_text, itemIDs),
-    itemCategoryConstraint(nForms, nItems, itemCategories, operator = "<=",
+    itemCategoryConstraint(nForms, itemCategories, operator = "<=",
                            targetValues = range[,2], whichForms,
                            info_text, itemIDs)
   )
@@ -58,7 +58,7 @@ itemCategoryRange <- function(nForms, nItems, itemCategories, range,
 
 #' @describeIn itemCategoryRange constrain minimum value
 #' @export
-itemCategoryMin <- function(nForms, nItems, itemCategories, min,
+itemCategoryMin <- function(nForms, itemCategories, min,
                             whichForms = seq_len(nForms),
                             info_text = NULL,
                             itemIDs = names(itemCategories)){
@@ -66,7 +66,7 @@ itemCategoryMin <- function(nForms, nItems, itemCategories, min,
   # choose info_text for info
   if(is.null(info_text)) info_text <- deparse(substitute(itemCategories))
 
-  itemCategoryConstraint(nForms, nItems, itemCategories, operator = ">=",
+  itemCategoryConstraint(nForms, itemCategories, operator = ">=",
                          targetValues = min, whichForms,
                          info_text, itemIDs)
 }
@@ -74,7 +74,7 @@ itemCategoryMin <- function(nForms, nItems, itemCategories, min,
 
 #' @describeIn itemCategoryRange constrain maximum value
 #' @export
-itemCategoryMax <- function(nForms, nItems, itemCategories, max,
+itemCategoryMax <- function(nForms, itemCategories, max,
                             whichForms = seq_len(nForms),
                             info_text = NULL,
                             itemIDs = names(itemCategories)){
@@ -82,7 +82,7 @@ itemCategoryMax <- function(nForms, nItems, itemCategories, max,
   # choose info_text for info
   if(is.null(info_text)) info_text <- deparse(substitute(itemCategories))
 
-  itemCategoryConstraint(nForms, nItems, itemCategories, operator = "<=",
+  itemCategoryConstraint(nForms, itemCategories, operator = "<=",
                          targetValues = max, whichForms,
                          info_text, itemIDs)
 }
@@ -90,7 +90,7 @@ itemCategoryMax <- function(nForms, nItems, itemCategories, max,
 
 #' @describeIn itemCategoryRange constrain the distance form the \code{targetValues}
 #' @export
-itemCategoryDeviation <- function(nForms, nItems, itemCategories,
+itemCategoryDeviation <- function(nForms, itemCategories,
                                   targetValues, allowedDeviation,
                                   relative = FALSE,
                                   whichForms = seq_len(nForms),
@@ -102,7 +102,7 @@ itemCategoryDeviation <- function(nForms, nItems, itemCategories,
 
   # if relative == TRUE, compute the absolute allowed Deviation
   allowedDeviation <- 'if'(relative, targetValues * allowedDeviation, allowedDeviation)
-  itemCategoryRange(nForms, nItems, itemCategories,
+  itemCategoryRange(nForms, itemCategories,
                     range = cbind(targetValues - allowedDeviation,
                                   targetValues + allowedDeviation),
                     whichForms,

@@ -23,13 +23,13 @@
 #' @examples
 #' ## constraints to make sure that the sum of the item values (1:10) is between
 #' ## 4 and 6
-#' itemValuesRange (2, 10, 1:10, range(min = 4, max = 6))
+#' itemValuesRange (2, 1:10, range(min = 4, max = 6))
 #'
 #' ## or alternatively
-#' itemValuesDeviation (2, 10, 1:10, targetValue = 5, allowedDeviation = 1)
+#' itemValuesDeviation (2, 1:10, targetValue = 5, allowedDeviation = 1)
 #'
 #' @export
-itemValuesRange <- function(nForms, nItems, itemValues, range,
+itemValuesRange <- function(nForms, itemValues, range,
                             whichForms = seq_len(nForms),
                             info_text = NULL,
                             itemIDs = names(itemValues)){
@@ -41,11 +41,11 @@ itemValuesRange <- function(nForms, nItems, itemValues, range,
   if(is.null(info_text)) info_text <- deparse(substitute(itemValues))
 
   combineConstraints(
-    itemValuesConstraint(nForms, nItems, itemValues, operator = ">=",
+    itemValuesConstraint(nForms, itemValues, operator = ">=",
                          targetValue = range[1], whichForms,
                          info_text = paste0(info_text, ">=", range[1]),
                          itemIDs),
-    itemValuesConstraint(nForms, nItems, itemValues, operator = "<=",
+    itemValuesConstraint(nForms, itemValues, operator = "<=",
                          targetValue = range[2], whichForms,
                          info_text = paste0(info_text, "<=", range[2]),
                          itemIDs)
@@ -54,14 +54,14 @@ itemValuesRange <- function(nForms, nItems, itemValues, range,
 
 #' @describeIn itemValuesRange constrain minimum value
 #' @export
-itemValuesMin <- function(nForms, nItems, itemValues, min,
+itemValuesMin <- function(nForms, itemValues, min,
                           whichForms = seq_len(nForms),
                           info_text = NULL,
                           itemIDs = names(itemValues)){
   # choose info_text for info
   if(is.null(info_text)) info_text <- deparse(substitute(itemValues))
 
-  itemValuesConstraint(nForms, nItems, itemValues, operator = ">=",
+  itemValuesConstraint(nForms, itemValues, operator = ">=",
                        targetValue = min, whichForms = whichForms,
                        info_text = paste0(info_text, ">=", min),
                        itemIDs)
@@ -70,14 +70,14 @@ itemValuesMin <- function(nForms, nItems, itemValues, min,
 
 #' @describeIn itemValuesRange constrain maximum value
 #' @export
-itemValuesMax <- function(nForms, nItems, itemValues, max,
+itemValuesMax <- function(nForms, itemValues, max,
                           whichForms = seq_len(nForms),
                           info_text = NULL,
                           itemIDs = names(itemValues)){
   # choose info_text for info
   if(is.null(info_text)) info_text <- deparse(substitute(itemValues))
 
-  itemValuesConstraint(nForms, nItems, itemValues, operator = "<=",
+  itemValuesConstraint(nForms, itemValues, operator = "<=",
                        targetValue = max, whichForms = whichForms,
                        info_text = paste0(info_text, "<=", max),
                        itemIDs)
@@ -86,7 +86,7 @@ itemValuesMax <- function(nForms, nItems, itemValues, max,
 
 #' @describeIn itemValuesRange constrain the distance form the \code{targetValue}
 #' @export
-itemValuesDeviation <- function(nForms, nItems, itemValues,
+itemValuesDeviation <- function(nForms, itemValues,
                                 targetValue, allowedDeviation,
                                 relative = FALSE,
                                 whichForms = seq_len(nForms),
@@ -99,7 +99,7 @@ itemValuesDeviation <- function(nForms, nItems, itemValues,
   # choose info_text for info
   if(is.null(info_text)) info_text <- deparse(substitute(itemValues))
 
-  itemValuesRange(nForms, nItems, itemValues,
+  itemValuesRange(nForms, itemValues,
                   range = c(targetValue - allowedDeviation,
                             targetValue + allowedDeviation),
                   whichForms = whichForms, info_text = info_text,

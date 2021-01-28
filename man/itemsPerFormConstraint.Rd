@@ -6,7 +6,7 @@
 \usage{
 itemsPerFormConstraint(
   nForms,
-  nItems,
+  nItems = NULL,
   operator = c("<=", "=", ">="),
   targetValue,
   whichForms = seq_len(nForms),
@@ -16,7 +16,7 @@ itemsPerFormConstraint(
 \arguments{
 \item{nForms}{Number of forms to be created.}
 
-\item{nItems}{Number of items in the item pool.}
+\item{nItems}{Number of items in the item pool [optional to create \code{itemIDs} automatically].}
 
 \item{operator}{A character indicating which operator should be used in the
 constraints, with three possible values: \code{"<="}, \code{"="},
@@ -43,6 +43,7 @@ The number of items per test form is constrained to be either
 }
 \examples{
 ## Constrain the test forms to have exactly five items
-itemsPerFormConstraint(3, 20, operator = "=", targetValue = 5)
+itemsPerFormConstraint(3, operator = "=", targetValue = 5,
+                       itemIDs = 1:20)
 
 }

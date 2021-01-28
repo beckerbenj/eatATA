@@ -4,12 +4,12 @@
 \alias{depletePoolConstraint}
 \title{Use complete item pool.}
 \usage{
-depletePoolConstraint(nForms, nItems, itemIDs = NULL)
+depletePoolConstraint(nForms, nItems = NULL, itemIDs = NULL)
 }
 \arguments{
 \item{nForms}{Number of forms to be created.}
 
-\item{nItems}{Number of items in the item pool.}
+\item{nItems}{Number of items in the item pool [optional to create \code{itemIDs} automatically].}
 
 \item{itemIDs}{a character vector of item IDs in correct ordering, or NULL.}
 }
@@ -21,6 +21,6 @@ Creates constraints that assure that every item in the item pool is used
 (at least) once. Essentially a wrapper around \code{itemUsageConstraint}.
 }
 \examples{
-depletePoolConstraint(2, 10)
+depletePoolConstraint(2, itemIDs = 1:10)
 
 }

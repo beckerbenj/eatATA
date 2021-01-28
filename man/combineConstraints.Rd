@@ -19,8 +19,8 @@ Combine multiple constraint-objects into one constraint object.
 }
 \examples{
 combineConstraints(
- itemValuesConstraint(2, 10, 1:10, operator = ">=", targetValue = 4),
- itemValuesConstraint(2, 10, 1:10, operator = "<=", targetValue = 6)
+ itemValuesConstraint(2, 1:10, operator = ">=", targetValue = 4),
+ itemValuesConstraint(2, 1:10, operator = "<=", targetValue = 6)
 )
 
 }

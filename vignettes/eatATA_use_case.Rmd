@@ -116,7 +116,7 @@ nForms <- 14           # number of blocks
 The first two constraints (no item overlap and item pool depletion) can be implemented by a single function: `itemUsageConstraint()`. To achieve this, the `operator` argument should be set to `"="`. 
 
 ```{r item usage constraints}
-itemOverlap <- itemUsageConstraint(nForms, nItems = nItems, operator = "=", itemIDs = items$Item_ID) 
+itemOverlap <- itemUsageConstraint(nForms, operator = "=", itemIDs = items$Item_ID) 
 ```
 
 Constraints with respect to categorical variables or factors (like `MC_open_none`) or numerical variables (like `short_answer`), can be easily implemented using the `autoItemValuesMinMax()` function. The result of this function depends on whether a factor or a numerical variable is used. That is, `autoItemValuesMinMax()` automatically determines the minimum and maximum frequency of each category of a factor. But for numerical variables, it automatically determines the target value. 
@@ -166,8 +166,8 @@ Another helpful function is the `itemsPerFormConstraint()` function, which const
 ```{r item numbers constraints}
 # number of items per test form
 min_Nitems <- floor(nItems / nForms) - 3
-noItems <- itemsPerFormConstraint(nForms = nForms, nItems = nItems, 
-                                  operator = ">=", min_Nitems, itemIDs = items$Item_ID)
+noItems <- itemsPerFormConstraint(nForms = nForms, operator = ">=", 
+                                  targetValue = min_Nitems, itemIDs = items$Item_ID)
 
 ```
 
@@ -175,7 +175,7 @@ Finally, I am setting up an optimization constraint. This constraint is not a cl
 
 ```{r target constraints}
 # optimize average time
-av_time <- minimaxConstraint(nForms, nItems = nItems, itemValues = items$RT_in_min, targetValue = 10,
+av_time <- minimaxConstraint(nForms, itemValues = items$RT_in_min, targetValue = 10,
                              itemIDs = items$Item_ID)
 ```
 

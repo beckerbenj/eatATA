@@ -5,32 +5,32 @@
 #' item values (\code{itemValues}) per test form and the chosen \code{targetValue}.
 #'
 #'@inheritParams itemValuesConstraint
-#'@param weight a weight for the real-valued variable(s). Usefull when multiple constraints are combined. Should only be used if the implications are well understood.
+#'@param weight a weight for the real-valued variable(s). Useful when multiple constraints are combined. Should only be used if the implications are well understood.
 #'
 #'@return An object of class \code{"constraint"}.
 #'
 #'@examples
 #'# constraint that minimizes the maximum difference per test form value and a
 #'#   target value of 0
-#'minimaxConstraint(nForms = 2, nItems = 10,
+#'minimaxConstraint(nForms = 2,
 #'                  itemValues = rep(-2:2, 2),
 #'                  targetValue = 0)
 #'
 #'@export
-minimaxConstraint <- function(nForms, nItems, itemValues, targetValue, weight = 1,
+minimaxConstraint <- function(nForms, itemValues, targetValue, weight = 1,
                               whichForms = seq_len(nForms), info_text = NULL,
                               itemIDs = names(itemValues)){
 
   # choose info_text for info
   if(is.null(info_text)) info_text <- 'minimax'
 
-  lowerBound <- makeFormConstraint(nForms, nItems, itemValues, realVar = -weight,
+  lowerBound <- makeFormConstraint(nForms, itemValues, realVar = -weight,
                                    operator = "<=", targetValue,
                                    whichForms, sense = "min", c_real = 1,
                                    info_text = paste0(info_text, "_lowerBound"),
                                    itemIDs = itemIDs)
 
-  upperBound <- makeFormConstraint(nForms, nItems, itemValues, realVar = weight,
+  upperBound <- makeFormConstraint(nForms, itemValues, realVar = weight,
                                    operator = ">=", targetValue,
                                    whichForms, sense = "min", c_real = 1,
                                    info_text = paste0(info_text, "_upperBound"),
@@ -57,12 +57,11 @@ minimaxConstraint <- function(nForms, nItems, itemValues, targetValue, weight = 
 #'@examples
 #'# constraint that minimizes the maximum difference per test form value and a
 #'#   target value of 0
-#'maximinConstraint(nForms = 2, nItems = 10,
-#'                  itemValues = rep(-2:2, 2),
+#'maximinConstraint(nForms = 2, itemValues = rep(-2:2, 2),
 #'                  allowedDeviation = 1)
 #'
 #'@export
-maximinConstraint <- function(nForms, nItems, itemValues, allowedDeviation,
+maximinConstraint <- function(nForms, itemValues, allowedDeviation,
                               weight = 1, whichForms = seq_len(nForms), info_text = NULL,
                               itemIDs = names(itemValues)){
 
@@ -73,14 +72,14 @@ maximinConstraint <- function(nForms, nItems, itemValues, allowedDeviation,
   # choose info_text for info
   if(is.null(info_text)) info_text <- 'maximin'
 
-  lowerBound <- makeFormConstraint(nForms, nItems, itemValues, realVar = -weight,
+  lowerBound <- makeFormConstraint(nForms, itemValues, realVar = -weight,
                                    operator = ">=", targetValue = 0,
                                    whichForms, sense = "max", c_real = 1,
                                    info_text = paste0(info_text, "_lowerBound"),
                                    itemIDs = itemIDs)
 
 
-  upperBound <- makeFormConstraint(nForms, nItems, itemValues, realVar = -weight,
+  upperBound <- makeFormConstraint(nForms, itemValues, realVar = -weight,
                                    operator = "<=", targetValue = allowedDeviation*weight,
                                    whichForms, sense = NULL, c_real = 1,
                                    info_text = paste0(info_text, "_upperBound"),
@@ -105,11 +104,10 @@ maximinConstraint <- function(nForms, nItems, itemValues, allowedDeviation,
 #'@examples
 #'# constraint that minimizes the maximum difference per test form value and a
 #'#   target value of 0
-#'cappedMaximinConstraint(nForms = 2, nItems = 10,
-#'                  itemValues = rep(-2:2, 2))
+#'cappedMaximinConstraint(nForms = 2, itemValues = rep(-2:2, 2))
 #'
 #'@export
-cappedMaximinConstraint <- function(nForms, nItems, itemValues, weight = 1,
+cappedMaximinConstraint <- function(nForms, itemValues, weight = 1,
                                     whichForms = seq_len(nForms), info_text = NULL,
                                     itemIDs = names(itemValues)){
 
@@ -117,14 +115,14 @@ cappedMaximinConstraint <- function(nForms, nItems, itemValues, weight = 1,
   # choose info_text for info
   if(is.null(info_text)) info_text <- 'cappedMaximin'
 
-  lowerBound <- makeFormConstraint(nForms, nItems, itemValues, realVar = c(-weight, 0),
+  lowerBound <- makeFormConstraint(nForms, itemValues, realVar = c(-weight, 0),
                                    operator = ">=", targetValue = 0,
                                    whichForms, sense = "max", c_real = c(1, -1),
                                    info_text = paste0(info_text, "_lowerBound"),
                                    itemIDs = itemIDs)
 
 
-  upperBound <- makeFormConstraint(nForms, nItems, itemValues, realVar = c(-weight, -weight),
+  upperBound <- makeFormConstraint(nForms, itemValues, realVar = c(-weight, -weight),
                                    operator = "<=", targetValue = 0,
                                    whichForms, sense = NULL, c_real = c(1, -1),
                                    info_text = paste0(info_text, "_upperBound"),
@@ -150,17 +148,17 @@ cappedMaximinConstraint <- function(nForms, nItems, itemValues, weight = 1,
 #'
 #'@examples
 #'# constraint that maximizes the sum of the itemValues
-#'maxConstraint(nForms = 1, nItems = 10,itemValues = rep(-2:2, 2))
+#'maxConstraint(nForms = 1, itemValues = rep(-2:2, 2))
 #'
 #'@export
-maxConstraint <- function(nForms, nItems, itemValues, weight = 1,
+maxConstraint <- function(nForms, itemValues, weight = 1,
                           whichForms = seq_len(nForms), info_text = NULL,
                           itemIDs = names(itemValues)){
 
   # choose info_text for info
   if(is.null(info_text)) info_text <- 'max'
 
-  makeFormConstraint(nForms = nForms, nItems, itemValues, realVar = -weight,
+  makeFormConstraint(nForms = nForms, itemValues, realVar = -weight,
                      operator = ">=", targetValue = 0, sense = "max",
                      c_real = 1, whichForms = whichForms,
                      info_text = info_text,
@@ -182,17 +180,17 @@ maxConstraint <- function(nForms, nItems, itemValues, weight = 1,
 #'
 #'@examples
 #'# constraint that maximizes the sum of the itemValues
-#'maxConstraint(nForms = 1, nItems = 10,itemValues = rep(-2:2, 2))
+#'maxConstraint(nForms = 1, itemValues = rep(-2:2, 2))
 #'
 #'@export
-minConstraint <- function(nForms, nItems, itemValues, weight = 1,
+minConstraint <- function(nForms, itemValues, weight = 1,
                           whichForms = seq_len(nForms), info_text = NULL,
                           itemIDs = names(itemValues)){
 
   # choose info_text for info
   if(is.null(info_text)) info_text <- 'min'
 
-  makeFormConstraint(nForms = nForms, nItems, itemValues, realVar = -weight,
+  makeFormConstraint(nForms = nForms, itemValues, realVar = -weight,
                      operator = "<=", targetValue = 0, sense = "min",
                      c_real = 1, whichForms = whichForms,
                      info_text = info_text,

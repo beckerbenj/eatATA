@@ -111,7 +111,7 @@ computeTargetValues(MC_factor, nForms = 3)
 
 ## The computed minimum and maximum frequencies can be used to create contstraints.
 MC_ranges <- computeTargetValues(MC_factor, nForms = 3)
-itemCategoryRange(3, nItems = length(MC_factor), MC_factor, range = MC_ranges)
+itemCategoryRange(3, MC_factor, range = MC_ranges)
 
 ## When desired, the automatically computed range can be adjusted by hand. This
 ##  can be of use when only a limited set of the categories should be constrained.
@@ -121,6 +121,6 @@ itemCategoryRange(3, nItems = length(MC_factor), MC_factor, range = MC_ranges)
 ##  Or to other sensible values.
 MC_ranges["not MC", ] <- c(0, 40)
 MC_ranges
-itemCategoryRange(3, nItems = length(MC_factor), MC_factor, range = MC_ranges)
+itemCategoryRange(3, MC_factor, range = MC_ranges)
 
 }

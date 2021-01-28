@@ -22,11 +22,11 @@
 #' itemValues = c(-4, -4, -2, -2, -1, -1, 20, 20, 0, 0))
 #'
 #' ## Test Assembly
-#' usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=",
+#' usage <- itemUsageConstraint(nForms = 2, operator = "=",
 #'                              targetValue = 1, itemIDs = items$ID)
-#' perForm <- itemsPerFormConstraint(nForms = 2, nItems = 10, operator = "=",
+#' perForm <- itemsPerFormConstraint(nForms = 2, operator = "=",
 #'                                   targetValue = 5, itemIDs = items$ID)
-#' target <- minimaxConstraint(nForms = 2, nItems = 10,
+#' target <- minimaxConstraint(nForms = 2,
 #'                                itemValues = items$itemValues,
 #'                                targetValue = 0, itemIDs = items$ID)
 #' sol <- useSolver(allConstraints = list(usage, perForm, target),

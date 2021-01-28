@@ -39,18 +39,18 @@ items_sim
 items_sim[, "IIF"] <- calculateIIF(B = items_sim$difficulty, theta = 0)
 nItems <- nrow(items_sim)
 
-itemNumber <- itemsPerFormConstraint(nForms = 1, nItems = nItems,
-                       operator = "=", targetValue = 10, itemIDs = items_sim$id)
+itemNumber <- itemsPerFormConstraint(nForms = 1, operator = "=", targetValue = 10, 
+                                     itemIDs = items_sim$id)
 
-itemUsage <- itemUsageConstraint(nForms = 1, nItems = nItems,
-                       operator = "<=", targetValue = 1, itemIDs = items_sim$id)
+itemUsage <- itemUsageConstraint(nForms = 1, operator = "<=", targetValue = 1, 
+                                 itemIDs = items_sim$id)
 
-testTime <- itemValuesDeviation(nForms = 1, nItems = nItems, itemValues = items_sim$mean_time,
+testTime <- itemValuesDeviation(nForms = 1, itemValues = items_sim$mean_time,
                     targetValue = 8 * 60, allowedDeviation = 5,
                     relative = FALSE, itemIDs = items_sim$id)
 
 
-testInfo <- maxConstraint(nForms = 1, nItems = nItems, itemValues = items_sim$IIF,
+testInfo <- maxConstraint(nForms = 1, itemValues = items_sim$IIF,
                           itemIDs = items_sim$id)
 
 

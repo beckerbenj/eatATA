@@ -6,7 +6,6 @@
 \usage{
 minimaxConstraint(
   nForms,
-  nItems,
   itemValues,
   targetValue,
   weight = 1,
@@ -18,13 +17,11 @@ minimaxConstraint(
 \arguments{
 \item{nForms}{Number of forms to be created.}
 
-\item{nItems}{Number of items in the item pool.}
-
 \item{itemValues}{Item parameter/values for which the sum per test form should be constrained.}
 
 \item{targetValue}{the target test form value.}
 
-\item{weight}{a weight for the real-valued variable(s). Usefull when multiple constraints are combined. Should only be used if the implications are well understood.}
+\item{weight}{a weight for the real-valued variable(s). Useful when multiple constraints are combined. Should only be used if the implications are well understood.}
 
 \item{whichForms}{An integer vector indicating which test forms should be constrained. Defaults to all the test forms.}
 
@@ -43,7 +40,7 @@ item values (\code{itemValues}) per test form and the chosen \code{targetValue}.
 \examples{
 # constraint that minimizes the maximum difference per test form value and a
 #   target value of 0
-minimaxConstraint(nForms = 2, nItems = 10,
+minimaxConstraint(nForms = 2,
                  itemValues = rep(-2:2, 2),
                  targetValue = 0)
 

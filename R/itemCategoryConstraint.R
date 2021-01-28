@@ -21,27 +21,27 @@
 #' ## in each test form
 #' nItems <- 30
 #' item_type <- factor(sample(1:3, size = nItems, replace = TRUE))
-#' itemCategoryConstraint(2, nItems, item_type, ">=", targetValues = c(1, 3, 2))
+#' itemCategoryConstraint(2, item_type, ">=", targetValues = c(1, 3, 2))
 #'
 #'@export
-itemCategoryConstraint <- function(nForms, nItems, itemCategories,
+itemCategoryConstraint <- function(nForms, itemCategories,
                                    operator = c("<=", "=", ">="), targetValues,
                                    whichForms = seq_len(nForms),
                                    info_text = NULL,
                                    itemIDs = names(itemCategories)){
 
-
+  if(!is.character(operator)) stop("'operator' needs to be a character vector.")
   operator <- match.arg(operator)
 
   # itemCategories should be a factor
   if(!is.factor(itemCategories)) stop("'itemCategories' should be a factor.")
 
-  # some arguments should be of lenght 1
-  check <- sapply(list(nForms, nItems, operator), length) == 1
-  if(any(!check)) stop("The following arguments should have length 1: 'nForms', 'nItems', 'operator'.")
+  # some arguments should be of length 1
+  check <- sapply(list(nForms, operator), length) == 1
+  if(any(!check)) stop("The following arguments should have length 1: 'nForms', 'operator'.")
 
-  # itemCategories should have length equal to nItems
-  if(length(itemCategories) != nItems) stop("The lenght of 'itemCategories' should be equal to 'nItems'.")
+  # itemValues should have length equal to itemIDs
+  if(!is.null(itemIDs) && length(itemCategories) != length(itemIDs)) stop("The length of 'itemCategories' and 'itemIDs' should be identical.")
 
   # the number of levels should be equal to the number of targetValues
   levels <- levels(itemCategories)
@@ -58,7 +58,7 @@ itemCategoryConstraint <- function(nForms, nItems, itemCategories,
   if(length(info_text) != nLevels) stop("'info_text' should be a character string of length equal to to the number of levels in 'itemCategories'.")
 
   do.call(combineConstraints, lapply(seq_len(nLevels), function(levelNr){
-    itemValuesConstraint(nForms, nItems, 1 * (itemCategories == levels[levelNr]),
+    itemValuesConstraint(nForms, 1 * (itemCategories == levels[levelNr]),
                          operator, targetValues[levelNr], whichForms, info_text[levelNr],
                          itemIDs)
   }))

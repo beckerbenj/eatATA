@@ -6,7 +6,7 @@
 \usage{
 itemUsageConstraint(
   nForms,
-  nItems,
+  nItems = NULL,
   formValues = rep(1, nForms),
   operator = c("<=", "=", ">="),
   targetValue = 1,
@@ -18,7 +18,7 @@ itemUsageConstraint(
 \arguments{
 \item{nForms}{Number of forms to be created.}
 
-\item{nItems}{Number of items in the item pool.}
+\item{nItems}{Number of items in the item pool [optional to create \code{itemIDs} automatically].}
 
 \item{formValues}{vector with values or weights for each form. Defaults to 1 for each form.}
 
@@ -53,6 +53,7 @@ complete item pool depletion.
 \examples{
 ## create no-item overlap constraints with item pool depletion
 ##  for 2 test forms with an item pool of 20 items
-itemUsageConstraint(2, 20, operator = "=", targetValue = 1)
+itemUsageConstraint(2, operator = "=", targetValue = 1,
+                    itemIDs = 1:20)
 
 }

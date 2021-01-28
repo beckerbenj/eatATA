@@ -9,7 +9,6 @@
 \usage{
 itemValuesRange(
   nForms,
-  nItems,
   itemValues,
   range,
   whichForms = seq_len(nForms),
@@ -19,7 +18,6 @@ itemValuesRange(
 
 itemValuesMin(
   nForms,
-  nItems,
   itemValues,
   min,
   whichForms = seq_len(nForms),
@@ -29,7 +27,6 @@ itemValuesMin(
 
 itemValuesMax(
   nForms,
-  nItems,
   itemValues,
   max,
   whichForms = seq_len(nForms),
@@ -39,7 +36,6 @@ itemValuesMax(
 
 itemValuesDeviation(
   nForms,
-  nItems,
   itemValues,
   targetValue,
   allowedDeviation,
@@ -51,8 +47,6 @@ itemValuesDeviation(
 }
 \arguments{
 \item{nForms}{Number of forms to be created.}
-
-\item{nItems}{Number of items in the item pool.}
 
 \item{itemValues}{Item parameter/values for which the sum per test form should be constrained.}
 
@@ -102,9 +96,9 @@ and a maximal allowed deviation (i.e., \code{allowedDeviation}) from that \code{
 \examples{
 ## constraints to make sure that the sum of the item values (1:10) is between
 ## 4 and 6
-itemValuesRange (2, 10, 1:10, range(min = 4, max = 6))
+itemValuesRange (2, 1:10, range(min = 4, max = 6))
 
 ## or alternatively
-itemValuesDeviation (2, 10, 1:10, targetValue = 5, allowedDeviation = 1)
+itemValuesDeviation (2, 1:10, targetValue = 5, allowedDeviation = 1)
 
 }

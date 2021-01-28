@@ -173,7 +173,7 @@ test_that("makeFormConstraint works", {
   itemValues <- rep(1:2, 5)
   whichForms <- c(2:4)
 
-  out <- makeFormConstraint(nForms, nItems, itemValues, realVar = NULL,
+  out <- makeFormConstraint(nForms, itemValues, realVar = NULL,
                             operator = "=", targetValue = 10,
                             whichForms, sense = NULL, info_text = NULL)
   expect_equal(out$A_binary, get_A_binary_forms(nForms, nItems, itemValues, whichForms))
@@ -188,7 +188,7 @@ test_that("makeFormConstraint works", {
 
   expect_is(out, "constraint")
 
-  expect_error(makeFormConstraint(nForms, nItems, itemValues, realVar = NULL,
+  expect_error(makeFormConstraint(nForms, itemValues, realVar = NULL,
                                   operator = "=", targetValue = 10,
                                   whichForms = c(2, 6), sense = NULL, info_text = NULL),
                "'whichForms' should be a subset of all the possible test form numbers given 'nForms'.")
@@ -260,10 +260,10 @@ test_that("combine2Constraints works", {
   whichFormsX <- c(2:4)
   whichFormsY <- 5
 
-  x <- makeFormConstraint(nForms, nItems, itemValues, realVar = NULL,
+  x <- makeFormConstraint(nForms, itemValues, realVar = NULL,
                             operator = "=", targetValue = 10,
                             whichFormsX, sense = NULL, info_text = NULL)
-  y <- makeFormConstraint(nForms, nItems, itemValues, realVar = NULL,
+  y <- makeFormConstraint(nForms, itemValues, realVar = NULL,
                           operator = "<=", targetValue = 5,
                           whichFormsY, sense = NULL, info_text = NULL)
   out <- combine2Constraints(x, y)
@@ -278,7 +278,7 @@ test_that("combine2Constraints works", {
   expect_equal(attr(out, "itemIDs"), sprintf(paste("it%0", nchar(nItems), "d", sep=''), seq_len(nItems)))
   expect_is(out, "constraint")
 
-  z <- makeFormConstraint(nForms, nItems, itemValues, realVar = 1,
+  z <- makeFormConstraint(nForms, itemValues, realVar = 1,
                           operator = "<=", targetValue = 5,
                           whichFormsX, sense = "min", info_text = "min")
   out2 <- combine2Constraints(out, z)
@@ -305,19 +305,19 @@ test_that("combine2Constraints returns errors", {
   whichFormsX <- c(2:4)
   whichFormsY <- 5
 
-  x <- makeFormConstraint(nForms, nItems, itemValues, realVar = NULL,
+  x <- makeFormConstraint(nForms, itemValues, realVar = NULL,
                           operator = "=", targetValue = 10,
                           whichFormsX, sense = NULL, info_text = NULL)
 
-  expect_error(combine2Constraints(x, makeFormConstraint(nForms+1, nItems, itemValues, realVar = NULL,
+  expect_error(combine2Constraints(x, makeFormConstraint(nForms+1, itemValues, realVar = NULL,
                                                          operator = "<=", targetValue = 5,
                                                          whichFormsY, sense = NULL, info_text = NULL)),
                "The constraints cannot be combined, the number of forms differs.")
-  expect_error(combine2Constraints(x, makeFormConstraint(nForms, nItems -1, itemValues[-1], realVar = NULL,
+  expect_error(combine2Constraints(x, makeFormConstraint(nForms, itemValues[-1], realVar = NULL,
                                                          operator = "<=", targetValue = 5,
                                                          whichFormsY, sense = NULL, info_text = NULL)),
                "The constraints cannot be combined, the number of items in the pool differs.")
-  expect_error(combine2Constraints(x, makeFormConstraint(nForms, nItems, itemValues, realVar = NULL,
+  expect_error(combine2Constraints(x, makeFormConstraint(nForms, itemValues, realVar = NULL,
                                                          operator = "<=", targetValue = 5,
                                                          whichFormsY, sense = NULL, info_text = NULL,
                                                          itemIDs = paste("it", seq_len(nItems)))),
@@ -338,13 +338,13 @@ test_that("combineConstraints works", {
   whichFormsX <- c(2:4)
   whichFormsY <- 5
 
-  x <- makeFormConstraint(nForms, nItems, itemValues, realVar = NULL,
+  x <- makeFormConstraint(nForms, itemValues, realVar = NULL,
                           operator = "=", targetValue = 10,
                           whichFormsX, sense = NULL, info_text = NULL)
-  y <- makeFormConstraint(nForms, nItems, itemValues, realVar = NULL,
+  y <- makeFormConstraint(nForms, itemValues, realVar = NULL,
                           operator = "<=", targetValue = 5,
                           whichFormsY, sense = NULL, info_text = NULL)
-  z <- makeFormConstraint(nForms, nItems, itemValues, realVar = 1,
+  z <- makeFormConstraint(nForms, itemValues, realVar = 1,
                           operator = "<=", targetValue = 5,
                           whichFormsX, sense = "min", info_text = "min")
 

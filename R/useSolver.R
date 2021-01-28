@@ -32,11 +32,11 @@
 #' nItems <- 4
 #'
 #' # create constraits
-#' target <- minimaxConstraint(nForms = nForms, nItems = nItems,
-#'   c(1, 0.5, 1.5, 2), targetValue = 2)
-#' noItemOverlap <- itemUsageConstraint(nForms, nItems = nItems, operator = "=")
-#' testLength <- itemsPerFormConstraint(nForms = nForms, nItems = nItems,
-#'   operator = "<=", 2)
+#' target <- minimaxConstraint(nForms = nForms, c(1, 0.5, 1.5, 2),
+#'                        targetValue = 2, itemIDs = 1:nItems)
+#' noItemOverlap <- itemUsageConstraint(nForms, operator = "=", itemIDs = 1:nItems)
+#' testLength <- itemsPerFormConstraint(nForms = nForms,
+#'                            operator = "<=", targetValue = 2, itemIDs = 1:nItems)
 #'
 #' # use a solver
 #' result <- useSolver(list(target, noItemOverlap, testLength),

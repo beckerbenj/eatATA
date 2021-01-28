@@ -1,5 +1,6 @@
 # eatATA 0.9.1.9000
 
+* argument `nItems` either completely removed from constraint functions or exchangeable with `itemIDs` 
 * `itemTargetConstraint()` substituted by `minimaxConstraint()`, `maximinConstraint()`, `maxConstraint()`, `minConstraint()`, `cappedMaximinConstraint()` which allow for different types of optimization goals
 * `Symphony` added as available solver (via `Rsymphony`)
 * `inspectSolution()` now allows character variables in the input if sums are calculated
