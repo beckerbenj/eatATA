@@ -57,6 +57,7 @@ test_that("analyze block exclusions errors", {
   expect_error(analyzeBlockExclusion(sol, items = items_small, idCol = "ID", exclusionTuples = "a"),
                "'exclusionTuples' must be a data.frame.")
   sol$solution_found <- FALSE
+  sol$solution <- rep(0, length(sol$solution))
   expect_error(analyzeBlockExclusion(sol, items = items_small, idCol = "ID", exclusionTuples),
                "'solverOut' does not contain a feasible solution.")
 })

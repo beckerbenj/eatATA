@@ -66,7 +66,7 @@ useSolver <- function(allConstraints,
   # check form names
   if(is.null(formNames)) formNames <- "form"
   if(length(formNames) == 1) formNames <- paste0(formNames, "_", seq_len(nForms))
-  if(length(formNames) != nForms) stop("'formNames' should be a character string of length 1 or of lenght 'nForms'.")
+  if(length(formNames) != nForms) stop("'formNames' should be a character string of length 1 or of length 'nForms'.")
 
   # call wrappers around solver
   if(solver == "GLPK") {

@@ -105,6 +105,21 @@ test_that("Output format", {
   expect_equal(rownames(out$item_matrix), paste0("it", seq_len(nItems)))
 })
 
+test_that("Output format infeasible solution", {
+  inf_constr1 <- itemValuesConstraint(nForms = 2, itemValues = c(1, rep(0, nrow(items)-1)),
+                                     operator = "=", targetValue = 1, itemIDs = items$itemIDs)
+  expect_message(out <- useSolver(allConstraints = list(usage, perForm, target, inf_constr1),
+                                  solver = "GLPK", verbose = FALSE),
+                 "The solution is undefined")
+
+  expect_equal(names(out), c("solution_found", "solution", "solution_status", "item_matrix"))
+  #expect_equal(rownames(out$item_matrix), sprintf(paste("it%0", nchar(nItems), "d", sep=''), seq_len(nItems)))
+  nItems <- attr(usage, "nItems")
+  expect_equal(rownames(out$item_matrix), paste0("it", seq_len(nItems)))
+  expect_false(out$solution_found)
+  expect_equal(out$solution, rep(0, (nItems*2)+1))
+})
+
 nItems <- 100
 nForms <- 2
 set.seed(144)
@@ -116,7 +131,7 @@ items <- data.frame(ID = paste0("item_", 1:nItems),
 usage <- itemUsageConstraint(nForms = nForms, nItems = nItems, operator = "=", targetValue = 1, itemIDs = items$ID)
 target <- minimaxConstraint(nForms = nForms, itemValues = with(items, structure(itemValues, names = ID)),
                                targetValue = 0, itemIDs = items$ID)
-test_that("Solve problem with time limit using glpk", {
+test_that("Solve problem with time limit using glpk (suboptimal solution", {
   expect_message(out <- useSolver(allConstraints = list(usage, target),
                                   solver = "GLPK", timeLimit = 0.1, verbose = FALSE),
                  "The solution is feasible, but may not be optimal.")
@@ -128,7 +143,7 @@ test_that("useSolver returns errors", {
                          solver = "G", timeLimit = 0.1, verbose = FALSE))
   expect_error(useSolver(allConstraints = list(usage, target),
                          solver = "GL", timeLimit = 0.1, verbose = FALSE,
-                         formNames = c("to", "many", "names")), "'formNames' should be a character string of length 1 or of lenght 'nForms'.")
+                         formNames = c("to", "many", "names")), "'formNames' should be a character string of length 1 or of length 'nForms'.")
 })
 
 

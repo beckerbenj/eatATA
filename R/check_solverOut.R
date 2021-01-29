@@ -11,6 +11,6 @@ check_solverOut <- function(solverOut) {
 }
 
 check_solution_true <- function(solverOut) {
-  if(!solverOut$solution_found) stop("'solverOut' does not contain a feasible solution.")
+  if(!solverOut$solution_found && all(solverOut$solution == 0)) stop("'solverOut' does not contain a feasible solution.")
   return()
 }
