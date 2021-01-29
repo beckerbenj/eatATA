@@ -56,6 +56,9 @@ test_that("analyze block exclusions errors", {
                "'exclusionTuples' must have two columns.")
   expect_error(analyzeBlockExclusion(sol, items = items_small, idCol = "ID", exclusionTuples = "a"),
                "'exclusionTuples' must be a data.frame.")
+  sol$solution_found <- FALSE
+  expect_error(analyzeBlockExclusion(sol, items = items_small, idCol = "ID", exclusionTuples),
+               "'solverOut' does not contain a feasible solution.")
 })
 
 test_that("block exclusions without item pool depletion", {

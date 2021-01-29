@@ -32,6 +32,8 @@ analyzeComplexBlockExclusion <- function(solverOut_list, items_list, idCol, excl
 
   ### restructure all in one big object
   processedObj <- Map(function(solverOut, items){
+    check_solverOut(solverOut)
+    check_solution_true(solverOut)
     inspectSolution(solverOut, items, idCol = idCol, colNames = names(items_list[[1]]), colSums = FALSE)
   }, solverOut = solverOut_list, items = items_list)
   processedObj <- unlist(processedObj, recursive = FALSE)

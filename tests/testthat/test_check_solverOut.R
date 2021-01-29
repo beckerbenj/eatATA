@@ -1,7 +1,7 @@
 #load("tests/testthat/helper_BlockExclusions.RData")
 load("helper_BlockExclusions.RData")
 
-test_that("checks correctly", {
+test_that("check_solverOut checks correctly", {
   sol2 <- sol3 <- sol4 <- sol5 <- sol
 
   expect_error(check_solverOut(1), "'solverOut' must be a list.")
@@ -16,6 +16,14 @@ test_that("checks correctly", {
   expect_error(check_solverOut(sol5), "'solverOut$item_matrix' must be data.frame.", fixed = TRUE)
 })
 
-test_that("Is silent correctly", {
+test_that("check_solverOut is silent correctly", {
   expect_silent(check_solverOut(sol))
 })
+
+test_that("check_solution_true", {
+  expect_silent(check_solution_true(sol))
+  sol$solution_found <- FALSE
+  expect_error(check_solution_true(sol),
+               "'solverOut' does not contain a feasible solution.")
+})
+

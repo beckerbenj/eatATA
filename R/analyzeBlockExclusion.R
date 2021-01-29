@@ -56,6 +56,7 @@ analyzeBlockExclusion <- function(solverOut, items, idCol, exclusionTuples, form
   if(!(is.data.frame(exclusionTuples) || is.matrix(exclusionTuples))) stop("'exclusionTuples' must be a data.frame or matrix.")
   if(ncol(exclusionTuples) != 2) stop("'exclusionTuples' must have two columns.")
   check_solverOut(solverOut)
+  check_solution_true(solverOut)
 
   processedObj <- inspectSolution(solverOut, items, idCol = idCol, colNames = names(items), colSums = FALSE)
 

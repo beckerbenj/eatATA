@@ -13,6 +13,7 @@
 
 ## Internal Changes
 
+* input checks (feasible solution?) for `analyzeBlockExclusion()` and `analyzeComplexBlockExclusion()`
 * uniqueness of argument `itemID` is checked
 * introduction of `constraint`-class with specific methods and constructor functions
 

@@ -9,3 +9,8 @@ check_solverOut <- function(solverOut) {
   if(!is.data.frame(solverOut$item_matrix)) stop("'solverOut$item_matrix' must be data.frame.")
   return()
 }
+
+check_solution_true <- function(solverOut) {
+  if(!solverOut$solution_found) stop("'solverOut' does not contain a feasible solution.")
+  return()
+}
