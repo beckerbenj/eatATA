@@ -13,6 +13,7 @@ comb_itemIDs_nItems <- function(itemIDs, nItems = NULL) {
 check_itemIDs <- function(itemIDs) {
   if(!is.null(itemIDs) && (!is.character(itemIDs) && !is.numeric(itemIDs))) stop("'itemIDs' needs to be a vector.")
   if(is.null(itemIDs)) warning("Argument 'itemIDs' is missing. 'itemIDs' will be generated automatically.")
+  if(any(duplicated(itemIDs))) stop("There are duplicate values in 'itemIDs'.")
   return()
 }
 

@@ -12,6 +12,7 @@
 
 ## Internal Changes
 
+* uniqueness of argument `itemID` is checked
 * introduction of `constraint`-class with specific methods and constructor functions
 
 # eatATA 0.9.1

@@ -20,6 +20,8 @@ test_that("check_itemIDs_nItems", {
                "'itemIDs' and 'nItems' imply different item numbers.")
   expect_error(comb_itemIDs_nItems(mtcars),
                "'itemIDs' needs to be a vector.")
+  expect_error(comb_itemIDs_nItems(c(1, 1)),
+               "There are duplicate values in 'itemIDs'.")
   expect_warning(comb_itemIDs_nItems(NULL, 5),
                "Argument 'itemIDs' is missing. 'itemIDs' will be generated automatically.")
   expect_silent(out <- comb_itemIDs_nItems(c("item1", "item2")))
