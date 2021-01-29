@@ -193,11 +193,27 @@ constr_list <- list(itemOverlap, mc_openItems, cmcItems, saItems,
 
 Now I can call the `useSolver()` function, which restructures the constraints internally and solves the optimization problem. Using the `solver` argument I specify `GLPK` as the solver (other alternatives are `lpSolve`, `Symphony` and `Gurobi`). Using the `timeLimit` argument we set the time limit to 10. This means I limit the solver to stop searching for an optimal solution after 10 seconds. Note that the computation times might depend on the solver you have selected.
 
-```{r solver, eval = TRUE, message=TRUE}
+```{r solver_local, eval = FALSE, echo = FALSE}
+# Local optimization chunk; prevents occasional errors on servers if no feasible solution is found
+output_local <- capture.output(solver_raw_local <- useSolver(constr_list, nForms = nForms, nItems = nItems, 
+                        itemIDs = items$Item_ID, solver = "GLPK", timeLimit = 30))
+saveRDS(solver_raw_local, "use_case_solver_out.RDS")
+saveRDS(output_local, "use_case_output.RDS")
+
+```
+
+```{r solver, eval = FALSE, message=TRUE}
 # Optimization
 solver_raw <- useSolver(constr_list, nForms = nForms, nItems = nItems, 
                         itemIDs = items$Item_ID, solver = "GLPK", timeLimit = 10)
 
+```
+
+```{r solver_load, eval = TRUE, echo = FALSE}
+solver_raw <- readRDS("use_case_solver_out.RDS")
+output_local <- readRDS("use_case_output.RDS")
+output_local
+message("The solution is feasible, but may not be optimal")
 ```
 
 The function provides output that indicates whether an optimal solution has been found. In our case, a viable solution has been found but the function reached the time limit before finding the optimal solution.
