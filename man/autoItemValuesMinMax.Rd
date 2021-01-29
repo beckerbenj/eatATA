@@ -7,6 +7,7 @@
 autoItemValuesMinMax(
   nForms,
   itemValues,
+  testLength = NULL,
   allowedDeviation = NULL,
   relative = FALSE,
   verbose = TRUE,
@@ -17,6 +18,8 @@ autoItemValuesMinMax(
 \item{nForms}{Number of forms to be created.}
 
 \item{itemValues}{Item parameter/values for which the sum per test form should be constrained.}
+
+\item{testLength}{to be documented.}
 
 \item{allowedDeviation}{Numeric value of length 1. How much deviance is allowed from target values?}
 
@@ -32,13 +35,15 @@ A sparse matrix.
 \description{
 \code{\link{itemValuesDeviation}} creates constraints related to an item parameter/value. \code{autoItemValuesMixMax} automatically
 determines the appropriate \code{targetValue} and then calls \code{\link{itemValuesDeviation}}. The function only works for
-(dichotomous) dummy indicators with values 0 or 1 and if the item pool is fully depleted in the test assembly.
+(dichotomous) dummy indicators with values 0 or 1.
 }
 \details{
-Two scenarios are possible when automatically determining the target value: (a) Either items with the selected property could be exactly
+Two scenarios are possible when automatically determining the target value:
+(a) Either items with the selected property could be exactly
 distributed across test forms or (b) this is not possible. An example would be 2 test forms and 4 multiple choice items (a) or 2 test
 forms and 5 multiple choice items (b). If (a), the tolerance level works exactly as one would expect. If (b) the tolerance level is
-adapted, meaning that if tolerance level is 0 in example (b), allowed values are 2 or 3 multiple choice items per test form.
+adapted, meaning that if tolerance level is 0 in example (b), allowed values are 2 or 3 multiple choice items per test form. For detailed documentation on how the minimum and maximum are calculated
+see also \code{\link{computeTargetValues}}.
 }
 \examples{
 autoItemValuesMinMax(2, itemValues = c(0, 1, 0, 1))

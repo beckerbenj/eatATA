@@ -22,6 +22,13 @@ test_that("auto item value", {
                autoItemValuesMinMax(nForms = 2, itemValues = c(1, 1, 1, 1), allowedDeviation = .5, relative = TRUE, verbose = FALSE, itemIDs = 1:4))
 })
 
+test_that("auto item value with specific testlength", {
+  out <- autoItemValuesMinMax(nForms = 2, itemValues = c(1, 1, 1, 1), testLength = 1,
+                              allowedDeviation = 0, verbose = FALSE, itemIDs = 1:4)
+  expect_equal(out$A_binary[1, ], c(1, 1, 1, 1, 0, 0, 0, 0))
+  expect_equal(out$A_binary[4, ], c(0, 0, 0, 0, 1, 1, 1, 1))
+  expect_equal(out$d, c(min = 1 , min = 1, max = 1, max = 1))
+})
 
 test_that("auto item value gives the correct messages + warnings", {
   expect_message(out <- autoItemValuesMinMax(nForms = 2, itemValues = c(1, 1, 1, 1, 1), itemIDs = 1:5),

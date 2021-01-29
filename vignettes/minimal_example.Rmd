@@ -56,6 +56,14 @@ testTime <- itemValuesDeviation(nForms = 1,
                                 relative = FALSE, 
                                 itemIDs = items_sim$id)
 
+testTime2 <- autoItemValuesMinMax(nForms = 1, 
+                                itemValues = items_sim$mean_time,
+                                testLength = 10, 
+                                allowedDeviation = 5,
+                                relative = FALSE, 
+                                itemIDs = items_sim$id)
+
+
 solver_out <- useSolver(list(itemNumber, itemUsage, testTime, testInfo),
                         solver = "GLPK")
 
