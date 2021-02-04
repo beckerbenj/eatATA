@@ -1,10 +1,10 @@
 ---
-title: "Minimal Automated Test Assembly Example"
+title: "Typical Use of eatATA: a Minimal Example"
 author: "Benjamin Becker"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Minimal Automated Test Assembly Example}
+  %\VignetteIndexEntry{Typical Use of eatATA: a Minimal Example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,28 +19,39 @@ knitr::opts_chunk$set(
 `eatATA` efficiently translates test design requirements for Automated Test Assembly (`ATA`) into constraints for a Mixed Integer Linear Programming Model (MILP). A number of efficient and user-friendly functions are available, and the resulting matrix of constrains can be easily transformed to be in line with a MILP solver, like the `GLPK` solver. In the remainder of this vignette we will illustrate the use of `eatATA` using a minimal example.
 
 ## Setup
-The `eatATA` package can be installed from `CRAN`.  
+The `eatATA` package can be installed from `CRAN`. As a default solver, we recommend `GLPK`, which is automatically installed alongside this package.   
 
 ```{r installation, eval = FALSE}
 install.packages("eatATA")
 ```
 
-As a default solver, we recommend `GLPK`, which is automatically installed alongside this package. If you want to use `Gurobi` as a solver (the most powerful and efficient solver currently implemented in `eatATA`), an external software installation and licensing is required. This means, you need to install the `Gurobi` solver and its corresponding `R` package. A detailed vignette on the installation process can be found [here](https://CRAN.R-project.org/package=prioritizr/vignettes/gurobi_installation.html). 
+## Item Pool
 
-First, `eatATA` is loaded into your `R` session.
+First, `eatATA` is loaded into your `R` session. In this vignette we use a small simulated item pool, `items_sim`. The goal will be to assemble a single test form consisting of ten items, an average test time of eight minutes and maximum `TIF` at medium ability. We therefore calculate the `IIF` at medium ability and append it to the item pool using the `calculateIFF()` function.
 
-## Example Code
 ```{r library, message = FALSE}
 # loading eatATA
 library(eatATA)
 
-items_sim
-
+str(items_sim)
 items_sim[, "IIF"] <- calculateIIF(B = items_sim$difficulty, theta = 0)
+```
 
+
+## Objective Function
+
+Next, the objective function is defined: The TIF should be maximized at medium ability. For this, we use the `maxConstraint()` function. Other available constraint functions are `minConstraint()`, `maximinConstraint()`, `minimaxConstraint()`, and `cappedMaximinConstraint()`.
+
+```{r objFun, message = FALSE}
 testInfo <- maxConstraint(nForms = 1, itemValues = items_sim$IIF,
                           itemIDs = items_sim$id)
+```
 
+## Constraints
+
+Our further, fixed constraints are defined as additional constraint objects. 
+
+```{r constraints, message = FALSE}
 itemNumber <- itemsPerFormConstraint(nForms = 1, operator = "=", 
                                      targetValue = 10, 
                                      itemIDs = items_sim$id)
@@ -55,21 +66,47 @@ testTime <- itemValuesDeviation(nForms = 1,
                                 allowedDeviation = 5,
                                 relative = FALSE, 
                                 itemIDs = items_sim$id)
+```
 
+Alternatively, we could determine the appropriate test time based on the item pool using the `autoItemValuesMinMax()` function.
+
+```{r test time, message = TRUE}
 testTime2 <- autoItemValuesMinMax(nForms = 1, 
                                 itemValues = items_sim$mean_time,
                                 testLength = 10, 
                                 allowedDeviation = 5,
                                 relative = FALSE, 
                                 itemIDs = items_sim$id)
+```
 
 
+
+## Solver usage
+
+To automatically assemble the test form based on our constraints, we call the `useSolver()` function. In this function we define which solver should be used as back end.
+
+```{r solver, message = FALSE}
 solver_out <- useSolver(list(itemNumber, itemUsage, testTime, testInfo),
                         solver = "GLPK")
-
-inspectSolution(solver_out, items = items_sim, idCol = "id")
-appendSolution(solver_out, items = items_sim, idCol = "id")
-
 ```
+
+
+## Inspect solution
+
+The solution can be inspected directly via `inspectSolution()` or appended to the item pool via `appendSolution()`. Using the `inspectSolution()` function an additional row is created that calculates the column sums for all numeric variables. 
+
+```{r inspect, message = FALSE}
+inspectSolution(solver_out, items = items_sim, idCol = "id")
+```
+
+```{r append, message = FALSE}
+appendSolution(solver_out, items = items_sim, idCol = "id")
+```
+
+
+
+
+
+
 
 

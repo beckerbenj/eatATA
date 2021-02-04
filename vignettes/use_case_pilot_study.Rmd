@@ -1,10 +1,10 @@
 ---
-title: "Typical Use of eatATA: a Case-Based Example"
+title: "Typical Use of eatATA: a Pilot Study Example"
 author: "Benjamin Becker"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Typical Use of eatATA: a Case-Based Example}
+  %\VignetteIndexEntry{Typical Use of eatATA: a Pilot Study Example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-`eatATA` efficiently translates test design requirements for Automated Test Assembly (`ATA`) into constraints for a Mixed Integer Linear Programming Model (MILP). A number of efficient and user-friendly functions are available, and the resulting matrix of constrains can be easily transformed to be in line with a MILP solver, like the `GLPK` or `Gurobi` solvers. In the remainder of this vignette I will illustrate the typical use of `eatATA` using a case-based example.
+`eatATA` efficiently translates test design requirements for Automated Test Assembly (`ATA`) into constraints for a Mixed Integer Linear Programming Model (MILP). A number of efficient and user-friendly functions are available, and the resulting matrix of constrains can be easily transformed to be in line with a MILP solver, like the `GLPK` solver. In the remainder of this vignette I will illustrate the typical use of `eatATA` using a case-based example.
 
 ## Setup
 The `eatATA` package can be installed from `CRAN`.  
@@ -25,9 +25,7 @@ The `eatATA` package can be installed from `CRAN`.
 install.packages("eatATA")
 ```
 
-As a default solver, we recommend `GLPK`, which is automatically installed alongside this package. If you want to use `Gurobi` as a solver (the most powerful and efficient solver currently implemented in `eatATA`), an external software installation and licensing is required. This means, you need to install the `Gurobi` solver and its corresponding `R` package. A detailed vignette on the installation process can be found [here](https://CRAN.R-project.org/package=prioritizr/vignettes/gurobi_installation.html). 
-
-First, `eatATA` is loaded into your `R` session.
+As a default solver, we recommend `GLPK`, which is automatically installed alongside this package. First, `eatATA` is loaded into your `R` session.
 
 ```{r library, message = FALSE}
 # loading eatATA

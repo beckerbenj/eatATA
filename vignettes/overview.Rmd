@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-`eatATA` efficiently translates test design requirements for Automated Test Assembly (`ATA`) into constraints for a Mixed Integer Linear Programming Model (MILP). A number of efficient and user-friendly functions are available, and the resulting matrix of constrains can be easily transformed to be in line with a MILP solver. Currently, `GLPK`, `lpSolve` and `Gurobi` are supported as solvers. In the remainder of this vignette we provide an overview of the functionality of `eatATA`.
+`eatATA` efficiently translates test design requirements for Automated Test Assembly (`ATA`) into constraints for a Mixed Integer Linear Programming Model (MILP). A number of efficient and user-friendly functions are available, and the resulting matrix of constrains can be easily transformed to be in line with a MILP solver. Currently, `GLPK`, `lpSolve`, `SYMPHONY`, and `Gurobi` are supported as solvers. In the remainder of this vignette we provide an overview of the functionality of `eatATA`.
 
 ## Setup
 The `eatATA` package can be installed from `CRAN`.  
@@ -25,7 +25,7 @@ The `eatATA` package can be installed from `CRAN`.
 install.packages("eatATA")
 ```
 
-As a default solver, we recommend `GLPK`, which is automatically installed alongside this package. If you want to use `Gurobi` as a solver (the most powerful and efficient solver currently implemented in `eatATA`), an external software installation and licensing is required. This means, you need to install the `Gurobi` solver and its corresponding `R` package. A detailed vignette on the installation process can be found [here](https://CRAN.R-project.org/package=prioritizr/vignettes/gurobi_installation.html). Note that currently `gurobi` works only under R versions <= 3.6.3.
+As a default solver, we recommend `GLPK`, which is automatically installed alongside this package. If you want to use `Gurobi` as a solver (the most powerful and efficient solver currently implemented in `eatATA`), an external software installation and licensing is required. This means, you need to install the `Gurobi` solver and its corresponding `R` package. A detailed vignette on the installation process can be found [here](https://CRAN.R-project.org/package=prioritizr/vignettes/gurobi_installation.html). 
 
 ```{r library, message = FALSE}
 # loading eatATA
