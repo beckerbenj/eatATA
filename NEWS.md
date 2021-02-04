@@ -1,4 +1,4 @@
-# eatATA 0.9.1.9000
+# eatATA 0.10.0
 
 * argument `nItems` either completely removed from constraint functions or exchangeable with `itemIDs` 
 * `itemTargetConstraint()` substituted by `minimaxConstraint()`, `maximinConstraint()`, `maxConstraint()`, `minConstraint()`, `cappedMaximinConstraint()` which allow for different types of optimization goals
