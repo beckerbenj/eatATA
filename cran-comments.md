@@ -3,6 +3,7 @@
 * OS X (on Github Action), release
 * ubuntu 16.04 (on Github Action), oldrel, release, devel
 * windows (on Github Action), release 
+* r-hub: windows-x86_64-devel, ubuntu-gcc-release, fedora-clang-devel
 
 
 ## R CMD check results
