@@ -1,8 +1,8 @@
 ## Test environments
 * local windows x86_64-w64-mingw32, R 4.0.2
-* OS X (on travis-ci), release
-* ubuntu 14.04 (on travis-ci), oldrel, release, devel
-* windows (on AppVeyor), release 
+* OS X (on Github Action), release
+* ubuntu 16.04 (on Github Action), oldrel, release, devel
+* windows (on Github Action), release 
 
 
 ## R CMD check results

@@ -1,10 +1,10 @@
 ---
-title: "Overview of eatATA functionality"
+title: "Overview of `eatATA` Functionality"
 author: "Benjamin Becker"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Overview of eatATA functionality}
+  %\VignetteIndexEntry{Overview of `eatATA` Functionality}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-`eatATA` efficiently translates test design requirements for Automated Test Assembly (`ATA`) into constraints for a Mixed Integer Linear Programming Model (MILP). A number of efficient and user-friendly functions are available, and the resulting matrix of constrains can be easily transformed to be in line with a MILP solver. Currently, `GLPK`, `lpSolve`, `SYMPHONY`, and `Gurobi` are supported as solvers. In the remainder of this vignette we provide an overview of the functionality of `eatATA`.
+`eatATA` efficiently translates test design requirements for Automated Test Assembly (`ATA`) into constraints for a Mixed Integer Linear Programming Model (MILP). A number of efficient and user-friendly functions are available that translate conceptual test assembly constraints to constraint objects for MILP solver. Currently, `GLPK`, `lpSolve`, `SYMPHONY`, and `Gurobi` are supported as solvers. In the remainder of this vignette we provide an overview of the functionality of `eatATA`. A minimal `ATA` example can be found in the vignette [Typical Use of `eatATA`: a Minimal Example](minimal_example.html), a more complex use case for a pilot study can be found in the vignette [Typical Use of `eatATA`: a Pilot Study Example](use_case_pilot_study.html).
 
 ## Setup
 The `eatATA` package can be installed from `CRAN`.  
@@ -25,18 +25,26 @@ The `eatATA` package can be installed from `CRAN`.
 install.packages("eatATA")
 ```
 
-As a default solver, we recommend `GLPK`, which is automatically installed alongside this package. If you want to use `Gurobi` as a solver (the most powerful and efficient solver currently implemented in `eatATA`), an external software installation and licensing is required. This means, you need to install the `Gurobi` solver and its corresponding `R` package. A detailed vignette on the installation process can be found [here](https://CRAN.R-project.org/package=prioritizr/vignettes/gurobi_installation.html). 
+As a default solver, we recommend `GLPK`, which is automatically installed alongside this package. `lpSolve` and `SYMPHONY` are also freely available open source solvers. If you want to use `Gurobi` as a solver (the most powerful and efficient solver currently supported by `eatATA`), an external software installation and licensing is required. This means, you need to install the `Gurobi` solver and its corresponding `R` package. A detailed vignette on the installation process can be found [here](https://CRAN.R-project.org/package=prioritizr/vignettes/gurobi_installation.html). 
 
 ```{r library, message = FALSE}
 # loading eatATA
 library(eatATA)
 ```
 
-
 ## Item pool preparation
 `eatATA` provides functions to calculate item information function (`calculateIIF()`) and expected response times (`calculatExpectedRT()`). `dummiesToFactor()` allows the transformation of a variable coded as multiple dummy variables into a single factor. `itemExclusionTuples()` allows the transformation of item exclusions saved as a single character variable into item exclusion tuples (pairs).
 
-## Constraint functions
+## Objective function
+Constraints defining the optimization goal of the automated test assembly:
+
+* `maxConstraint()`
+* `minConstraint()`
+* `maximinConstraint()`
+* `minimaxConstraint()`
+* `cappedMaximinConstraint()`
+
+## Constraints
 Here is a list of functions that can be used to set constraints:
 
 Constraints controlling how often an item should or an be used:
@@ -65,19 +73,11 @@ Constraints controlling metric properties of items across test forms:
 * `itemValuesMin()`
 * `itemValuesRange()`
 
-Constraints defining the optimization goal of the automated test assembly:
-
-* `maxConstraint()`
-* `minConstraint()`
-* `maximinConstraint()`
-* `minimaxConstraint()`
-* `cappedMaximinConstraint()`
-
 ## Solver function
 After defining all required constraints using the functions above, `useSolver()` can be used to call the desired solver.
 
 ## Using the solver output
-`useSolver()` provides the identical output independent of the solver used. This output can be further processed by `inspectSolution()` (to inspect the assembled booklets) and `appendSolution()` (to append the assembly information to the existing item `data.frame`).
+`useSolver()` structures the output consistently, independent of the solver used. This output can be further processed by `inspectSolution()` (to inspect the assembled booklets) and `appendSolution()` (to append the assembly information to the existing item `data.frame`).
 
 ## Booklet exclusions
-If test form assembly can be performed in a two stage process, first assembling booklets from items and then assembling test forms from booklets. In this case, item exclusions might translate to exclusions on booklets level. Booklet exclusions can exist between booklets of one automated booklet assembly run or between booklets of multiple automated booklet assembly runs. For the first case, `analyzeBlockExclusion()` can be used to inspect booklet exclusions. For the second case, `analyzeComplexBlockExclusion()` can be used to inspect booklet exclusions.
+Test form assembly might be performed in a two stage process, first assembling booklets from items and then assembling test forms from booklets. In this case, item exclusions might translate to exclusions on booklets level. Booklet exclusions can exist between booklets of one automated booklet assembly run or between booklets of multiple automated booklet assembly runs. For the first case, `analyzeBlockExclusion()` can be used to inspect booklet exclusions. For the second case, `analyzeComplexBlockExclusion()` can be used to inspect booklet exclusions.

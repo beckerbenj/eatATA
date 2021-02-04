@@ -1,10 +1,10 @@
 ---
-title: "Typical Use of eatATA: a Pilot Study Example"
-author: "Benjamin Becker"
+title: "Typical Use of `eatATA`: a Pilot Study Example"
+author: "Benjamin Becker, Dries Debeer"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Typical Use of eatATA: a Pilot Study Example}
+  %\VignetteIndexEntry{Typical Use of `eatATA`: a Pilot Study Example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-`eatATA` efficiently translates test design requirements for Automated Test Assembly (`ATA`) into constraints for a Mixed Integer Linear Programming Model (MILP). A number of efficient and user-friendly functions are available, and the resulting matrix of constrains can be easily transformed to be in line with a MILP solver, like the `GLPK` solver. In the remainder of this vignette I will illustrate the typical use of `eatATA` using a case-based example.
+`eatATA` efficiently translates test design requirements for Automated Test Assembly (`ATA`) into constraints for a Mixed Integer Linear Programming Model (MILP). A number of efficient and user-friendly functions are available that translate conceptual test assembly constraints to constraint objects for MILP solvers, like the `GLPK` solver. In the remainder of this vignette I will illustrate the typical use of `eatATA` using a case-based example. A general overview over `eatATA` can be found in the vignette [Overview of `eatATA` Functionality](overview.html).
 
 ## Setup
 The `eatATA` package can be installed from `CRAN`.  
@@ -25,7 +25,7 @@ The `eatATA` package can be installed from `CRAN`.
 install.packages("eatATA")
 ```
 
-As a default solver, we recommend `GLPK`, which is automatically installed alongside this package. First, `eatATA` is loaded into your `R` session.
+First, `eatATA` is loaded into the `R` session.
 
 ```{r library, message = FALSE}
 # loading eatATA
@@ -34,7 +34,7 @@ library(eatATA)
 
 
 ## Item pool
-No ATA without an item pool. In this example I use a fictional example item pool of 80 items. The item pool information is stored as an `excel` file that is included in the package. To import the item pool information into `R` I recommend using the package `readxl`. This package imports the data as a `tibble`, but in the code below, the item pool is immediately transformed into a `data.frame`. 
+No `ATA` without an item pool. In this example we use a fictional example item pool of 80 items. The item pool information is stored as an `excel` file that is included in the package. To import the item pool information into `R` we recommend using the package `readxl`. This package imports the data as a `tibble`, but in the code below, the item pool is immediately transformed into a `data.frame`. 
 
 Note that `R` requires a rectangular data set. Yet, often excel files store additional information in rows above or below the "rectangular" item pool information. The `skip` argument in the `read_excel()` function can be used to skip unnecessary rows in the `excel` file. (Note that the item pool can also be directly accessed in the package via `items`; see `?items` for more information.)
 
@@ -64,7 +64,7 @@ items <- dummiesToFactor(items, dummies = paste0("diff_", 1:5), facVar = "itemDi
 items[c(24, 33, 37, 47, 48, 54, 76), ]
 ```
 
-In addition, the column `short_answer` can have `r max(items$short_answer)` as a value, and is consequently not a dummy variable. Therefore, I will (a) treat `short_answer` as a numerical value, (b) collapse `MC` and `open` into a new factor `MC_open_none`, (these dummies are mutually exclusive), and (c) turn `CMC` and the difficulty indicators into factors. (See `?autoItemValuesMinMax` and `?computeTargetValues` for further information on the different treatment of factors and numerical variables.)
+In addition, the column `short_answer` can have `r max(items$short_answer)` as a value, and is consequently not a dummy variable. Therefore, we will (a) treat `short_answer` as a numerical value, (b) collapse `MC` and `open` into a new factor `MC_open_none`, (these dummies are mutually exclusive), and (c) turn `CMC` and the difficulty indicators into factors. (See `?autoItemValuesMinMax` and `?computeTargetValues` for further information on the different treatment of factors and numerical variables.)
  
 
 ```{r data cleaning, message = FALSE}
@@ -81,7 +81,7 @@ items$f_CMC <- factor(items$CMC, labels = paste("CMC", c("no", "yes"), sep = "_"
 table(items$short_answer)
 ```
 
-## ATA goal
+## `ATA` goal
 
 In this example, the goal is to assemble 14 booklets out of the 80 items item pool. All items should be assigned to one (and only one booklet), so that there is no item overlap and the item pool is completely depleted.
 
@@ -99,7 +99,9 @@ To be more precise, the required constraints are:
 
 * as similar as possible response times across booklets
 
-For ease of use, I set up two variables that I will use frequently: the number of test forms or booklets to be created (`nForms`) and the number of items in the item pool (`nItems`).
+Note that the booklets will later be manually assembled to test forms.
+
+For ease of use, we set up two variables that we will use frequently: the number of test forms or booklets to be created (`nForms`) and the number of items in the item pool (`nItems`).
 
 ```{r fixed variables, message = FALSE}
 # set up fixed variables
@@ -107,19 +109,29 @@ nItems <- nrow(items)  # number of items
 nForms <- 14           # number of blocks
 ```
 
+`eatATA` offers a variety of functions that automatically compute the constraints mentioned above and which are illustrated in the following. 
+
+## Objective Function
+
+First, we are setting up an optimization constraint. This constraint is not a clear *yes* or *no* constraint, and it does not have to be attained perfectly. Instead, the solver will minimize the distance of the actual booklet value for all booklets towards a target value. In our example, we specify 10 minutes as the target response time `RT_in_min` for all booklets.
+
+```{r target constraints}
+# optimize average time
+av_time <- minimaxConstraint(nForms, itemValues = items$RT_in_min, targetValue = 10,
+                             itemIDs = items$Item_ID)
+```
 
 ## Set up constraints
-`eatATA` offers a variety of function the automatically compute the constraints mentioned above. 
-
-The first two constraints (no item overlap and item pool depletion) can be implemented by a single function: `itemUsageConstraint()`. To achieve this, the `operator` argument should be set to `"="`. 
+The first two constraints (no item overlap and item pool depletion) can be implemented by a single function: `itemUsageConstraint()`. To achieve this, the `operator` argument should be set to `"="`, meaning that every item should be used exactly once in the booklet assembly. 
 
 ```{r item usage constraints}
-itemOverlap <- itemUsageConstraint(nForms, operator = "=", itemIDs = items$Item_ID) 
+itemOverlap <- itemUsageConstraint(nForms, targetValue = 1, 
+                                   operator = "=", itemIDs = items$Item_ID) 
 ```
 
 Constraints with respect to categorical variables or factors (like `MC_open_none`) or numerical variables (like `short_answer`), can be easily implemented using the `autoItemValuesMinMax()` function. The result of this function depends on whether a factor or a numerical variable is used. That is, `autoItemValuesMinMax()` automatically determines the minimum and maximum frequency of each category of a factor. But for numerical variables, it automatically determines the target value. 
 
-The `allowedDeviation` argument specifies the allowed range between booklets regarding the category or the numerical value. If the argument is omitted, it defaults to "no deviation is allowed" for numerical values, and to the minimal possible deviation for categorical variables or factors. Hence, for numeric values, I will specify `allowedDeviation = 1`. The function prints the calculated target value or the resulting allowed value range on booklet level.    
+The `allowedDeviation` argument specifies the allowed range between booklets regarding the category or the numerical value. If the argument is omitted, it defaults to "no deviation is allowed" for numerical values, and to the minimal possible deviation for categorical variables or factors. Hence, for numeric values, we specify `allowedDeviation = 1`. The function prints the calculated target value or the resulting allowed value range on booklet level.    
 
 ```{r categorical constraints}
 # item formats
@@ -159,7 +171,7 @@ excl_constraints <- itemExclusionConstraint(nForms = 14, exclusionTuples = exclu
                                             itemIDs = items$Item_ID)
 ```
 
-Another helpful function is the `itemsPerFormConstraint()` function, which constrains the number of items per test forms. However, since this is not required in this example, I will not use these constraints in the final ATA constraints.
+Another helpful function is the `itemsPerFormConstraint()` function, which constrains the number of items per booklet. However, since this is not required in this example, we will not use these constraints in the final `ATA` constraints.
 
 ```{r item numbers constraints}
 # number of items per test form
@@ -167,14 +179,6 @@ min_Nitems <- floor(nItems / nForms) - 3
 noItems <- itemsPerFormConstraint(nForms = nForms, operator = ">=", 
                                   targetValue = min_Nitems, itemIDs = items$Item_ID)
 
-```
-
-Finally, I am setting up an optimization constraint. This constraint is not a clear *yes* or *no* constraint, and it does not have to be attained perfectly. Instead, the solver will minimize the distance of the actual booklet value for all booklets towards a target value. In our example, we specify 10 minutes as the target response time `RT_in_min` for all booklets.
-
-```{r target constraints}
-# optimize average time
-av_time <- minimaxConstraint(nForms, itemValues = items$RT_in_min, targetValue = 10,
-                             itemIDs = items$Item_ID)
 ```
 
 
@@ -189,7 +193,7 @@ constr_list <- list(itemOverlap, mc_openItems, cmcItems, saItems,
                       av_time)
 ```
 
-Now I can call the `useSolver()` function, which restructures the constraints internally and solves the optimization problem. Using the `solver` argument I specify `GLPK` as the solver (other alternatives are `lpSolve`, `Symphony` and `Gurobi`). Using the `timeLimit` argument we set the time limit to 10. This means I limit the solver to stop searching for an optimal solution after 10 seconds. Note that the computation times might depend on the solver you have selected.
+Now we can call the `useSolver()` function, which restructures the constraints internally and solves the optimization problem. Using the `solver` argument we specify `GLPK` as the solver (other alternatives are `lpSolve`, `Symphony` and `Gurobi`). Using the `timeLimit` argument we set the time limit to 10. This means we limit the solver to stop searching for an optimal solution after 10 seconds. Note that the computation times might depend on the solver you have selected.
 
 ```{r solver_local, eval = FALSE, echo = FALSE}
 # Local optimization chunk; prevents occasional errors on servers if no feasible solution is found
@@ -220,7 +224,7 @@ If there is no feasible solution, one option is to relax some of the constraints
 
 ## Inspect Solution
 
-The solution provided by `eatATA` can be inspected using the `inspectSolution()` function. It allows me to inspect the assembled item blocks at a first glance, including some column sums.
+The solution provided by `eatATA` can be inspected using the `inspectSolution()` function. It allows us to inspect the assembled item blocks at a first glance, including some column sums.
 
 ```{r inspect solution}
 out_list <- inspectSolution(solver_raw, items = items, idCol = "Item_ID", colSums = TRUE,
@@ -228,10 +232,10 @@ out_list <- inspectSolution(solver_raw, items = items, idCol = "Item_ID", colSum
                                          "MC", "CMC", "short_answer", "open",
                                          paste0("diff_", 1:5)))
 
-## first two booklets
+# first two booklets
 out_list[1:2]
 ```
-In this case I also want to assemble the created booklets into test forms. Therefore, I am interested in booklet exclusions that can result from item exclusions. The `analyzeBlockExclusion()` function can be used to obtain tuples with booklet exclusions.
+In our case we want to assemble the created booklets into test forms. Therefore, we are interested in booklet exclusions that can result from item exclusions. The `analyzeBlockExclusion()` function can be used to obtain tuples with booklet exclusions.
 
 ```{r block exclusions}
 analyzeBlockExclusion(solverOut = solver_raw, item = items, idCol = "Item_ID", 

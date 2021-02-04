@@ -1,10 +1,10 @@
 ---
-title: "Typical Use of eatATA: a Minimal Example"
+title: "Typical Use of `eatATA`: a Minimal Example"
 author: "Benjamin Becker"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Typical Use of eatATA: a Minimal Example}
+  %\VignetteIndexEntry{Typical Use of `eatATA`: a Minimal Example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,10 +16,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-`eatATA` efficiently translates test design requirements for Automated Test Assembly (`ATA`) into constraints for a Mixed Integer Linear Programming Model (MILP). A number of efficient and user-friendly functions are available, and the resulting matrix of constrains can be easily transformed to be in line with a MILP solver, like the `GLPK` solver. In the remainder of this vignette we will illustrate the use of `eatATA` using a minimal example.
+`eatATA` efficiently translates test design requirements for Automated Test Assembly (`ATA`) into constraints for a Mixed Integer Linear Programming Model (MILP). A number of efficient and user-friendly functions are available that translate conceptual test assembly constraints to constraint objects for MILP solvers, like the `GLPK` solver. In the remainder of this vignette we will illustrate the use of `eatATA` using a minimal example. A general overview over `eatATA` can be found in the vignette [Overview of `eatATA` Functionality](overview.html).
 
 ## Setup
-The `eatATA` package can be installed from `CRAN`. As a default solver, we recommend `GLPK`, which is automatically installed alongside this package.   
+The `eatATA` package can be installed from `CRAN`. 
 
 ```{r installation, eval = FALSE}
 install.packages("eatATA")
@@ -33,14 +33,17 @@ First, `eatATA` is loaded into your `R` session. In this vignette we use a small
 # loading eatATA
 library(eatATA)
 
+# item pool structure
 str(items_sim)
+
+# calculate and append IIF
 items_sim[, "IIF"] <- calculateIIF(B = items_sim$difficulty, theta = 0)
 ```
 
 
 ## Objective Function
 
-Next, the objective function is defined: The TIF should be maximized at medium ability. For this, we use the `maxConstraint()` function. Other available constraint functions are `minConstraint()`, `maximinConstraint()`, `minimaxConstraint()`, and `cappedMaximinConstraint()`.
+Next, the objective function is defined: The `TIF` should be maximized at medium ability. For this, we use the `maxConstraint()` function.
 
 ```{r objFun, message = FALSE}
 testInfo <- maxConstraint(nForms = 1, itemValues = items_sim$IIF,
@@ -83,7 +86,7 @@ testTime2 <- autoItemValuesMinMax(nForms = 1,
 
 ## Solver usage
 
-To automatically assemble the test form based on our constraints, we call the `useSolver()` function. In this function we define which solver should be used as back end.
+To automatically assemble the test form based on our constraints, we call the `useSolver()` function. In this function we define which solver should be used as back end. As a default solver, we recommend `GLPK`, which is automatically installed alongside this package.   
 
 ```{r solver, message = FALSE}
 solver_out <- useSolver(list(itemNumber, itemUsage, testTime, testInfo),

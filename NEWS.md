@@ -8,8 +8,9 @@
 
 ## Documentation
 
-* minimal example vignette
-* vignette with package overview
+* reworked use case vignette
+* added minimal example vignette
+* added vignette with package overview
 
 ## Internal Changes
 
