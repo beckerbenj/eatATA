@@ -27,27 +27,33 @@ install.packages("eatATA")
 
 ## Item Pool
 
-First, `eatATA` is loaded into your `R` session. In this vignette we use a small simulated item pool, `items_sim`. The goal will be to assemble a single test form consisting of ten items, an average test time of eight minutes and maximum `TIF` at medium ability. We therefore calculate the `IIF` at medium ability and append it to the item pool using the `calculateIFF()` function.
+First, `eatATA` is loaded into your `R` session. In this vignette we use a small simulated item pool, `items_mini`. The goal will be to assemble a single test form consisting of ten items, an average test time of eight minutes and maximum `TIF` at medium ability. We therefore calculate the `IIF` at medium ability and append it to the item pool using the `calculateIFF()` function.
 
 ```{r library, message = FALSE}
 # loading eatATA
 library(eatATA)
 
 # item pool structure
-str(items_sim)
+str(items_mini)
 
 # calculate and append IIF
-items_sim[, "IIF"] <- calculateIIF(B = items_sim$difficulty, theta = 0)
+items_mini[, "IIF_0"] <- calculateIIF(B = items_mini$difficulty, theta = 0)
 ```
 
+In Table 1 you can see the first five items of the item pool.
+
+```{r item pool, eval = TRUE, results = 'asis', echo = FALSE}
+# create content bounderies in advance
+knitr::kable(items_mini[1:5,], digits = 3, caption = "Table 1. First 5 Items of the Item Pool")
+```
 
 ## Objective Function
 
 Next, the objective function is defined: The `TIF` should be maximized at medium ability. For this, we use the `maxConstraint()` function.
 
 ```{r objFun, message = FALSE}
-testInfo <- maxConstraint(nForms = 1, itemValues = items_sim$IIF,
-                          itemIDs = items_sim$id)
+testInfo <- maxConstraint(nForms = 1, itemValues = items_mini$IIF,
+                          itemIDs = items_mini$id)
 ```
 
 ## Constraints
@@ -57,29 +63,29 @@ Our further, fixed constraints are defined as additional constraint objects.
 ```{r constraints, message = FALSE}
 itemNumber <- itemsPerFormConstraint(nForms = 1, operator = "=", 
                                      targetValue = 10, 
-                                     itemIDs = items_sim$id)
+                                     itemIDs = items_mini$id)
 
 itemUsage <- itemUsageConstraint(nForms = 1, operator = "<=", 
                                  targetValue = 1, 
-                                 itemIDs = items_sim$id)
+                                 itemIDs = items_mini$id)
 
 testTime <- itemValuesDeviation(nForms = 1, 
-                                itemValues = items_sim$mean_time,
+                                itemValues = items_mini$mean_time,
                                 targetValue = 8 * 60, 
                                 allowedDeviation = 5,
                                 relative = FALSE, 
-                                itemIDs = items_sim$id)
+                                itemIDs = items_mini$id)
 ```
 
 Alternatively, we could determine the appropriate test time based on the item pool using the `autoItemValuesMinMax()` function.
 
 ```{r test time, message = TRUE}
 testTime2 <- autoItemValuesMinMax(nForms = 1, 
-                                itemValues = items_sim$mean_time,
+                                itemValues = items_mini$mean_time,
                                 testLength = 10, 
                                 allowedDeviation = 5,
                                 relative = FALSE, 
-                                itemIDs = items_sim$id)
+                                itemIDs = items_mini$id)
 ```
 
 
@@ -99,11 +105,11 @@ solver_out <- useSolver(list(itemNumber, itemUsage, testTime, testInfo),
 The solution can be inspected directly via `inspectSolution()` or appended to the item pool via `appendSolution()`. Using the `inspectSolution()` function an additional row is created that calculates the column sums for all numeric variables. 
 
 ```{r inspect, message = FALSE}
-inspectSolution(solver_out, items = items_sim, idCol = "id")
+inspectSolution(solver_out, items = items_mini, idCol = "id")
 ```
 
 ```{r append, message = FALSE}
-appendSolution(solver_out, items = items_sim, idCol = "id")
+appendSolution(solver_out, items = items_mini, idCol = "id")
 ```
 
 

@@ -13,4 +13,4 @@
 #' \item{MC, CMC, short_answer, open}{Answer formats.}
 #' \item{diff_1, diff_2, diff_3, diff_4, diff5}{Difficulty categories.}
 #' }
-"items"
+"items_vera"

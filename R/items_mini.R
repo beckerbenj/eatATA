@@ -11,4 +11,4 @@
 #' \item{mean_time}{Average response times in seconds.}
 #' \item{difficulty}{IRT difficulty parameter.}
 #' }
-"items_sim"
+"items_mini"

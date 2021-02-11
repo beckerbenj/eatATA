@@ -1,3 +1,8 @@
+# eatATA 0.10.0.9000
+
+* added simulated item pools for examples
+* renamed all item pools consistently (`items_mini`, `items_diao`, `items_pilot`, `items_vera`)
+
 # eatATA 0.10.0
 
 * argument `nItems` either completely removed from constraint functions or exchangeable with `itemIDs` 

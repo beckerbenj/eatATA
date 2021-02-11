@@ -19,7 +19,7 @@ test_that("warning for exclusions on non existant items", {
 
 
 test_that("item exclusion constraint big item pool", {
-  items <- eatATA::items
+  items <- eatATA::items_vera
   exclusionTuples <- itemExclusionTuples(items, idCol = "Item_ID", exclusions = "exclusions", sepPattern = ", ")
 
   out <- itemExclusionConstraint(nForms = 14, exclusionTuples = exclusionTuples, itemIDs = items$Item_ID)
@@ -87,7 +87,7 @@ test_that("item exclusion tuples other names and columnumbers", {
 })
 
 test_that("item exclusion tuples big item pool", {
-  items <- eatATA::items
+  items <- eatATA::items_vera
   exclusionTuples <- itemExclusionTuples(items, idCol = 1, exclusions = 2, sepPattern = ", ")
 
   expect_equal(dim(exclusionTuples), c(45, 2))
