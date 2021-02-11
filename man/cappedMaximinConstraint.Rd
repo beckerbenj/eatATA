@@ -33,11 +33,18 @@ An object of class \code{"constraint"}.
 Create \code{maximin}-constraints related to an item parameter/value. That is, the created
 constraints can be used to maximize the minimal sum of the
 item values (\code{itemValues}), while at the same time automatically setting
-an ideal upper limit to the overflow.
+an ideal upper limit to the overflow. More specifically, the _capped minimax_
+method described by Luo (2020) is used.
 }
 \examples{
 # constraint that minimizes the maximum difference per test form value and a
 #   target value of 0
 cappedMaximinConstraint(nForms = 2, itemValues = rep(-2:2, 2))
 
+}
+\references{
+Xiao Luo (2020). Automated Test Assembly with Mixed‐Integer Programming:
+The Effects of Modeling Approaches and Solvers.
+\emph{Journal of Educational Measurement}, 57(4), 547-565.
+\url{https://onlinelibrary.wiley.com/doi/10.1111/jedm.12262}
 }
