@@ -46,11 +46,11 @@ items <- data.frame(ID = c("items1", "items2", "items3", "items4"),
                      stringsAsFactors = FALSE)
 
 # Create tuples
-exTuples2 <- itemExclusionTuples(items = items, idCol = "ID", exclusions = "exclusions",
+exTuples2 <- itemTuples(items = items, idCol = "ID", infoCol = "exclusions",
                     sepPattern = ", ")
 
 #' ## Create constraints
-exclusion_constraint <- itemExclusionConstraint(nForms = 2, exclusionTuples = exTuples2,
+exclusion_constraint <- itemExclusionConstraint(nForms = 2, itemTuples = exTuples2,
                                                 itemIDs = items$ID)
 depletion_constraint <- depletePoolConstraint(2, nItems = 4,
                                                 itemIDs = items$ID)

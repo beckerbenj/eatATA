@@ -165,9 +165,9 @@ This transformation can be done using the `itemExclusionTuples()` function, whic
 
 ```{r exclusion constraints}
 # item exclusions
-exclusionTuples <- itemExclusionTuples(items, idCol = "Item_ID", 
-                                       exclusions = "exclusions", sepPattern = ", ")
-excl_constraints <- itemExclusionConstraint(nForms = 14, exclusionTuples = exclusionTuples, 
+exclusionTuples <- itemTuples(items, idCol = "Item_ID", 
+                                       infoCol = "exclusions", sepPattern = ", ")
+excl_constraints <- itemExclusionConstraint(nForms = 14, itemTuples = exclusionTuples, 
                                             itemIDs = items$Item_ID)
 ```
 
