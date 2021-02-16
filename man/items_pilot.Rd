@@ -19,6 +19,6 @@ A \code{data.frame} .
 items_pilot
 }
 \description{
-A \code{data.frame} containing 100 uncalibrated items with different categorical and metric properties.
+A \code{data.frame} containing 100 not yet calibrated items with different categorical and metric properties.
 }
 \keyword{datasets}

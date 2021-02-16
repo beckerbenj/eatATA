@@ -1,6 +1,7 @@
 # eatATA 0.10.0.9000
 
 * `itemInclusionConstraint()` added to force items to be in the same test forms
+* `stemInclusionTuples()` added to create inclusion tuples from column with shared stimulus
 * `itemExclusionTuples()` renamed to `itemTuples()`, as it can also be used for `itemInclusionConstraint()`
 * argument names in `itemTuples()` and `itemExclusionConstraint()` slightly modified
 * added simulated item pools for examples
