@@ -33,6 +33,24 @@ test_that("test if get_A_binary_items works", {
 })
 
 
+test_that("test if get_A_binary_items_forms works", {
+  nItems <- 5
+  nForms <- 3
+  values <- rep(1:8)
+  out <- get_A_binary_items_forms(nForms, nItems, values,
+                                  whichForms = c(1, 3),
+                                  whichItems = c(1, 3:5))
+
+  expect_equal(dim(out), c(1, nItems * nForms))
+  expect_equal(out[1, ], c(1, 0, 2, 3, 4,
+                           0, 0, 0, 0, 0,
+                           5, 0, 6, 7, 8))
+
+  expect_is(out, "Matrix")
+})
+
+
+
 test_that("test if make_info works", {
   whichForms <- 2:5
   info_text <- "test"
@@ -61,8 +79,20 @@ test_that("test if make_info works", {
 
   expect_is(out, "data.frame")
 
-  expect_error(make_info(info_text, whichForms, whichItems),
-               "One of 'whichForms' and 'whichItems' should be NULL.")
+  whichForms <- c(1, 3)
+  whichItems <- c(1, 3:5)
+  info_text <- "test3"
+
+  out <- make_info(info_text, whichForms = whichForms, whichItems = whichItems)
+
+  expect_equal(dim(out), c(1, 4))
+  expect_equal(out$constraint, info_text)
+  expect_equal(out$rowNr, 1)
+  expect_equal(out$itemNr, NA)
+  expect_equal(out$formNr, NA)
+
+  expect_is(out, "data.frame")
+
   expect_error(make_info(info_text),
                "'whichForms' and 'whichItems' should not be both NULL.")
 })
@@ -94,6 +124,21 @@ test_that("newConstraint works", {
                        sense = NULL,
                        info = make_info(whichForms, "test"),
                        itemIDs = paste("item", seq_len(nItems)))
+  expect_equal(attr(out, "itemIDs"), paste("item", seq_len(nItems)))
+
+  whichItems <- c(3, 6:8)
+  values <- 1:12
+
+  out <- newConstraint(get_A_binary_items_forms(nForms, nItems, values, whichForms, whichItems),
+                       A_real = NULL,
+                       operators = "=",
+                       d = sum(1:12),
+                       nForms = nForms,
+                       nItems = nItems,
+                       sense = NULL,
+                       info = make_info("test", whichForms, whichItems),
+                       itemIDs = paste("item", seq_len(nItems)))
+
   expect_equal(attr(out, "itemIDs"), paste("item", seq_len(nItems)))
 
 
@@ -251,6 +296,51 @@ test_that("makeItemConstraint works", {
 })
 
 
+
+test_that("makeItemFormConstraint works", {
+  nItems <- 5
+  nForms <- 3
+  values <- c(1, 1, 0)
+  whichItems <- c(2:4)
+  whichForms <- 2
+  autoInfo <- paste0(
+    paste0("formsNrs:", paste(whichForms, collapse = "-")),
+    paste0(" + itemsNrs:", paste(whichItems, collapse = "-")),
+    paste0(" = ", 1))
+
+  out <- makeItemFormConstraint(nForms, nItems, values, realVar = NULL,
+                            operator = "=", targetValue = 1, whichForms,
+                            whichItems, sense = NULL, info_text = NULL)
+  expect_equal(out$A_binary, get_A_binary_items_forms(nForms, nItems,
+                                                      values, whichForms,whichItems))
+  expect_equal(out$A_real, NULL)
+  expect_equal(out$operator, "=")
+  expect_equal(out$d, 1)
+  expect_equal(out$c_binary, NULL)
+  expect_equal(out$c_real, NULL)
+  expect_equal(attr(out, "info"), make_info(autoInfo, whichForms, whichItems))
+  expect_equal(attr(out, "sense"), NULL)
+  expect_equal(attr(out, "itemIDs"), sprintf(paste("it%0", nchar(nItems), "d", sep=''), seq_len(nItems)))
+
+  expect_is(out, "constraint")
+
+  expect_error(makeItemFormConstraint(nForms, nItems, values, realVar = NULL,
+                                  operator = "=", targetValue = 1,
+                                  whichForms = 3, whichItems = c(1, 6), sense = NULL, info_text = NULL,
+                                  itemIDs = paste0("item", seq_len(nItems))),
+               "'whichItems' should be a subset of either all the possible items numbers given 'nItems', or of the 'itemIDs'.")
+  expect_error(makeItemFormConstraint(nForms, nItems, values, realVar = NULL,
+                                      operator = "=", targetValue = 1,
+                                      whichForms = 4, whichItems = c(1, 2), sense = NULL, info_text = NULL,
+                                      itemIDs = paste0("item", seq_len(nItems))),
+               "'whichForms' should be a subset of all the possible test form numbers given 'nForms'.")
+  expect_error(makeItemFormConstraint(nForms, nItems, formValues, realVar = NULL,
+                                  operator = "=", targetValue = 1,
+                                  whichForms = 2, whichItems = "it01", sense = NULL, info_text = NULL,
+                                  itemIDs = paste0("item", seq_len(nItems))),
+               "The itemIDs in 'whichItems' do not correspond with the 'itemIDs'.")
+
+})
 
 
 test_that("combine2Constraints works", {

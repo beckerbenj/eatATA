@@ -50,6 +50,41 @@ get_A_binary_items <- function(nForms, nItems,
 }
 
 
+#### function that creates the A-matrix for binary decision variables - for item*forms constraints ####
+get_A_binary_items_forms <- function(nForms, nItems,
+                               values,
+                               whichForms = seq_len(nForms),
+                               whichItems = seq_len(nItems)){
+
+  # number of  used items
+  nUsedItems <- length(whichItems)
+
+  # number of used forms
+  nUsedForms = length(whichForms)
+
+  # length of values should be equal to nUsedItems * nUsedItems
+  nValues <- nUsedForms * nUsedItems
+  if(length(values) != nValues) stop("The number of values does not correspond to whichForms and whichItems.")
+
+  # number of binary decision variables
+  nBin <- nForms * nItems
+
+  # row indexes for binary decision variables
+  jIndex <- do.call(c, lapply(whichForms, function(formNr) {
+    whichItems + (formNr - 1) * nItems
+  }))
+
+  A_binary = Matrix::sparseMatrix(
+    i = rep(1, nValues),
+    j = jIndex,
+    x = values,
+    dims = c(1, nBin))
+  A_binary
+}
+
+
+
+
 #### function that makes data.frame with row-wise information about the constraints ####
 make_info <- function(info_text, whichForms = NULL, whichItems = NULL){
   if(is.null(whichForms)){
@@ -65,7 +100,12 @@ make_info <- function(info_text, whichForms = NULL, whichItems = NULL){
                       itemNr = NA,
                       constraint = info_text,
                       stringsAsFactors = FALSE)
-  } else stop("One of 'whichForms' and 'whichItems' should be NULL.")
+  } else
+    out <- data.frame(rowNr = 1,
+                      formNr = NA,
+                      itemNr = NA,
+                      constraint = info_text,
+                      stringsAsFactors = FALSE)
   return(out)
 }
 
@@ -73,7 +113,7 @@ make_info <- function(info_text, whichForms = NULL, whichItems = NULL){
 #### function that creates an S3 class 'constraint' ####
 newConstraint <- function(A_binary, A_real = NULL, operators, d,
                           nForms, nItems, sense = NULL,
-                          c_binary = NULL, c_real = NULL,info, itemIDs = NULL){
+                          c_binary = NULL, c_real = NULL, info, itemIDs = NULL){
 
   ### check input
   # check if A_binary is a Matrix
@@ -216,6 +256,56 @@ makeItemConstraint <- function(nForms, nItems, formValues, realVar, operator,
 
   # make constraint object
   newConstraint(A_binary, A_real, operators, d,
+                nForms, nItems, sense, c_binary, c_real, info,
+                itemIDs = itemIDs)
+
+}
+
+
+
+#### function that creates constraints across items and forms - general ####
+makeItemFormConstraint <- function(nForms, nItems, values, realVar, operator,
+                               targetValue, whichForms, whichItems, sense,
+                               c_binary = NULL,
+                               c_real = NULL, info_text = NULL, itemIDs = NULL){
+
+
+  if(!is.null(itemIDs) & is.character(whichItems)) {
+    if(!all(whichItems %in% itemIDs))
+      stop("The itemIDs in 'whichItems' do not correspond with the 'itemIDs'.")
+    whichItems <- which(itemIDs %in% whichItems)
+  }
+
+  # whichForms should be a subset of 1:nForms
+  if(! all(whichForms %in% seq_len(nForms))) stop("'whichForms' should be a subset of all the possible test form numbers given 'nForms'.")
+
+  # whichItems should be a subset of 1:nItems
+  if(! all(whichItems %in% seq_len(nItems))) stop("'whichItems' should be a subset of either all the possible items numbers given 'nItems', or of the 'itemIDs'.")
+
+  # number of used forms in constraints
+  nUsedForms <- length(whichForms)
+
+  # number of used forms in constraints
+  nUsedItems <- length(whichItems)
+
+  # A matrix with weights - only for binary variables
+  A_binary <- get_A_binary_items_forms(nForms, nItems, values, whichForms, whichItems)
+
+  # A matrix with weights - only for real variables
+  A_real <- 'if'(is.null(realVar), realVar, matrix(realVar))
+
+  # data.frame with information about the constraint
+  info <- make_info('if'(is.null(info_text),
+                         paste0(
+                           paste0("formsNrs:", paste(whichForms, collapse = "-")),
+                           paste0(" + itemsNrs:", paste(whichItems, collapse = "-")),
+                           paste0(" = ", targetValue)),
+                         info_text),
+                    whichForms = whichForms,
+                    whichItems = whichItems)
+
+  # make constraint object
+  newConstraint(A_binary, A_real, operator, targetValue,
                 nForms, nItems, sense, c_binary, c_real, info,
                 itemIDs = itemIDs)
 
