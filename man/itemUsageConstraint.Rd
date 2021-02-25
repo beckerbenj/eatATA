@@ -28,7 +28,7 @@ or \code{">="}. See details for more information.}
 
 \item{targetValue}{The value to be used in the constraints}
 
-\item{whichItems}{A vector indicating which items should be constrained. Defaults to all the items forms.}
+\item{whichItems}{A vector indicating which items should be constrained. Defaults to all the items.}
 
 \item{info_text}{a character string of length 1, to be used in the \code{"info"}-attribute of the resulting \code{constraint}-object.}
 
@@ -49,11 +49,23 @@ be selected maximally once, which corresponds with assuring that there is no
 item overlap between the forms. When \code{operator = "="} and \code{value = 1},
 each item is used exactly once, which corresponds to no item-overlap and
 complete item pool depletion.
+
+If certain items are required in the resulting test form(s), as for example anchor items,
+\code{whichItems} can be used to constrain the usage of these items to be exactly 1.
+\code{whichItems} can either be a numeric vector with item numbers or a character vector
+with item identifiers corresponding to \code{itemIDs}.
 }
 \examples{
 ## create no-item overlap constraints with item pool depletion
 ##  for 2 test forms with an item pool of 20 items
 itemUsageConstraint(2, operator = "=", targetValue = 1,
                     itemIDs = 1:20)
+
+## force certain items to be in the test, others not
+usage1 <- itemUsageConstraint(2, operator = "<=", targetValue = 1,
+                    itemIDs = paste0("item", 1:20))
+usage2 <- itemUsageConstraint(2, operator = "=", targetValue = 1,
+                    itemIDs = paste0("item", 1:20),
+                    whichItems = c("item5", "item8", "item10"))
 
 }

@@ -1,3 +1,17 @@
+test_that("whichItemstoNumeric", {
+  expect_equal(whichItemsToNumeric(c("item3"), paste0("item", 1:5)), 3)
+  expect_equal(whichItemsToNumeric(c("item5", "item2"), paste0("item", 1:5)), c(5, 2))
+
+  expect_equal(whichItemsToNumeric(c(3, 6, 1), paste0("item", 1:5)), c(3, 6, 1))
+})
+
+test_that("whichItemstoNumeric errors", {
+  expect_error(whichItemsToNumeric(c("item6"), paste0("item", 1:5)),
+               "The following item IDs are in 'whichItem' but not in 'itemIDs': item6")
+  expect_error(whichItemsToNumeric(c("item6"), NULL),
+               "item IDs supplied to 'whichItems' but not to 'itemIDs'.")
+})
+
 test_that("Item Usage Constraint", {
   out <- itemUsageConstraint(2, itemIDs = 1:4)
   expect_equal(out$A_binary[1, ], c(1, 0, 0, 0, 1, 0, 0, 0))
@@ -28,6 +42,15 @@ test_that("Item Usage Constraint", {
   expect_equal(out, out2)
 
   expect_is(out, "constraint")
+})
+
+test_that("Item Usage Constraint specific items", {
+  out <- itemUsageConstraint(2, itemIDs = paste0("item", 1:4), whichItems = 3, operator = "=")
+  expect_equal(out$A_binary[1, ], c(0, 0, 1, 0, 0, 0, 1, 0))
+  expect_equal(nrow(out$A_binary), 1)
+  expect_equal(out$A_real, NULL)
+  expect_equal(out$operator, "=")
+  expect_equal(out$d, 1)
 })
 
 test_that("Item Usage Constraint returns errors", {

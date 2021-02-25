@@ -8,8 +8,8 @@
 #' @format A \code{data.frame} .
 #'\describe{
 #' \item{Item}{Item identifier.}
-#' \item{a}{Discrimination paramter.}
-#' \item{b}{Difficulty paramter.}
+#' \item{a}{Discrimination parameter.}
+#' \item{b}{Difficulty parameter.}
 #' \item{c}{Pseudo-guessing parameter.}
 #' \item{Category}{Content category.}
 #' }

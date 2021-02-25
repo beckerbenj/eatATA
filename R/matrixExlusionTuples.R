@@ -43,5 +43,5 @@ matrixExclusionTuples <- function(exclMatrix) {
     if(any(excls != 0)) excl_str[ro, "excl"] <- paste(excls[excls != 0], collapse = ",")
   }
 
-  itemExclusionTuples(items = excl_str, idCol = "item", exclusions = "excl", sepPattern = ",")
+  itemTuples(items = excl_str, idCol = "item", infoCol = "excl", sepPattern = ",")
 }

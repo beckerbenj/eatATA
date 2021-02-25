@@ -2,11 +2,20 @@
 % Please edit documentation in R/itemExclusionConstraint.R
 \name{itemExclusionConstraint}
 \alias{itemExclusionConstraint}
-\title{Create item exclusion constraints.}
+\alias{itemInclusionConstraint}
+\title{Create item inclusion or exclusion constraints.}
 \usage{
 itemExclusionConstraint(
   nForms,
-  exclusionTuples,
+  itemTuples,
+  itemIDs,
+  whichForms = seq_len(nForms),
+  info_text = NULL
+)
+
+itemInclusionConstraint(
+  nForms,
+  itemTuples,
   itemIDs,
   whichForms = seq_len(nForms),
   info_text = NULL
@@ -15,7 +24,7 @@ itemExclusionConstraint(
 \arguments{
 \item{nForms}{Number of forms to be created.}
 
-\item{exclusionTuples}{\code{data.frame} with two columns, containing tuples with item IDs which should be in test forms exclusively.}
+\item{itemTuples}{\code{data.frame} with two columns, containing tuples with item IDs which should be in test forms inclusively or exclusively.}
 
 \item{itemIDs}{Character vector of item IDs in correct ordering.}
 
@@ -27,34 +36,47 @@ itemExclusionConstraint(
 An object of class \code{"constraint"}.
 }
 \description{
-Create constraints that prohibit that item pairs occur in the same test forms.
+Create constraints that prohibit that item pairs occur in the same test forms (exclusions) or
+force item pairs to be in the same test forms (inclusions).
 }
 \details{
-Item exclusion pairs can, for example, be created by the function \code{\link{itemExclusionTuples}}.
+Item tuples can, for example, be created by the function \code{\link{itemTuples}}.
 }
+\section{Functions}{
+\itemize{
+\item \code{itemExclusionConstraint}: item pair exclusion constraints
+
+\item \code{itemInclusionConstraint}: item pair inclusion constraints
+}}
+
 \examples{
-## item-IDs
+## Simple Exclusion Example
+# item-IDs
 IDs <- c("item1", "item2", "item3", "item4")
 
-## tuples: Item 1 can not be in the test form as item 2 and 3
+# exclusion tuples: Item 1 can not be in the test form as item 2 and 3
 exTuples <- data.frame(v1 = c("item1", "item1"), v2 = c("item2", "item3"),
                        stringsAsFactors = FALSE)
+# inclusion tuples: Items 2 and 3 have to be in the same test form
+inTuples <- data.frame(v1 = c("item2"), v2 = c("item3"),
+                       stringsAsFactors = FALSE)
 
-## Create constraints
-itemExclusionConstraint(nForms = 2, exclusionTuples = exTuples, itemIDs = IDs)
+# create constraints
+itemExclusionConstraint(nForms = 2, itemTuples = exTuples, itemIDs = IDs)
+itemInclusionConstraint(nForms = 2, itemTuples = inTuples, itemIDs = IDs)
 
 
 ########
-## Full workflow using itemExclusionTuples
+## Full workflow for exclusions using itemTuples
 # Example data.frame
 items <- data.frame(ID = c("item1", "item2", "item3", "item4"),
-                     exclusions = c("item2, item3", NA, NA, NA))
+                     infoCol = c("item2, item3", NA, NA, NA))
 
 # Create tuples
-exTuples2 <- itemExclusionTuples(items = items, idCol = "ID", exclusions = "exclusions",
+exTuples2 <- itemTuples(items = items, idCol = "ID", infoCol = "infoCol",
                     sepPattern = ", ")
 
-#' ## Create constraints
-itemExclusionConstraint(nForms = 2, exclusionTuples = exTuples2, itemIDs = IDs)
+## Create constraints
+itemExclusionConstraint(nForms = 2, itemTuples = exTuples2, itemIDs = IDs)
 
 }

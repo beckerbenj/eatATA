@@ -1,5 +1,10 @@
 # eatATA 0.10.0.9000
 
+* `itemUsageConstraint()` argument `whichItem` now takes a character vector (item identifiers) as input
+* `itemInclusionConstraint()` added to force items to be in the same test forms
+* `stemInclusionTuples()` added to create inclusion tuples from column with shared stimulus
+* `itemExclusionTuples()` renamed to `itemTuples()`, as it can also be used for `itemInclusionConstraint()`
+* argument names in `itemTuples()` and `itemExclusionConstraint()` slightly modified
 * added simulated item pools for examples
 * renamed all item pools consistently (`items_mini`, `items_diao`, `items_pilot`, `items_vera`)
 
