@@ -28,6 +28,11 @@ test_that("item tuples warnings", {
   expect_true(all(out[4, 1:2] %in% c(" item3", "item2")))
 })
 
+test_that("item tuples with numeric ID", {
+  out <- itemTuples(items_pilot, idCol = "Item", infoCol = "exclusions", sepPattern = ", ")
+  expect_equal(out[1, ], c("3", "76"))
+  expect_equal(out[43, ], c("82", "97"))
+})
 
 test_that("item tuples", {
   items <- data.frame(ID = c("item1", "item2", "item3", "item4"),

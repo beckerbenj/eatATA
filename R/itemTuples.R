@@ -48,6 +48,9 @@ itemTuples <- function(items, idCol = "ID", infoCol, sepPattern = ", ") {
   excl_df <- data.frame(items[idCol], excl_vars, stringsAsFactors = FALSE)
   colnames(excl_df)[-1] <- c(paste0("excl_", 1:max_excl))
 
+  # convert itemID to character, otherwise apply will
+  excl_df[, idCol] <- as.character(excl_df[, idCol])
+  #if(is.numeric(items[, idCol])) browser()
   out_list <- apply(excl_df, 1, function(excl_row) {
     do.call(rbind, lapply(excl_row[c(FALSE, !is.na(excl_row[2:(max_excl+1)]))], function(x) {
       sort(as.character(c(excl_row[idCol], x)))
