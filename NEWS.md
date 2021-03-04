@@ -6,7 +6,7 @@
 * `itemExclusionTuples()` renamed to `itemTuples()`, as it can also be used for `itemInclusionConstraint()`
 * argument names in `itemTuples()` and `itemExclusionConstraint()` slightly modified
 * added simulated item pools for examples
-* renamed all item pools consistently (`items_mini`, `items_diao`, `items_pilot`, `items_vera`)
+* renamed all item pools consistently (`items_mini`, `items_diao`, `items_pilot`, `items_vera`, `items_lsa`)
 
 # eatATA 0.10.0
 

@@ -25,7 +25,7 @@ items_diao <- data.frame(Item = seq_len(nItems),
 usethis::use_data(items_diao, overwrite = TRUE)
 
 
-# item pool example SW & KS
+# item pool example pilot study (SW)
 ####################################################################
 nItems <- 100
 set.seed(6402)
@@ -44,6 +44,30 @@ items_pilot <- data.frame(Item = seq_len(nItems),
                         exclusions = exclusions)
 
 usethis::use_data(items_pilot, overwrite = TRUE)
+
+# item pool example lsa (KS)
+####################################################################
+nItems <- 209
+set.seed(5476)
+
+formats <- c("multiple choice", "complex multiple choice","sentence completion", "open answer", "multiple matching", "true-false-not given")
+testlet <- as.factor(c(rep(replicate(nItems%%4, paste0("TR", paste(sample(LETTERS, 1, replace=TRUE),collapse=""),paste(sample(0:9, 4, replace=TRUE),collapse=""))),each=nItems%%4+4),rep(replicate(nItems%/%4-1, paste0("TR", paste(sample(LETTERS, 1, replace=TRUE),collapse=""),paste(sample(0:9, 4, replace=TRUE),collapse=""))),each=4)))
+testlet <- testlet[order(testlet)]
+pool <- data.frame(testlet = testlet,
+                   item = unlist(tapply(testlet,testlet,function(x) paste0(x,letters[seq(along=x)]))),
+                   level=NA,
+                   format = unlist(tapply(testlet, testlet, function(x) rep(sample(formats,2,replace=TRUE),each=sample(c(2,3),1))[seq(along=x)] )),
+                   frequency = rbeta(nItems, 2, 2),
+                   infit = rnorm(nItems, 1.05, .1),
+                   time = round(rbeta(nItems, 2, 2)*100+30,0))
+row.names(pool) <- seq_len(nItems)
+a <- pool$frequency+ pool$frequency+rbeta(nItems,2,2)-1
+pool$level <- ifelse(a < quantile(a)[2], "IV", ifelse(a < quantile(a)[3], "III", ifelse(a < quantile(a)[4], "II", "I")))
+pool$anchor <- unlist(tapply(testlet, testlet, function(x) rep(sample(c(1,0), 1,prob=c(.2,.8)), length(x))))
+pool[pool$anchor==1&pool$infit>1.3,"infit"] <- 1.115
+items_lsa <- pool
+
+usethis::use_data(items_lsa, overwrite = TRUE)
 
 
 # based on real item pool (realistic data format)
