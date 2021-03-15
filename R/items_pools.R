@@ -6,9 +6,9 @@
 #'
 #' @format A \code{data.frame} .
 #'\describe{
-#' \item{id}{Item identifier.}
-#' \item{format}{Items format (multiple choice, open answer, ordering).}
-#' \item{mean_time}{Average response times in seconds.}
+#' \item{item}{Item identifier.}
+#' \item{format}{Item format (e.g., multiple choice, open answer, order item).}
+#' \item{time}{Average response time in seconds.}
 #' \item{difficulty}{IRT difficulty parameter.}
 #' }
 "items_mini"
@@ -22,11 +22,11 @@
 #'
 #' @format A \code{data.frame} .
 #'\describe{
-#' \item{Item}{Item identifier.}
+#' \item{item}{Item identifier.}
 #' \item{a}{Discrimination parameter.}
 #' \item{b}{Difficulty parameter.}
 #' \item{c}{Pseudo-guessing parameter.}
-#' \item{Category}{Content category.}
+#' \item{category}{Content category.}
 #' }
 #'
 #' @references Diao, Q. & van der Linden, W.J. (2011). Automated test assembly using lp_solve version 5.5 in R. \emph{Applied Psychological Measurement, 35 (5)}, 398-409.
@@ -41,11 +41,11 @@
 #'
 #' @format A \code{data.frame} .
 #'\describe{
-#' \item{Item}{Item identifier.}
-#' \item{diff}{Item difficulty (five categories).}
+#' \item{item}{Item identifier.}
+#' \item{diffCategory}{Item difficulty (five categories).}
 #' \item{format}{Item format (multiple choice, constructed multiple choice, or open answer).}
 #' \item{domain}{Item domain (listening, reading, or writing).}
-#' \item{mean_time}{Average response times in seconds.}
+#' \item{time}{Average response times in seconds.}
 #' \item{exclusions}{Items which can not be in the same test form.}
 #' }
 "items_pilot"
@@ -59,7 +59,7 @@
 #'
 #' @format A \code{data.frame} .
 #'\describe{
-#' \item{testlet}{Testlet identifier.}
+#' \item{testlet}{Testlet identifier (items in the same testlet share a common stimulus.}
 #' \item{item}{Item identifier.}
 #' \item{level}{Competence level.}
 #' \item{format}{Item format.}
@@ -78,9 +78,9 @@
 #'
 #' @format A \code{data.frame} .
 #'\describe{
-#' \item{Item_ID}{Item identifier.}
+#' \item{item}{Item identifier.}
 #' \item{exclusions}{Items which can not be in the same test form.}
-#' \item{RT_in_min}{Average response times in minutes. \code{2.5} equals 2 minutes and 30 seconds, for example.}
+#' \item{time}{Average response times in minutes. \code{2.5} equals 2 minutes and 30 seconds, for example.}
 #' \item{subitems}{Number of sub items.}
 #' \item{MC, CMC, short_answer, open}{Answer formats.}
 #' \item{diff_1, diff_2, diff_3, diff_4, diff5}{Difficulty categories.}

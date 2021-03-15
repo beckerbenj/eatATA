@@ -19,10 +19,10 @@ test_that("warning for exclusions on non existant items", {
 
 
 test_that("item exclusion constraint big item pool", {
-  items <- eatATA::items_vera
-  itemTuples <- itemTuples(items, idCol = "Item_ID", infoCol = "exclusions", sepPattern = ", ")
+  items <- items_vera
+  itemTuples <- itemTuples(items, idCol = "item", infoCol = "exclusions", sepPattern = ", ")
 
-  out <- itemExclusionConstraint(nForms = 14, itemTuples = itemTuples, itemIDs = items$Item_ID)
+  out <- itemExclusionConstraint(nForms = 14, itemTuples = itemTuples, itemIDs = items$item)
   expect_true(inherits(out$A_binary, "Matrix"))
   expect_equal(dim(out$A_binary), c(630, 1120))
 

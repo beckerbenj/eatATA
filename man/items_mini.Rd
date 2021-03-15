@@ -7,9 +7,9 @@
 \format{
 A \code{data.frame} .
 \describe{
-\item{id}{Item identifier.}
-\item{format}{Items format (multiple choice, open answer, ordering).}
-\item{mean_time}{Average response times in seconds.}
+\item{item}{Item identifier.}
+\item{format}{Item format (e.g., multiple choice, open answer, order item).}
+\item{time}{Average response time in seconds.}
 \item{difficulty}{IRT difficulty parameter.}
 }
 }

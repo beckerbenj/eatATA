@@ -35,6 +35,13 @@ library(eatATA)
 ## Item pool preparation
 `eatATA` provides functions to calculate item information function (`calculateIIF()`) and expected response times (`calculatExpectedRT()`). `dummiesToFactor()` allows the transformation of a variable coded as multiple dummy variables into a single factor. `itemExclusionTuples()` allows the transformation of item exclusions saved as a single character variable into item exclusion tuples (pairs).
 
+There also a number of example item pools included in the package:
+* `items_mini`: A small minimal example item pool
+* `items_diao`: An item pool modeled after the first problem in Diao & van der Linden (2011)
+* `items_pilot`: An item pool for a calibration study
+* `items_lsa`: An item pool for the block assembly of a large-scale assessment
+* `items_vera`: An item pool similar to a `Vergleichsarbeiten` item pool 
+
 ## Objective function
 Constraints defining the optimization goal of the automated test assembly:
 

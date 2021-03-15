@@ -7,11 +7,11 @@
 \format{
 A \code{data.frame} .
 \describe{
-\item{Item}{Item identifier.}
-\item{diff}{Item difficulty (five categories).}
+\item{item}{Item identifier.}
+\item{diffCategory}{Item difficulty (five categories).}
 \item{format}{Item format (multiple choice, constructed multiple choice, or open answer).}
 \item{domain}{Item domain (listening, reading, or writing).}
-\item{mean_time}{Average response times in seconds.}
+\item{time}{Average response times in seconds.}
 \item{exclusions}{Items which can not be in the same test form.}
 }
 }

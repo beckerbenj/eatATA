@@ -1,8 +1,8 @@
 
 test_that("input checks, errors", {
-  expect_error(itemTuples(items = items_mini, idCol = "ID", infoCol = "format", sepPattern = ", "),
+  expect_error(itemTuples(items = items_mini, idCol = "id", infoCol = "format", sepPattern = ", "),
                "'idCol' is not a column in 'items'.")
-  expect_error(itemTuples(items = items_mini, idCol = "id", infoCol = "Format", sepPattern = ", "),
+  expect_error(itemTuples(items = items_mini, idCol = "item", infoCol = "Format", sepPattern = ", "),
                "'infoCol' is not a column in 'items'.")
 
   items <- data.frame(ID = c("item1", "item2", "item3", "item4"),
@@ -29,7 +29,7 @@ test_that("item tuples warnings", {
 })
 
 test_that("item tuples with numeric ID", {
-  out <- itemTuples(items_pilot, idCol = "Item", infoCol = "exclusions", sepPattern = ", ")
+  out <- itemTuples(items_pilot, idCol = "item", infoCol = "exclusions", sepPattern = ", ")
   expect_equal(out[1, ], c("3", "76"))
   expect_equal(out[43, ], c("82", "97"))
 })

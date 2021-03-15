@@ -7,7 +7,7 @@
 \format{
 A \code{data.frame} .
 \describe{
-\item{testlet}{Testlet identifier.}
+\item{testlet}{Testlet identifier (items in the same testlet share a common stimulus.}
 \item{item}{Item identifier.}
 \item{level}{Competence level.}
 \item{format}{Item format.}

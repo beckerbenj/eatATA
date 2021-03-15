@@ -44,7 +44,7 @@ items_path <- system.file("extdata", "items.xlsx", package = "eatATA")
 items <- as.data.frame(readxl::read_excel(path = items_path), stringsAsFactors = FALSE)
 ```
 
-Inspection of the item pool indicates that the items have different properties: item format (`MC`, `CMC`, `short_answer`, or `open`), difficulty (`diff_1` - `diff_5`), average response times in minutes (`RT_in_min`). In addition, similar items can not be in the same booklet or test form. This information is stored in the column `exclusions`, which indicates which items are too similar and should not be in the same booklet with the item in that row..
+Inspection of the item pool indicates that the items have different properties: item format (`MC`, `CMC`, `short_answer`, or `open`), difficulty (`diff_1` - `diff_5`), average response times in minutes (`time`). In addition, similar items can not be in the same booklet or test form. This information is stored in the column `exclusions`, which indicates which items are too similar and should not be in the same booklet with the item in that row..
 
 ```{r inspect items, message = FALSE}
 head(items)
@@ -113,12 +113,12 @@ nForms <- 14           # number of blocks
 
 ## Objective Function
 
-First, we are setting up an optimization constraint. This constraint is not a clear *yes* or *no* constraint, and it does not have to be attained perfectly. Instead, the solver will minimize the distance of the actual booklet value for all booklets towards a target value. In our example, we specify 10 minutes as the target response time `RT_in_min` for all booklets.
+First, we are setting up an optimization constraint. This constraint is not a clear *yes* or *no* constraint, and it does not have to be attained perfectly. Instead, the solver will minimize the distance of the actual booklet value for all booklets towards a target value. In our example, we specify 10 minutes as the target response time `time` for all booklets.
 
 ```{r target constraints}
 # optimize average time
-av_time <- minimaxConstraint(nForms, itemValues = items$RT_in_min, targetValue = 10,
-                             itemIDs = items$Item_ID)
+av_time <- minimaxConstraint(nForms, itemValues = items$time, targetValue = 10,
+                             itemIDs = items$item)
 ```
 
 ## Set up constraints
@@ -126,7 +126,7 @@ The first two constraints (no item overlap and item pool depletion) can be imple
 
 ```{r item usage constraints}
 itemOverlap <- itemUsageConstraint(nForms, targetValue = 1, 
-                                   operator = "=", itemIDs = items$Item_ID) 
+                                   operator = "=", itemIDs = items$item) 
 ```
 
 Constraints with respect to categorical variables or factors (like `MC_open_none`) or numerical variables (like `short_answer`), can be easily implemented using the `autoItemValuesMinMax()` function. The result of this function depends on whether a factor or a numerical variable is used. That is, `autoItemValuesMinMax()` automatically determines the minimum and maximum frequency of each category of a factor. But for numerical variables, it automatically determines the target value. 
@@ -136,22 +136,22 @@ The `allowedDeviation` argument specifies the allowed range between booklets reg
 ```{r categorical constraints}
 # item formats
 mc_openItems <- autoItemValuesMinMax(nForms = nForms, itemValues = items$MC_open_none, 
-                                     itemIDs = items$Item_ID)
-cmcItems <- autoItemValuesMinMax(nForms = nForms, itemValues = items$f_CMC, itemIDs = items$Item_ID)
+                                     itemIDs = items$item)
+cmcItems <- autoItemValuesMinMax(nForms = nForms, itemValues = items$f_CMC, itemIDs = items$item)
 saItems <- autoItemValuesMinMax(nForms = nForms, itemValues = items$short_answer, 
-                                allowedDeviation = 1, itemIDs = items$Item_ID)
+                                allowedDeviation = 1, itemIDs = items$item)
 
 # difficulty categories
 Items1 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_1, 
-                               allowedDeviation = 1, itemIDs = items$Item_ID)
+                               allowedDeviation = 1, itemIDs = items$item)
 Items2 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_2, 
-                               allowedDeviation = 1, itemIDs = items$Item_ID)
+                               allowedDeviation = 1, itemIDs = items$item)
 Items3 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_3, 
-                               allowedDeviation = 1, itemIDs = items$Item_ID)
+                               allowedDeviation = 1, itemIDs = items$item)
 Items4 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_4, 
-                               allowedDeviation = 1, itemIDs = items$Item_ID)
+                               allowedDeviation = 1, itemIDs = items$item)
 Items5 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_5, 
-                               allowedDeviation = 1, itemIDs = items$Item_ID)
+                               allowedDeviation = 1, itemIDs = items$item)
 ```
 
 To implement item exclusion constraints, two function can be used: `itemExclusionTuples()` and `itemExclusionConstraint()`. When item exclusions are supplied as a single character string for each item, with item identifiers separated by `", "`, they should be transformed first.
@@ -165,10 +165,10 @@ This transformation can be done using the `itemExclusionTuples()` function, whic
 
 ```{r exclusion constraints}
 # item exclusions
-exclusionTuples <- itemTuples(items, idCol = "Item_ID", 
+exclusionTuples <- itemTuples(items, idCol = "item", 
                                        infoCol = "exclusions", sepPattern = ", ")
 excl_constraints <- itemExclusionConstraint(nForms = 14, itemTuples = exclusionTuples, 
-                                            itemIDs = items$Item_ID)
+                                            itemIDs = items$item)
 ```
 
 Another helpful function is the `itemsPerFormConstraint()` function, which constrains the number of items per booklet. However, since this is not required in this example, we will not use these constraints in the final `ATA` constraints.
@@ -177,7 +177,7 @@ Another helpful function is the `itemsPerFormConstraint()` function, which const
 # number of items per test form
 min_Nitems <- floor(nItems / nForms) - 3
 noItems <- itemsPerFormConstraint(nForms = nForms, operator = ">=", 
-                                  targetValue = min_Nitems, itemIDs = items$Item_ID)
+                                  targetValue = min_Nitems, itemIDs = items$item)
 
 ```
 
@@ -198,7 +198,7 @@ Now we can call the `useSolver()` function, which restructures the constraints i
 ```{r solver_local, eval = FALSE, echo = FALSE}
 # Local optimization chunk; prevents occasional errors on servers if no feasible solution is found
 output_local <- capture.output(solver_raw_local <- useSolver(constr_list, nForms = nForms, nItems = nItems, 
-                        itemIDs = items$Item_ID, solver = "GLPK", timeLimit = 30))
+                        itemIDs = items$item, solver = "GLPK", timeLimit = 30))
 saveRDS(solver_raw_local, "use_case_solver_out.RDS")
 saveRDS(output_local, "use_case_output.RDS")
 
@@ -207,7 +207,7 @@ saveRDS(output_local, "use_case_output.RDS")
 ```{r solver, eval = FALSE, message=TRUE}
 # Optimization
 solver_raw <- useSolver(constr_list, nForms = nForms, nItems = nItems, 
-                        itemIDs = items$Item_ID, solver = "GLPK", timeLimit = 10)
+                        itemIDs = items$item, solver = "GLPK", timeLimit = 10)
 
 ```
 
@@ -227,8 +227,8 @@ If there is no feasible solution, one option is to relax some of the constraints
 The solution provided by `eatATA` can be inspected using the `inspectSolution()` function. It allows us to inspect the assembled item blocks at a first glance, including some column sums.
 
 ```{r inspect solution}
-out_list <- inspectSolution(solver_raw, items = items, idCol = "Item_ID", colSums = TRUE,
-                            colNames = c("RT_in_min", "subitems", 
+out_list <- inspectSolution(solver_raw, items = items, idCol = "item", colSums = TRUE,
+                            colNames = c("time", "subitems", 
                                          "MC", "CMC", "short_answer", "open",
                                          paste0("diff_", 1:5)))
 
@@ -238,7 +238,7 @@ out_list[1:2]
 In our case we want to assemble the created booklets into test forms. Therefore, we are interested in booklet exclusions that can result from item exclusions. The `analyzeBlockExclusion()` function can be used to obtain tuples with booklet exclusions.
 
 ```{r block exclusions}
-analyzeBlockExclusion(solverOut = solver_raw, item = items, idCol = "Item_ID", 
+analyzeBlockExclusion(solverOut = solver_raw, item = items, idCol = "item", 
                       exclusionTuples = exclusionTuples)
 
 ```
@@ -247,7 +247,7 @@ analyzeBlockExclusion(solverOut = solver_raw, item = items, idCol = "Item_ID",
 To save the item distribution on blocks or test forms, we can use the `appendSolution()` function. The function simply merges the new variables containing the solution to the test assembly problem to the original item pool.
 
 ```{r append solution}
-out_df <- appendSolution(solver_raw, items = items, idCol = "Item_ID")
+out_df <- appendSolution(solver_raw, items = items, idCol = "item")
 ```
 
 Finally, when the solution should be exported as an `excel` file (`.xlsx`), this can, for example, be achieved via the `eatAnalysis` package, which has to be installed from `Github`.
