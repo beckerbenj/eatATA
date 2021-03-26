@@ -32,7 +32,7 @@ test_that("check_solution_true", {
 
   usage <- itemUsageConstraint(nForms = 2, operator = "=", targetValue = 1, itemIDs = items$itemIDs)
   perForm <- itemsPerFormConstraint(nForms = 2, operator = "=", targetValue = 5, itemIDs = items$itemIDs)
-  target <- minimaxConstraint(nForms = 2, itemValues = items$itemValues,
+  target <- minimaxObjective(nForms = 2, itemValues = items$itemValues,
                               targetValue = 0, itemIDs = items$itemIDs)
   inf_constr1 <- itemValuesConstraint(nForms = 2, itemValues = c(1, rep(0, nrow(items)-1)),
                                       operator = "=", targetValue = 1, itemIDs = items$itemIDs)

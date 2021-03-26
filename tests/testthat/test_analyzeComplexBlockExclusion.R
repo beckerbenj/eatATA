@@ -11,13 +11,13 @@ suppressWarnings(excl2 <- itemExclusionConstraint(nForms = 2, exclusionTuples2, 
 usage1 <- itemUsageConstraint(nForms = 2, nItems = 4, operator = "=", targetValue = 1, itemIDs = items1$ID)
 perForm1 <- itemsPerFormConstraint(nForms = 2, nItems = 4, operator = "=", targetValue = 2, itemIDs = items1$ID)
 
-target1 <- minimaxConstraint(nForms = 2, itemValues = items1$itemValues,
+target1 <- minimaxObjective(nForms = 2, itemValues = items1$itemValues,
                                targetValue = 0, itemIDs = items1$ID)
 
 usage2 <- itemUsageConstraint(nForms = 2, nItems = 4, operator = "=", targetValue = 1, itemIDs = items2$ID)
 perForm2 <- itemsPerFormConstraint(nForms = 2, nItems = 4, operator = "=", targetValue = 2, itemIDs = items2$ID)
 
-target2 <- minimaxConstraint(nForms = 2, itemValues = items2$itemValues,
+target2 <- minimaxObjective(nForms = 2, itemValues = items2$itemValues,
                              targetValue = 0, itemIDs = items2$ID)
 
 #suppressMessages(sol1 <- useSolver(allConstraints = list(usage1, excl1, target1, perForm1),

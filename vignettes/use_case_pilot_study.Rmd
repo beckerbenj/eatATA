@@ -117,7 +117,7 @@ First, we are setting up an optimization constraint. This constraint is not a cl
 
 ```{r target constraints}
 # optimize average time
-av_time <- minimaxConstraint(nForms, itemValues = items$time, targetValue = 10,
+av_time <- minimaxObjective(nForms, itemValues = items$time, targetValue = 10,
                              itemIDs = items$item)
 ```
 
@@ -135,22 +135,22 @@ The `allowedDeviation` argument specifies the allowed range between booklets reg
 
 ```{r categorical constraints}
 # item formats
-mc_openItems <- autoItemValuesMinMax(nForms = nForms, itemValues = items$MC_open_none, 
+mc_openItems <- autoItemValuesMinMaxConstraint(nForms = nForms, itemValues = items$MC_open_none, 
                                      itemIDs = items$item)
-cmcItems <- autoItemValuesMinMax(nForms = nForms, itemValues = items$f_CMC, itemIDs = items$item)
-saItems <- autoItemValuesMinMax(nForms = nForms, itemValues = items$short_answer, 
+cmcItems <- autoItemValuesMinMaxConstraint(nForms = nForms, itemValues = items$f_CMC, itemIDs = items$item)
+saItems <- autoItemValuesMinMaxConstraint(nForms = nForms, itemValues = items$short_answer, 
                                 allowedDeviation = 1, itemIDs = items$item)
 
 # difficulty categories
-Items1 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_1, 
+Items1 <- autoItemValuesMinMaxConstraint(nForms = nForms, itemValues = items$diff_1, 
                                allowedDeviation = 1, itemIDs = items$item)
-Items2 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_2, 
+Items2 <- autoItemValuesMinMaxConstraint(nForms = nForms, itemValues = items$diff_2, 
                                allowedDeviation = 1, itemIDs = items$item)
-Items3 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_3, 
+Items3 <- autoItemValuesMinMaxConstraint(nForms = nForms, itemValues = items$diff_3, 
                                allowedDeviation = 1, itemIDs = items$item)
-Items4 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_4, 
+Items4 <- autoItemValuesMinMaxConstraint(nForms = nForms, itemValues = items$diff_4, 
                                allowedDeviation = 1, itemIDs = items$item)
-Items5 <- autoItemValuesMinMax(nForms = nForms, itemValues = items$diff_5, 
+Items5 <- autoItemValuesMinMaxConstraint(nForms = nForms, itemValues = items$diff_5, 
                                allowedDeviation = 1, itemIDs = items$item)
 ```
 

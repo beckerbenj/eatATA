@@ -1,7 +1,7 @@
 #' Create single value constraints with minimum and maximum.
 #'
-#' \code{\link{itemValuesDeviation}} creates constraints related to an item parameter/value. \code{autoItemValuesMixMax} automatically
-#' determines the appropriate \code{targetValue} and then calls \code{\link{itemValuesDeviation}}. The function only works for
+#' \code{\link{itemValuesDeviationConstraint}} creates constraints related to an item parameter/value. \code{autoItemValuesMixMax} automatically
+#' determines the appropriate \code{targetValue} and then calls \code{\link{itemValuesDeviationConstraint}}. The function only works for
 #' (dichotomous) dummy indicators with values 0 or 1.
 #'
 #' Two scenarios are possible when automatically determining the target value:
@@ -18,10 +18,10 @@
 #' @return A sparse matrix.
 #'
 #' @examples
-#' autoItemValuesMinMax(2, itemValues = c(0, 1, 0, 1))
+#' autoItemValuesMinMaxConstraint(2, itemValues = c(0, 1, 0, 1))
 #'
 #' @export
-autoItemValuesMinMax <- function(nForms, itemValues, testLength = NULL, allowedDeviation = NULL,
+autoItemValuesMinMaxConstraint <- function(nForms, itemValues, testLength = NULL, allowedDeviation = NULL,
                                  relative = FALSE, verbose = TRUE, itemIDs = NULL){
   check_itemIDs(itemIDs)
   # compute the minimum and maximum values
@@ -33,7 +33,7 @@ autoItemValuesMinMax <- function(nForms, itemValues, testLength = NULL, allowedD
 
   # if itemValues are actually categories (i.e., a factor)
   if(is.factor(itemValues)){
-    out <- itemCategoryRange(nForms, itemCategories = itemValues,
+    out <- itemCategoryRangeConstraint(nForms, itemCategories = itemValues,
                        range = min_max, itemIDs = itemIDs)
 
     if(verbose){
@@ -52,7 +52,7 @@ autoItemValuesMinMax <- function(nForms, itemValues, testLength = NULL, allowedD
         }
 
     } else {  # constraints with respect to a minimum and maximum
-      out <- itemValuesRange(nForms, itemValues,
+      out <- itemValuesRangeConstraint(nForms, itemValues,
                        range = min_max, itemIDs = itemIDs)
       if(verbose){
         message("The minimum and maximum values per test form are: min = ",
@@ -64,7 +64,7 @@ autoItemValuesMinMax <- function(nForms, itemValues, testLength = NULL, allowedD
 }
 
 ## deprecated version
-# autoItemValuesMinMax <- function(nForms, nItems, itemValues, threshold, verbose = TRUE){
+# autoItemValuesMinMaxConstraint <- function(nForms, nItems, itemValues, threshold, verbose = TRUE){
 #   targetValue <- detTargetValue(nForms = nForms, itemValues = itemValues)
 #   threshold <- threshold + 0.5 ## not correct if targetValue is an integer, but should still work
 #
@@ -83,7 +83,7 @@ autoItemValuesMinMax <- function(nForms, itemValues, testLength = NULL, allowedD
 # # determine target value automatically based on empirical frequency of category
 # detTargetValue <- function(nForms, itemValues) {
 #   if(!identical(sort(unique(itemValues)), c(0, 1)) && !identical(sort(unique(itemValues)), 1)) {
-#     stop("autoItemValuesMinMax only works for (dichotomous) dummy indicators with values 0 and 1. See itemValuesM# inMax for more flexibility.")
+#     stop("autoItemValuesMinMaxConstraint only works for (dichotomous) dummy indicators with values 0 and 1. See itemValuesM# inMax for more flexibility.")
 #   }
 #
 #   if(sum(itemValues) %% nForms != 0) {

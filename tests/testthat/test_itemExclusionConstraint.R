@@ -41,7 +41,7 @@ test_that("with solver", {
   tupl <- data.frame(i1 = c("I1"), i2 = c("I2"), stringsAsFactors = FALSE)
   incl <- itemInclusionConstraint(nForms = 1, itemTuples = tupl, itemIDs = paste0("I", 1:3))
   len <- itemsPerFormConstraint(nForms = 1, targetValue = 2, itemIDs = paste0("I", 1:3))
-  tif <- maxConstraint(nForms = 1, itemValues = c(1, 1, 1.5), itemIDs = paste0("I", 1:3))
+  tif <- maxObjective(nForms = 1, itemValues = c(1, 1, 1.5), itemIDs = paste0("I", 1:3))
   txt <- capture_output(suppressMessages(out <- useSolver(list(incl, len, tif))))
 
   expect_equal(out$solution, c(1, 1, 0, 2))

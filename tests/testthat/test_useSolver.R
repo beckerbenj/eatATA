@@ -6,7 +6,7 @@ items <- data.frame(ID = paste0("item_", 1:10),
 
 usage <- itemUsageConstraint(nForms = 2, operator = "=", targetValue = 1, itemIDs = items$itemIDs)
 perForm <- itemsPerFormConstraint(nForms = 2, operator = "=", targetValue = 5, itemIDs = items$itemIDs)
-target <- minimaxConstraint(nForms = 2, itemValues = items$itemValues,
+target <- minimaxObjective(nForms = 2, itemValues = items$itemValues,
                                targetValue = 0, itemIDs = items$itemIDs)
 
 test_that("Solve problem using lpsolve", {
@@ -129,7 +129,7 @@ items <- data.frame(ID = paste0("item_", 1:nItems),
 #load("helper_glpk_timeLimit.RData")
 
 usage <- itemUsageConstraint(nForms = nForms, nItems = nItems, operator = "=", targetValue = 1, itemIDs = items$ID)
-target <- minimaxConstraint(nForms = nForms, itemValues = with(items, structure(itemValues, names = ID)),
+target <- minimaxObjective(nForms = nForms, itemValues = with(items, structure(itemValues, names = ID)),
                                targetValue = 0, itemIDs = items$ID)
 test_that("Solve problem with time limit using glpk (suboptimal solution", {
   expect_message(out <- useSolver(allConstraints = list(usage, target),

@@ -49,7 +49,7 @@ nForms <- 2
 nItems <- 4
 
 # create constraits
-target <- minimaxConstraint(nForms = nForms, c(1, 0.5, 1.5, 2),
+target <- minimaxObjective(nForms = nForms, c(1, 0.5, 1.5, 2),
                        targetValue = 2, itemIDs = 1:nItems)
 noItemOverlap <- itemUsageConstraint(nForms, operator = "=", itemIDs = 1:nItems)
 testLength <- itemsPerFormConstraint(nForms = nForms,

@@ -10,7 +10,7 @@ excl <- itemExclusionConstraint(nForms = 3, exclusionTuples, itemIDs = items_sma
 usage <- itemUsageConstraint(nForms = 3, nItems = 6, operator = "=", targetValue = 1, itemIDs = items_small$ID)
 perForm <- itemsPerFormConstraint(nForms = 3, nItems = 6, operator = "=", targetValue = 2, itemIDs = items_small$ID)
 
-target <- minimaxConstraint(nForms = 3, itemValues = items_small$itemValues,
+target <- minimaxObjective(nForms = 3, itemValues = items_small$itemValues,
                                targetValue = 0, itemIDs = items_small$ID)
 
 suppressMessages(sol <- useSolver(allConstraints = list(usage, excl, target, perForm),

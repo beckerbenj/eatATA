@@ -45,11 +45,11 @@ There also a number of example item pools included in the package:
 ## Objective function
 Constraints defining the optimization goal of the automated test assembly:
 
-* `maxConstraint()`
-* `minConstraint()`
-* `maximinConstraint()`
-* `minimaxConstraint()`
-* `cappedMaximinConstraint()`
+* `maxObjective()`
+* `minObjective()`
+* `maximinObjective()`
+* `minimaxObjective()`
+* `cappedMaximinObjective()`
 
 ## Constraints
 Here is a list of functions that can be used to set constraints:
@@ -66,19 +66,19 @@ Constraints controlling number of items per test forms:
 Constraints controlling categorical properties of items across test forms:
 
 * `itemCategoryConstraint()`
-* `itemCategoryDeviation()`
-* `itemCategoryMax()`
-* `itemCategoryMin()`
-* `itemCategoryRange()`
+* `itemCategoryDeviationConstraint()`
+* `itemCategoryMaxConstraint()`
+* `itemCategoryMinConstraint()`
+* `itemCategoryRangeConstraint()`
 
 Constraints controlling metric properties of items across test forms:
 
 * `autoItemValuesMinMax()`
 * `itemValuesConstraint()`
-* `itemValuesDeviation()`
-* `itemValuesMax()`
-* `itemValuesMin()`
-* `itemValuesRange()`
+* `itemValuesDeviationConstraint()`
+* `itemValuesMaxConstraint()`
+* `itemValuesMinConstraint()`
+* `itemValuesRangeConstraint()`
 
 ## Solver function
 After defining all required constraints using the functions above, `useSolver()` can be used to call the desired solver.

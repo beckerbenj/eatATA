@@ -49,10 +49,10 @@ knitr::kable(items_mini[1:5,], digits = 3, caption = "Table 1. First 5 Items of 
 
 ## Objective Function
 
-Next, the objective function is defined: The `TIF` should be maximized at medium ability. For this, we use the `maxConstraint()` function.
+Next, the objective function is defined: The `TIF` should be maximized at medium ability. For this, we use the `maxObjective()` function.
 
 ```{r objFun, message = FALSE}
-testInfo <- maxConstraint(nForms = 1, itemValues = items_mini$IIF,
+testInfo <- maxObjective(nForms = 1, itemValues = items_mini$IIF,
                           itemIDs = items_mini$item)
 ```
 
@@ -69,7 +69,7 @@ itemUsage <- itemUsageConstraint(nForms = 1, operator = "<=",
                                  targetValue = 1, 
                                  itemIDs = items_mini$item)
 
-testTime <- itemValuesDeviation(nForms = 1, 
+testTime <- itemValuesDeviationConstraint(nForms = 1, 
                                 itemValues = items_mini$time,
                                 targetValue = 8 * 60, 
                                 allowedDeviation = 5,
@@ -80,7 +80,7 @@ testTime <- itemValuesDeviation(nForms = 1,
 Alternatively, we could determine the appropriate test time based on the item pool using the `autoItemValuesMinMax()` function.
 
 ```{r test time, message = TRUE}
-testTime2 <- autoItemValuesMinMax(nForms = 1, 
+testTime2 <- autoItemValuesMinMaxConstraint(nForms = 1, 
                                 itemValues = items_mini$time,
                                 testLength = 10, 
                                 allowedDeviation = 5,
