@@ -1,3 +1,7 @@
+# eatATA 0.11.1
+
+* fix `non ascii` character in help file
+
 # eatATA 0.11.0
 
 * constraint functions re-named consistently (now ending all on `Constraint`) 
