@@ -1,3 +1,7 @@
+# eatATA 0.11.2
+
+* fix occasional system dependent test failure
+
 # eatATA 0.11.1
 
 * fix `non ascii` character in help file
