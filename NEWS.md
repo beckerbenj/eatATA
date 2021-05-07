@@ -1,3 +1,7 @@
+# eatATA 0.11.2.9000
+
+* updated overview vignette
+
 # eatATA 0.11.2
 
 * fix occasional system dependent test failure
