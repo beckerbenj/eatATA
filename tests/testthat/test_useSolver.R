@@ -131,12 +131,16 @@ items <- data.frame(ID = paste0("item_", 1:nItems),
 usage <- itemUsageConstraint(nForms = nForms, nItems = nItems, operator = "=", targetValue = 1, itemIDs = items$ID)
 target <- minimaxObjective(nForms = nForms, itemValues = with(items, structure(itemValues, names = ID)),
                                targetValue = 0, itemIDs = items$ID)
-test_that("Solve problem with time limit using glpk (suboptimal solution", {
-  expect_message(out <- useSolver(allConstraints = list(usage, target),
-                                  solver = "GLPK", timeLimit = 0.1, verbose = FALSE),
-                 "The solution is feasible, but may not be optimal.")
-  expect_false(out$solution_found)
-})
+
+# run this test only for development versions, as frequently GLPK does not find a feasible solution that quickly on CRAN
+if (length(strsplit(packageDescription("eatATA")$Version, "\\.")[[1]]) > 3) {
+  test_that("Solve problem with time limit using glpk (suboptimal solution", {
+    expect_message(out <- useSolver(allConstraints = list(usage, target),
+                                    solver = "GLPK", timeLimit = 0.1, verbose = FALSE),
+                   "The solution is feasible, but may not be optimal.")
+    expect_false(out$solution_found)
+  })
+}
 
 test_that("useSolver returns errors", {
   expect_error(useSolver(allConstraints = list(usage, target),
@@ -171,8 +175,7 @@ call <- substitute(fun(6))
 test_that("eval_with_time_limit works", {
   expect_equal(eval_call_with_time_limit(call, elapsed = .5, on_time_out = mean, x = c(1:3)),
                2)
-  expect_error(eval_call_with_time_limit(call, elapsed = .5), "reached elapsed time limit")
+  expect_error(out <- eval_call_with_time_limit(call, elapsed = .5), "reached elapsed time limit")
   expect_equal(eval_call_with_time_limit(call, elapsed = .5, on_time_out = "OK"), "OK")
-
 })
 

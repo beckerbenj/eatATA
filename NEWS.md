@@ -1,5 +1,19 @@
-# eatATA 0.10.0.9000
+# eatATA 0.11.2.9000
 
+* updated overview vignette
+
+# eatATA 0.11.2
+
+* fix occasional system dependent test failure
+
+# eatATA 0.11.1
+
+* fix `non ascii` character in help file
+
+# eatATA 0.11.0
+
+* constraint functions re-named consistently (now ending all on `Constraint`) 
+* objective function functions re-named consistently (now ending all on `Objective`) 
 * `itemUsageConstraint()` argument `whichItem` now takes a character vector (item identifiers) as input
 * `itemInclusionConstraint()` added to force items to be in the same test forms
 * `stemInclusionTuples()` added to create inclusion tuples from column with shared stimulus
@@ -7,6 +21,7 @@
 * argument names in `itemTuples()` and `itemExclusionConstraint()` slightly modified
 * added simulated item pools for examples
 * renamed all item pools consistently (`items_mini`, `items_diao`, `items_pilot`, `items_vera`, `items_lsa`)
+
 
 # eatATA 0.10.0
 

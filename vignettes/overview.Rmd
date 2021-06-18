@@ -33,7 +33,14 @@ library(eatATA)
 ```
 
 ## Item pool preparation
-`eatATA` provides functions to calculate item information function (`calculateIIF()`) and expected response times (`calculatExpectedRT()`). `dummiesToFactor()` allows the transformation of a variable coded as multiple dummy variables into a single factor. `itemExclusionTuples()` allows the transformation of item exclusions saved as a single character variable into item exclusion tuples (pairs).
+`eatATA` provides functions to prepare the item pool for test assembly:
+
+* `calculateIIF()`
+* `calculatExpectedRT()`
+* `dummiesToFactor()`
+* `computeTargetValues()`
+
+These functions can be used to calculate the item information function (`calculateIIF()`) and expected response times (`calculatExpectedRT()`). `dummiesToFactor()` allows the transformation of a variable coded as multiple dummy variables into a single factor. `computeTargetValues()` allows the calculation of target values for test form constraints, but this functionality is also contained in the `autoItemValuesMinMax()` function.
 
 There also a number of example item pools included in the package:
 * `items_mini`: A small minimal example item pool
@@ -62,6 +69,7 @@ Constraints controlling how often an item should or an be used:
 Constraints controlling number of items per test forms:
 
 * `itemUsageConstraint()`
+* `itemsPerFormConstraint()`
 
 Constraints controlling categorical properties of items across test forms:
 
@@ -80,8 +88,19 @@ Constraints controlling metric properties of items across test forms:
 * `itemValuesMinConstraint()`
 * `itemValuesRangeConstraint()`
 
+Constraints controlling item inclusions or exclusions within test forms: 
+
+* `itemExclusionConstraint()`
+* `itemInclusionConstraint()`
+
+Input for the inclusion and exclusion function can be prepared using:
+
+* `itemTuples()`
+* `matrixExclusionTuples()`
+* `stemInclusionTuples()`
+
 ## Solver function
-After defining all required constraints using the functions above, `useSolver()` can be used to call the desired solver.
+After defining all required constraints using the functions above, `useSolver()` can be used to call the desired solver. Optionally, constraints can be combined beforehand using the `combineConstraint()` function.
 
 ## Using the solver output
 `useSolver()` structures the output consistently, independent of the solver used. This output can be further processed by `inspectSolution()` (to inspect the assembled booklets) and `appendSolution()` (to append the assembly information to the existing item `data.frame`).

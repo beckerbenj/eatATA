@@ -10,7 +10,7 @@
 
 ## Overview
 
-`eatATA` provides a small `R` interface to mathematical optimization solvers specialized on solving simple automated test assembly problems (`ATA`). Internally, sparse matrices are used via the `Matrix` package. Currently supported solvers are `GLPK`, `lpSolve`, and `Gurobi`. See below for a list of implemented features and feature to come.
+`eatATA` provides a small `R` interface to mathematical optimization solvers specialized on solving simple automated test assembly problems (`ATA`). Internally, sparse matrices are used via the `Matrix` package. Currently supported solvers are `GLPK`, `lpSolve`, `Symphony`, and `Gurobi`. See below for a list of implemented features and feature to come.
 
 ## Installation
 
@@ -19,14 +19,14 @@
 install.packages("eatATA")
 
 # Install development version from GitHub via
-remotes::install_github("beckerbenj/eatATA", build_vignettes = TRUE)
+remotes::install_github("beckerbenj/eatATA", build_vignettes = TRUE, dependencies = TRUE)
 ```
 
 ## Documentation
 
-A vignette describing the current functionality can be found on [CRAN](https://CRAN.R-project.org/package=eatATA/vignettes/eatATA.html).
+A set of vignettes describing the current functionality can be found on [CRAN](https://CRAN.R-project.org/package=eatATA/).
 
-Alternatively, the vignette of the development version can be accessed through `R`. 
+Alternatively, the vignettes of the development version can be accessed through `R`. 
 
 ```R
 library(eatATA)
@@ -35,7 +35,7 @@ vignette("eatATA")
 
 ## Implemented Features
 
-The following types of constraints can be set via `eatATA`:
+For example, the following types of constraints can be set via `eatATA`:
 
 * no item overlap between test forms
 
@@ -45,19 +45,17 @@ The following types of constraints can be set via `eatATA`:
 
 * excluding items from being together in the same booklet (item exclusions)
 
-* simple optimization constraints
+* force items to be in the same test form (item inclusions)
+
+* force a set of items to be included in the test forms
+
+* various optimization constraints
 
 ## Outlook
 
-We are hoping to add interfaces to other mathematical optimization solvers. 
-
-Constraints that we hope to implement in the future:
-
-* force items to be in the same test form
+Constraints that might be implemented in the future:
 
 * taking into account hierarchical stimulus-item structures
-
-* more complex optimization targets
 
 If you wish to contribute to the package, please send an email to b.becker@iqb.hu-berlin.de.
 
