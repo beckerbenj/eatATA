@@ -14,7 +14,8 @@ URL: https://github.com/beckerbenj/eatATA
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.5.0)
-Imports: Matrix, 
+Imports: Matrix,
+         methods,
          Rglpk,
          lpSolve
 RoxygenNote: 7.1.1

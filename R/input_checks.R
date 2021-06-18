@@ -54,6 +54,7 @@ check_nItems_itemValues_itemIDs <- function(nItems = NULL,
 
 
 # Function to check whether the arguments are of the correct type
+#' @importFrom methods formalArgs
 check_type <- function(..., type = "numeric", stop = TRUE,
                        envir = parent.frame()) {
 

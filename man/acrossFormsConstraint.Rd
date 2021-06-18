@@ -58,7 +58,8 @@ combineConstraints(
   acrossFormsConstraint(nForms = 3,
                         operator = "=", targetValue = 4,
                         whichForms = c(1, 3),
-                        itemValues = c(rep(1, 10), rep(0, 10)))
+                        itemValues = c(rep(1, 10), rep(0, 10)),
+                        itemIDs = 1:20),
   itemUsageConstraint(nForms = 3, nItems = 20, operator = "=", targetValue = 1,
                       itemIDs = 1:20)
                     )
@@ -68,8 +69,9 @@ combineConstraints(
   acrossFormsConstraint(nForms = 3, nItems = 20,
                         operator = "=", targetValue = 4,
                         whichForms = c(1, 3),
-                        whichItems = 1:10)
-  temUsageConstraint(nForms = 3, nItems = 20, operator = "=", targetValue = 1,
+                        whichItems = 1:10,
+                        itemIDs = 1:20),
+  itemUsageConstraint(nForms = 3, nItems = 20, operator = "=", targetValue = 1,
                       itemIDs = 1:20)
                     )
 
