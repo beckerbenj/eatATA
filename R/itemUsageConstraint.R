@@ -41,29 +41,40 @@
 # constraints sum of item values over forms
 itemUsageConstraint <- function(nForms, nItems = NULL, formValues = rep(1, nForms),
                                 operator = c("<=", "=", ">="),
-                                targetValue = 1, whichItems = seq_len(nItems),
+                                targetValue = 1, whichItems = NULL,
                                 info_text = NULL,
                                 itemIDs = NULL){
 
-  operator <- match.arg(operator)
+  # Do checks
+  check_out <- do_checks_eatATA(
+    nItems = nItems,
+    itemIDs = itemIDs,
+    itemValues = NULL,
+    formValues = formValues,
+    operator = operator,
+    nForms = nForms,
+    targetValue = targetValue,
+    info_text = info_text,
+    whichItems = whichItems,
+    testFormValues = TRUE,
+    itemValuesName = deparse(substitute(formValues)))
 
-  nItems <- comb_itemIDs_nItems(itemIDs, nItems = nItems)
+  nItems <- check_out$nItems
+  itemIDs <- check_out$itemIDs
+  itemValues <- check_out$itemValues
+  operator <- check_out$operator
+  info_text <- check_out$info_text
+  whichItems <- check_out$whichItems
+  formValues <- check_out$formValues
 
-  # all arguments should be of lenght 1
-  check <- sapply(list(nForms, nItems, operator, targetValue), length) == 1
-  if(any(!check)) stop("The following arguments should have length 1: 'nForms', 'nItems', 'operator', 'targetValue'.")
 
-  # formValues should have length equal to nForms
-  if(length(formValues) != nForms) stop("The length of 'formValues' should be equal to 'nForms'.")
 
   # the targetValue should be smaller than or equal to the sum of the formValues
   if(targetValue > sum(formValues)) stop("The 'targetValue' should be smaller than the sum of the 'formValues'.")
 
-  # item IDs supplied to whichItems
-  whichItems <- whichItemsToNumeric(whichItems, itemIDs = itemIDs)
-
-  # choose info_text for info
-  if(is.null(info_text)) info_text <- paste0(deparse(substitute(formValues)), operator, targetValue)
+#
+#  # choose info_text for info
+#  if(is.null(info_text)) info_text <- paste0(deparse(substitute(formValues)), operator, targetValue)
 
   makeItemConstraint(nForms, nItems, formValues, realVar = NULL,
                      operator, targetValue,
@@ -72,13 +83,4 @@ itemUsageConstraint <- function(nForms, nItems = NULL, formValues = rep(1, nForm
                      itemIDs = itemIDs)
 }
 
-whichItemsToNumeric <- function(whichItems, itemIDs) {
-  if(is.character(whichItems)) {
-    if(is.null(itemIDs)) stop("item IDs supplied to 'whichItems' but not to 'itemIDs'.")
-    not_in_itemIDs <- setdiff(whichItems, itemIDs)
-    if(length(not_in_itemIDs) > 0) stop("The following item IDs are in 'whichItem' but not in 'itemIDs': ",
-                                        paste(not_in_itemIDs, collapse = ", "))
-    return(match(whichItems, itemIDs))
-  }
-  whichItems
-}
+

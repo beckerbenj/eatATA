@@ -62,6 +62,11 @@ get_A_binary_items_forms <- function(nForms, nItems,
   # number of used forms
   nUsedForms = length(whichForms)
 
+  # if the number of values equals nForms * nItems, then select the relevant values
+  if(length(values) == (nForms * nItems))
+    values <- matrix(values, ncol = nForms)[cbind(rep(whichItems, nUsedForms),
+                                                  rep(whichForms, each = nUsedItems))]
+
   # length of values should be equal to nUsedItems * nUsedItems
   nValues <- nUsedForms * nUsedItems
   if(length(values) != nValues) stop("The number of values does not correspond to whichForms and whichItems.")
@@ -285,7 +290,7 @@ makeItemFormConstraint <- function(nForms, nItems, values, realVar, operator,
   # number of used forms in constraints
   nUsedForms <- length(whichForms)
 
-  # number of used forms in constraints
+  # number of used items in constraints
   nUsedItems <- length(whichItems)
 
   # A matrix with weights - only for binary variables

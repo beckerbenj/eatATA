@@ -20,15 +20,16 @@ test_that("Item Values Constraint", {
 })
 
 test_that("Item Values Constraint returns errors", {
-  expect_error(itemValuesConstraint(c(2, 4), 1:10, targetValue = 4),
-               "The following arguments should have length 1: 'nForms', 'operator', 'targetValue'.")
+  expect_error(itemValuesConstraint(c(2, 4), 1:10, targetValue = 4, itemIDs = 1:10),
+               "'nForms' should be a vector of length 1.")
   expect_error(itemValuesConstraint(2, 1:5, "=", 3, itemIDs = 1:4),
-               "The length of 'itemValues' should be equal to 'itemIDs'.")
-  expect_error(itemValuesConstraint(2, 1:5, "=", 20),
+               "The length of 'itemIDs' and 'itemValues' should correspond.")
+  expect_error(itemValuesConstraint(2, 1:5, "=", 20, itemIDs = 1:5),
                "The 'targetValue' should be smaller than the sum of the 'itemValues'.")
 
-  expect_error(itemValuesConstraint(2, 2:5, targetValue = 4, info_text = c("two", "strings")),
-               "'info_text' should be a character string of length 1.")
+  expect_error(itemValuesConstraint(2, 2:5, targetValue = 4, info_text = c("two", "strings"),
+                                    itemIDs = 1:4),
+               "'info_text' should be a vector of length 1.")
 })
 
 

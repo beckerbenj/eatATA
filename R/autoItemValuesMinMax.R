@@ -23,7 +23,7 @@
 #' @export
 autoItemValuesMinMaxConstraint <- function(nForms, itemValues, testLength = NULL, allowedDeviation = NULL,
                                  relative = FALSE, verbose = TRUE, itemIDs = NULL){
-  check_itemIDs(itemIDs)
+
   # compute the minimum and maximum values
   min_max <- computeTargetValues(itemValues, nForms, testLength = testLength,
                                  allowedDeviation = allowedDeviation, relative = relative)

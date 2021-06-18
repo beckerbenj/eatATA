@@ -22,8 +22,9 @@ test_that("Item Category Constraint returns errors and warnings", {
                "The length of 'itemCategories' and 'itemIDs' should be identical.")
   expect_error(itemCategoryConstraint(2, factor(c(1, 2, 2, 1)), "=", targetValues = 1),
                "The number of 'targetValues' should correspond with the number of levels in 'itemCategories'.")
-  expect_error(itemCategoryConstraint(2:3, factor(c(1, 2, 2, 1)), "=", targetValues = c(1, 2)),
-               "The following arguments should have length 1: 'nForms', 'operator'.")
+  expect_error(itemCategoryConstraint(2:3, factor(c(1, 2, 2, 1)), "=", targetValues = c(1, 2),
+                                      itemIDs = 1:4),
+               "'nForms' should be a vector of length 1.")
   warns <- capture_warnings(out <- itemCategoryConstraint(2, factor(c(1, 1, 2, 2)), "=", targetValues = c(1, 2)))
   warns[[1]] <- "Argument 'itemIDs' is missing. 'itemIDs' will be generated automatically."
 })

@@ -27,16 +27,34 @@ itemsPerFormConstraint <- function(nForms, nItems = NULL, operator = c("<=", "="
                                    targetValue, whichForms = seq_len(nForms),
                                    itemIDs = NULL){
 
-  operator <- match.arg(operator)
-  suppressWarnings(nItems <- comb_itemIDs_nItems(itemIDs, nItems))
 
-  # value cannot be greater than nForms
+  # Do checks
+  check_out <- do_checks_eatATA(
+    nItems = nItems,
+    itemIDs = itemIDs,
+    itemValues = NULL,
+    operator = operator,
+    nForms = nForms,
+    targetValue = targetValue,
+    info_text = NULL,
+    whichItems = NULL,
+    itemValuesName = "itemsPerForm")
+
+  nItems <- check_out$nItems
+  itemIDs <- check_out$itemIDs
+  itemValues <- check_out$itemValues
+  operator <- check_out$operator
+  info_text <- check_out$info_text
+
+
+  # the targetValue should be smaller than or equal to the sum of the itemValues
   if(targetValue > nItems) stop("'targetValue' should be smaller than or equal to 'nItems'.")
 
 
-  itemValuesConstraint(nForms, itemValues = rep(1, nItems), operator,
-                       targetValue, whichForms = whichForms,
-                       info_text = paste0("itemsPerForm", operator, targetValue),
-                       itemIDs)
+  makeFormConstraint(nForms, itemValues, realVar = NULL,
+                     operator, targetValue,
+                     whichForms, sense = NULL,
+                     info_text = info_text,
+                     itemIDs = itemIDs)
 
 }

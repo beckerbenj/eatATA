@@ -41,6 +41,18 @@ constraints assure that the sum of the item values (\code{itemValues}) per test 
 (\code{operator = "="}), or (c) greater than or equal to (\code{operator = ">="})
 the chosen \code{targetValue}.
 }
+\details{
+When \code{operator} is \code{"<="}, the constraint can be mathematically formulated as:
+\deqn{\sum_{i=1}^{I} v_i \times x_{if} \geq t &, \; \; \; \text{for} \:  f \in G,}
+where $I$ refers to the number of items in the item pool, $v_i$ is the
+\code{itemValue} for item $i$ and $t$ is the \code{targetValue}. Further, $G$
+corresponds to \code{whichForms}, so that the above inequality constraint
+is repeated for every test form $f$ in $G$. In addition, let \eqn{\boldsymbol{x}}
+be a vector of binary decision variables with length \eqn{I \times F}, where $F$
+is \code{nForms}. The binary decision variables $x_{if}$ are defined as:
+\deqn{ x_{if} = 1 \text{if item $i$ is assigned to form $f$,}}
+\deqn{x_{if} = 0 \text{otherwise.}}
+}
 \examples{
 ## constraints to make sure that the sum of the item values (1:10) is between
 ## 4 and 6

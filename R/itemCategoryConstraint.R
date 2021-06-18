@@ -30,15 +30,10 @@ itemCategoryConstraint <- function(nForms, itemCategories,
                                    info_text = NULL,
                                    itemIDs = names(itemCategories)){
 
-  if(!is.character(operator)) stop("'operator' needs to be a character vector.")
   operator <- match.arg(operator)
 
   # itemCategories should be a factor
   if(!is.factor(itemCategories)) stop("'itemCategories' should be a factor.")
-
-  # some arguments should be of length 1
-  check <- sapply(list(nForms, operator), length) == 1
-  if(any(!check)) stop("The following arguments should have length 1: 'nForms', 'operator'.")
 
   # itemValues should have length equal to itemIDs
   if(!is.null(itemIDs) && length(itemCategories) != length(itemIDs)) stop("The length of 'itemCategories' and 'itemIDs' should be identical.")

@@ -10,7 +10,7 @@ itemUsageConstraint(
   formValues = rep(1, nForms),
   operator = c("<=", "=", ">="),
   targetValue = 1,
-  whichItems = seq_len(nItems),
+  whichItems = NULL,
   info_text = NULL,
   itemIDs = NULL
 )

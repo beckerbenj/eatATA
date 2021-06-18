@@ -16,8 +16,8 @@ test_that("Items per Form Constraint works", {
 })
 
 test_that("Items per Form Constraint returns errors", {
-  expect_error(itemValuesConstraint(c(2, 4), 10, targetValue = 4),
-               "The following arguments should have length 1: 'nForms', 'operator', 'targetValue'.")
+  expect_error(suppressWarnings(itemValuesConstraint(c(2, 4), 10, targetValue = 4)),
+               "'nForms' should be a vector of length 1.")
   expect_error(itemsPerFormConstraint(2, operator = "=", targetValue = 12, itemIDs = 1:10),
                "'targetValue' should be smaller than or equal to 'nItems'.")
 })

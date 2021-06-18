@@ -1,16 +1,4 @@
-test_that("whichItemstoNumeric", {
-  expect_equal(whichItemsToNumeric(c("item3"), paste0("item", 1:5)), 3)
-  expect_equal(whichItemsToNumeric(c("item5", "item2"), paste0("item", 1:5)), c(5, 2))
 
-  expect_equal(whichItemsToNumeric(c(3, 6, 1), paste0("item", 1:5)), c(3, 6, 1))
-})
-
-test_that("whichItemstoNumeric errors", {
-  expect_error(whichItemsToNumeric(c("item6"), paste0("item", 1:5)),
-               "The following item IDs are in 'whichItem' but not in 'itemIDs': item6")
-  expect_error(whichItemsToNumeric(c("item6"), NULL),
-               "item IDs supplied to 'whichItems' but not to 'itemIDs'.")
-})
 
 test_that("Item Usage Constraint", {
   out <- itemUsageConstraint(2, itemIDs = 1:4)
@@ -55,14 +43,14 @@ test_that("Item Usage Constraint specific items", {
 
 test_that("Item Usage Constraint returns errors", {
   expect_error(itemUsageConstraint(c(2, 4), 10, itemIDs = 1:10),
-               "The following arguments should have length 1: 'nForms', 'nItems', 'operator', 'targetValue'.")
+               "'nForms' should be a vector of length 1.")
   expect_error(itemUsageConstraint(2, 10, operator = "=", targetValue = 3, itemIDs = 1:10),
                "The 'targetValue' should be smaller than the sum of the 'formValues'.")
   expect_error(itemUsageConstraint(2, 10, 1:3, operator = "=", targetValue = 1, itemIDs = 1:10),
-               "The length of 'formValues' should be equal to 'nForms'.")
+               "'formValues' should be a vector of length 2.")
   expect_error(itemUsageConstraint(2, 10, rep(1, 2), operator = "=",
                                    targetValue = 1, whichItems = c(1, 11), itemIDs = 1:10),
-               "'whichItems' should be a subset of either all the possible items numbers given 'nItems', or of the 'itemIDs")
+               "Some values in 'whichItems' are out of range. That is, higher than the length of 'itemIDs'.")
   expect_warning(out <- itemUsageConstraint(2, 4),
                  "'itemIDs' is missing. 'itemIDs' will be generated automatically.")
 })
