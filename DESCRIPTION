@@ -14,10 +14,12 @@ URL: https://github.com/beckerbenj/eatATA
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.5.0)
-Imports: Matrix,
-         methods,
-         Rglpk,
-         lpSolve
+Imports: 
+    Matrix,
+    methods,
+    Rglpk,
+    mathjaxr,
+    lpSolve
 RoxygenNote: 7.1.1
 Suggests: 
     testthat (>= 2.1.0),
@@ -26,6 +28,8 @@ Suggests:
     rmarkdown,
     readxl,
     Rsymphony
-Enhances:
+Enhances: 
     gurobi
+RdMacros: 
+    mathjaxr
 VignetteBuilder: knitr
