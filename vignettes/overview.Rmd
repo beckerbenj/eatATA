@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-`eatATA` efficiently translates test design requirements for Automated Test Assembly (`ATA`) into constraints for a Mixed Integer Linear Programming Model (MILP). A number of efficient and user-friendly functions are available that translate conceptual test assembly constraints to constraint objects for MILP solver. Currently, `GLPK`, `lpSolve`, `SYMPHONY`, and `Gurobi` are supported as solvers. In the remainder of this vignette we provide an overview of the functionality of `eatATA`. A minimal `ATA` example can be found in the vignette [Typical Use of `eatATA`: a Minimal Example](minimal_example.html), a more complex use case for a pilot study can be found in the vignette [Typical Use of `eatATA`: a Pilot Study Example](use_case_pilot_study.html).
+`eatATA` efficiently translates test design requirements for Automated Test Assembly (`ATA`) into constraints for a Mixed Integer Linear Programming Model (MILP). A number of user-friendly functions are available that translate conceptual test assembly constraints to constraint objects for MILP solver. Currently, `GLPK`, `lpSolve`, `SYMPHONY`, and `Gurobi` are supported as solvers. In the remainder of this vignette we provide an overview of the functionality of `eatATA`. A minimal `ATA` example can be found in the vignette [Typical Use of `eatATA`: a Minimal Example](minimal_example.html), a more complex use case for a pilot study can be found in the vignette [Typical Use of `eatATA`: a Pilot Study Example](use_case_pilot_study.html).
 
 ## Setup
 The `eatATA` package can be installed from `CRAN`.  
@@ -90,7 +90,7 @@ Constraints controlling metric properties of items per test forms:
 
 Constraints controlling metric properties of items across test forms:
 
-* `acrossFormConstraint()`
+* `acrossFormsConstraint()`
 
 Constraints controlling item inclusions or exclusions within test forms: 
 
