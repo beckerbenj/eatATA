@@ -1,10 +1,10 @@
 #' Constrain the sum of item values across multiple forms.
 #'
 #' Create constraints related to item values. That is, the created
-#' constraints assure that the sum of the item values (\code{values}) across test forms is either
+#' constraints assure that the sum of the item values (\code{itemValues}) across test forms is either
 #' (a) smaller than or equal to (\code{operator = "<="}), (b) equal to
 #' (\code{operator = "="}), or (c) greater than or equal to (\code{operator = ">="})
-#' the chosen \code{targetValue}. Note that the length of \code{values} should
+#' the chosen \code{targetValue}. Note that the length of \code{itemValues} should
 #' equal to the number of the length of \code{whichForms} times \code{whichItems}.
 #'
 #'@inheritParams itemValuesConstraint
