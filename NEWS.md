@@ -1,14 +1,20 @@
-# eatATA 0.11.2.9000
+# eatATA 1.0.0
 
 * updated overview vignette
+* added mathematical formulations of implementation on the help page of `itemValuesConstraint()`
+* added `acrossFormsConstraint()` for constraints across test forms
+* more rigorous input checks for all constraint functions
+
 
 # eatATA 0.11.2
 
 * fix occasional system dependent test failure
 
+
 # eatATA 0.11.1
 
 * fix `non ascii` character in help file
+
 
 # eatATA 0.11.0
 
@@ -43,6 +49,7 @@
 * uniqueness of argument `itemID` is checked
 * introduction of `constraint`-class with specific methods and constructor functions
 
+
 # eatATA 0.9.1
 
 * `GLPK` and `lpSolve` solvers are now supported
@@ -51,6 +58,7 @@
 * `prepareConstraints()` and `processGurobiOutput()` retired
 * `calculateIIF()` calculates item information function
 * `calculateExpectedRT()` calculates expected response times
+
 
 # eatATA 0.7.0
 

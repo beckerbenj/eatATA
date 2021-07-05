@@ -26,7 +26,7 @@ test_that("check_length", {
   expect_silent(check_length(vec, length = goal))
 
   expect_error(check_length(vec = 1, c("a"), length = 2),
-               cat("'vec', 'c(\"a\")' should be a vector of length 2."))
+               paste0("'vec', 'c(\"a\")' should be a vector of length 2."), fixed = TRUE)
 
   expect_invisible(check_length(vec = 1, c("a", "b"), length = 2, stop = FALSE),
                    c(FALSE, TRUE))

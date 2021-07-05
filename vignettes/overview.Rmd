@@ -61,7 +61,7 @@ Constraints defining the optimization goal of the automated test assembly:
 ## Constraints
 Here is a list of functions that can be used to set constraints:
 
-Constraints controlling how often an item should or an be used:
+Constraints controlling how often an item should or can be used:
 
 * `depletePoolConstraint()`
 * `itemUsageConstraint()`
@@ -71,7 +71,7 @@ Constraints controlling number of items per test forms:
 * `itemUsageConstraint()`
 * `itemsPerFormConstraint()`
 
-Constraints controlling categorical properties of items across test forms:
+Constraints controlling categorical properties of items per test forms:
 
 * `itemCategoryConstraint()`
 * `itemCategoryDeviationConstraint()`
@@ -79,14 +79,18 @@ Constraints controlling categorical properties of items across test forms:
 * `itemCategoryMinConstraint()`
 * `itemCategoryRangeConstraint()`
 
-Constraints controlling metric properties of items across test forms:
+Constraints controlling metric properties of items per test forms:
 
-* `autoItemValuesMinMax()`
+* `autoItemValuesMinMaxConstraint()`
 * `itemValuesConstraint()`
 * `itemValuesDeviationConstraint()`
 * `itemValuesMaxConstraint()`
 * `itemValuesMinConstraint()`
 * `itemValuesRangeConstraint()`
+
+Constraints controlling metric properties of items across test forms:
+
+* `acrossFormConstraint()`
 
 Constraints controlling item inclusions or exclusions within test forms: 
 
