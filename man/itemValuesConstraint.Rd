@@ -43,7 +43,7 @@ the chosen \code{targetValue}.
 }
 \details{
 When \code{operator} is \code{"<="}, the constraint can be mathematically formulated as:
-\mjsdeqn{\sum_{i=1}^{I} v_i \times x_{if} \leq t , \; \; \; \text{for} \:  f \in G,}
+\mjsdeqn{\sum_{i=1}^{I} v_i \times x_{if} \leq t , \; \; \; \code{for} \:  f \in G,}
 where \mjseqn{I} refers to the number of items in the item pool, \mjseqn{v_i} is the
 \code{itemValue} for item \mjseqn{i} and \mjseqn{t} is the \code{targetValue}. Further, \mjseqn{G}
 corresponds to \code{whichForms}, so that the above inequality constraint
