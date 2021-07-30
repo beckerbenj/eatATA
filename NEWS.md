@@ -1,3 +1,6 @@
+# eatATA 1.0.0.9000
+* bugfix in `itemTuples()` (#1)
+
 # eatATA 1.0.0
 
 * updated overview vignette
