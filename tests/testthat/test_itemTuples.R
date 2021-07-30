@@ -76,6 +76,18 @@ test_that("item tuples big item pool", {
   expect_equal(dim(itemTuples), c(45, 2))
 })
 
+test_that("all items have identical number of tuples", {
+  items <- data.frame(ID = c("item1", "item2", "item3", "item4"),
+                      exclusions = c("item2", "item1", "item4", "item3"),
+                      stringsAsFactors = FALSE)
+
+  out <- itemTuples(items = items, idCol = "ID", infoCol = "exclusions",
+                    sepPattern = ", ")
+
+  expect_equal(dim(out), c(2, 2))
+  expect_equal(as.character(out[1, ]), c("item1", "item2"))
+  expect_equal(as.character(out[2, ]), c("item3", "item4"))
+})
 
 
 
