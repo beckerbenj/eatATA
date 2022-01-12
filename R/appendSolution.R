@@ -37,7 +37,7 @@ appendSolution <- function(solverOut, items, idCol){
     if(!idCol %in% names(items)) stop("'idCol' is not a column in 'items'.")
   } else if(!idCol %in% seq_len(dim(items)[2])) stop("'idCol' is not a column number in 'items'.")
 
-  if(!identical(rownames(solverOut$item_matrix), as.character(items[, idCol]))) stop("'items' and the solution in 'solverOut' have different sets of itemIDs.")
+  if(!identical(rownames(solverOut$item_matrix), as.character(items[[idCol]]))) stop("'items' and the solution in 'solverOut' have different sets of itemIDs.")
   check_solverOut(solverOut)
 
   new_items <- data.frame(items, solverOut$item_matrix)
