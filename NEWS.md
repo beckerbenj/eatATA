@@ -1,5 +1,6 @@
 # eatATA 1.0.0.9000
 * bugfix in `inspectSolution()` (works with `tibbles` now)
+* bugfix in `itemValuesConstraint()` (works with negative `itemValues` now)
 * bugfix in `itemTuples()` (#1)
 
 # eatATA 1.0.0

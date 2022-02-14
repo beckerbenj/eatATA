@@ -19,13 +19,16 @@ test_that("Item Values Constraint", {
   expect_is(out$A_binary, "Matrix")
 })
 
-test_that("Item Values Constraint returns errors", {
+test_that("Item Values Constraint returns errors or warnings", {
   expect_error(itemValuesConstraint(c(2, 4), 1:10, targetValue = 4, itemIDs = 1:10),
                "'nForms' should be a vector of length 1.")
   expect_error(itemValuesConstraint(2, 1:5, "=", 3, itemIDs = 1:4),
                "The length of 'itemIDs' and 'itemValues' should correspond.")
   expect_error(itemValuesConstraint(2, 1:5, "=", 20, itemIDs = 1:5),
                "The 'targetValue' should be smaller than the sum of the 'itemValues'.")
+  expect_message(itemValuesConstraint(2, -3:3, "=", 2, itemIDs = 1:7),
+               "The 'targetValue' is higher than the sum of the 'itemValues', is this possible?")
+
 
   expect_error(itemValuesConstraint(2, 2:5, targetValue = 4, info_text = c("two", "strings"),
                                     itemIDs = 1:4),

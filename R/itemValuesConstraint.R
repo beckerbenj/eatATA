@@ -68,8 +68,9 @@ itemValuesConstraint <- function(nForms, itemValues,
 
 
   # the targetValue should be smaller than or equal to the sum of the itemValues
-  if(targetValue > sum(itemValues)) stop("The 'targetValue' should be smaller than the sum of the 'itemValues'.")
-
+  negatives_in_itemValues <- any(itemValues < 0)
+  if(!negatives_in_itemValues && targetValue > sum(itemValues)) stop("The 'targetValue' should be smaller than the sum of the 'itemValues'.")
+  if(negatives_in_itemValues && targetValue > sum(itemValues)) message("The 'targetValue' is higher than the sum of the 'itemValues', is this possible?")
 
   makeFormConstraint(nForms, itemValues, realVar = NULL,
                      operator, targetValue,
