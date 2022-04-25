@@ -1,4 +1,5 @@
 # eatATA 1.0.0.9000
+* `calculateExpectedRTvar()` for calculating the expected response time variance of an item 
 * bugfix in `inspectSolution()` (works with `tibbles` now)
 * bugfix in `itemValuesConstraint()` (works with negative `itemValues` now)
 * bugfix in `itemTuples()` (#1)

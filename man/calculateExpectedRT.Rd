@@ -2,9 +2,12 @@
 % Please edit documentation in R/calculateExpectedRT.R
 \name{calculateExpectedRT}
 \alias{calculateExpectedRT}
-\title{Calculate Expected Response Times}
+\alias{calculateExpectedRTvar}
+\title{Calculate Expected Response Times Moments}
 \usage{
 calculateExpectedRT(lambda, phi = rep(1, length(lambda)), zeta, sdEpsi)
+
+calculateExpectedRTvar(lambda, phi = rep(1, length(lambda)), zeta, sdEpsi)
 }
 \arguments{
 \item{lambda}{Vector of time intensity parameters.}
@@ -19,27 +22,39 @@ calculateExpectedRT(lambda, phi = rep(1, length(lambda)), zeta, sdEpsi)
 a matrix, with columns for different \code{zeta} and rows for different items
 }
 \description{
-Calculate expected response times given item parameters of the log normal response time model.
+Calculate expected response times moments (mean and variance) given item parameters of the log normal response time model.
 }
 \details{
 Expected response times are calculated according to the log normal response time model by
 van der Linden (2006) or Klein Entink et al. (2009). If \code{phi} is \code{1}, the model
-by van der Linden (2006) is used. Either a single set of parameters of vectors of each parameters
+by van der Linden (2006) is used. Either a single set of parameters of vectors of each parameter
 can be supplied.
 
 The calculation is based on Fenton (1960). For the model by van der Linden (2006), the calculation was
 first introduced by van der Linden (2011).
 }
+\section{Functions}{
+\itemize{
+\item \code{calculateExpectedRT}: Calculate expected mean response time
+
+\item \code{calculateExpectedRTvar}: Calculate expected response time variance
+}}
+
 \examples{
 # expected RT for a single item (van der Linden model)
 calculateExpectedRT(lambda = 3.8, zeta = 0, sdEpsi = 0.3)
+calculateExpectedRTvar(lambda = 3.8, zeta = 0, sdEpsi = 0.3)
 
 # expected RT for multiple items (van der Linden model)
 calculateExpectedRT(lambda = c(4.1, 3.8, 3.5), zeta = 0,
                    sdEpsi = c(0.3, 0.4, 0.2))
+calculateExpectedRTvar(lambda = c(4.1, 3.8, 3.5), zeta = 0,
+                   sdEpsi = c(0.3, 0.4, 0.2))
 
-# TIF for multiple items and multiple ability levels (1PL model)
+# expected RT for multiple items and multiple spped levels (Klein Entink model)
 calculateExpectedRT(lambda = c(3.7, 4.1, 3.8), phi = c(1.1, 0.8, 0.5),
+                    zeta = c(-1, 0, 1), sdEpsi = c(0.3, 0.4, 0.2))
+calculateExpectedRTvar(lambda = c(3.7, 4.1, 3.8), phi = c(1.1, 0.8, 0.5),
                     zeta = c(-1, 0, 1), sdEpsi = c(0.3, 0.4, 0.2))
 
 }

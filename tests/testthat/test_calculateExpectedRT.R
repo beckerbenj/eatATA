@@ -41,3 +41,8 @@ test_that("multiple items and multiple zetas", {
   expect_equal(as.numeric(round(out[1, 2], 2)), c(22.76))
   expect_equal(colnames(out), c("zeta=0", "zeta=1"))
 })
+
+test_that("normal variance", {
+  out <- calculateExpectedRTvar(4, phi = 1, zeta = 0, sdEpsi = 0.5)
+  expect_equal(round(out[1], 2), c(1087.14))
+})
