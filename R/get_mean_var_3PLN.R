@@ -42,13 +42,13 @@
 #'
 #'@examples
 #'# expected RT for a single item (van der Linden model)
-#'calculateMeanRT(lambda = 3.8, zeta = 0, sdEpsi = 0.3)
-#'get_var_3PLN(lambda = 3.8, zeta = 0, sdEpsi = 0.3)
+#'get_mean_2PLN(lambda = 3.8, zeta = 0, sdEpsi = 0.3)
+#'get_var_2PLN(lambda = 3.8, zeta = 0, sdEpsi = 0.3)
 #'
 #'# expected RT for multiple items (van der Linden model)
-#'get_mean_3PLN(lambda = c(4.1, 3.8, 3.5), zeta = 0,
+#'get_mean_2PLN(lambda = c(4.1, 3.8, 3.5), zeta = 0,
 #'                    sdEpsi = c(0.3, 0.4, 0.2))
-#'get_var_3PLN(lambda = c(4.1, 3.8, 3.5), zeta = 0,
+#'get_var_2PLN(lambda = c(4.1, 3.8, 3.5), zeta = 0,
 #'                    sdEpsi = c(0.3, 0.4, 0.2))
 #'
 #'# expected RT for multiple items and multiple spped levels (Klein Entink model)
