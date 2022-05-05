@@ -1,5 +1,10 @@
 # eatATA 1.0.0.9000
-* `calculateExpectedRTvar()` for calculating the expected response time variance of an item 
+* `get_mean_2PLN()` and `get_mean_2PLN()` for calculating the mean of the two- 
+and three-parameter log-normal response time distributions, based on a set of 
+parameters.
+* `get_var_2PLN()` and `get_var_2PLN()` for calculating the variance of the two- 
+and three-parameter log-normal response time distributions, based on a set of 
+parameters
 * bugfix in `inspectSolution()` (works with `tibbles` now)
 * bugfix in `itemValuesConstraint()` (works with negative `itemValues` now)
 * bugfix in `itemTuples()` (#1)
