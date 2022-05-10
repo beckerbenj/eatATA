@@ -60,11 +60,7 @@
 #' @describeIn get_mean_3PLN Calculate mean 3PLN
 #'@export
 get_mean_3PLN <- function(lambda, phi = rep(1, length(lambda)), zeta, sdEpsi) {
-  if(!is.numeric(lambda)) stop("'lambda' must be a numeric vector.")
-  if(!is.numeric(phi)) stop("'phi' must be a numeric vector.")
-  if(!is.numeric(zeta)) stop("'zeta' must be a numeric vector.")
-  if(!is.numeric(sdEpsi)) stop("'sdEpsi' must be a numeric vector.")
-  if(length(sdEpsi) != length(lambda) || length(sdEpsi) != length(phi)) stop("'lambda', 'phi', and 'sdEpsi' must be of the same length.")
+  check_RT_params_input(lambda = lambda, phi = phi, zeta = zeta, sdEpsi = sdEpsi)
 
   cumulants <- get_cumulant_3PLN(zeta, lambda, phi, sdEpsi)
   return(cumulants[[1]])
@@ -82,11 +78,7 @@ get_mean_2PLN <- function(lambda, zeta, sdEpsi) {
 #' @describeIn get_mean_3PLN Calculate variance 3PLN
 #'@export
 get_var_3PLN <- function(lambda, phi = rep(1, length(lambda)), zeta, sdEpsi) {
-  if(!is.numeric(lambda)) stop("'lambda' must be a numeric vector.")
-  if(!is.numeric(phi)) stop("'phi' must be a numeric vector.")
-  if(!is.numeric(zeta)) stop("'zeta' must be a numeric vector.")
-  if(!is.numeric(sdEpsi)) stop("'sdEpsi' must be a numeric vector.")
-  if(length(sdEpsi) != length(lambda) || length(sdEpsi) != length(phi)) stop("'lambda', 'phi', and 'sdEpsi' must be of the same length.")
+  check_RT_params_input(lambda = lambda, phi = phi, zeta = zeta, sdEpsi = sdEpsi)
 
   cumulants <- get_cumulant_3PLN(zeta, lambda, phi, sdEpsi)
   return(cumulants[[2]])
@@ -101,6 +93,15 @@ get_var_2PLN <- function(lambda, phi = rep(1, length(lambda)), zeta, sdEpsi) {
                 sdEpsi = sdEpsi)
 }
 
+
+check_RT_params_input <- function(lambda, phi = rep(1, length(lambda)), zeta, sdEpsi) {
+  if(!is.numeric(lambda)) stop("'lambda' must be a numeric vector.")
+  if(!is.numeric(phi)) stop("'phi' must be a numeric vector.")
+  if(!is.numeric(zeta)) stop("'zeta' must be a numeric vector.")
+  if(!is.numeric(sdEpsi)) stop("'sdEpsi' must be a numeric vector.")
+  if(length(sdEpsi) != length(lambda) || length(sdEpsi) != length(phi)) stop("'lambda', 'phi', and 'sdEpsi' must be of the same length.")
+  NULL
+}
 
 ### Function to compute the first, second and third cumulant of the
 ### item response time function.
