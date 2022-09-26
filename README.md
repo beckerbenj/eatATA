@@ -24,18 +24,12 @@ remotes::install_github("beckerbenj/eatATA", build_vignettes = TRUE, dependencie
 
 ## Documentation
 
-A set of vignettes describing the current functionality can be found on [CRAN](https://CRAN.R-project.org/package=eatATA/).
+An extensive tutorial paper including a variety of use cases has been published here: <https://doi.org/10.3390/psych3020010>. Additionally, a set of vignettes describing the current functionality can be found on [CRAN](https://CRAN.R-project.org/package=eatATA/).
 
-Alternatively, the vignettes of the development version can be accessed through `R`. 
-
-```R
-library(eatATA)
-vignette("eatATA")
-```
 
 ## Implemented Features
 
-For example, the following types of constraints can be set via `eatATA`:
+`eatATA` is suitable for the automated test assembly of fixed linear test forms or multi-stage testing modules. For example, the following types of constraints can be set via `eatATA`:
 
 * no item overlap between test forms
 
@@ -53,9 +47,11 @@ For example, the following types of constraints can be set via `eatATA`:
 
 ## Outlook
 
-Constraints that might be implemented in the future:
+Features that might be implemented in the future:
 
 * taking into account hierarchical stimulus-item structures
+
+* adopting the `ROI` framework to access a larger number of solvers
 
 If you wish to contribute to the package, please send an email to b.becker@iqb.hu-berlin.de.
 
