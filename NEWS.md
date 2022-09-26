@@ -1,8 +1,8 @@
 # eatATA 1.0.0.9000
-* `get_mean_2PLN()` and `get_mean_2PLN()` for calculating the mean of the two- 
+* `getMean2PLN()` and `getMean2PLN()` for calculating the mean of the two- 
 and three-parameter log-normal response time distributions, based on a set of 
 parameters.
-* `get_var_2PLN()` and `get_var_2PLN()` for calculating the variance of the two- 
+* `getMar2PLN()` and `getVar2PLN()` for calculating the variance of the two- 
 and three-parameter log-normal response time distributions, based on a set of 
 parameters
 * bugfix in `inspectSolution()` (works with `tibbles` now)

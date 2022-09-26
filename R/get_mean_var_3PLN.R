@@ -8,7 +8,7 @@
 #' Calculate the first and second cumulant of the two-parameter log-normal (2PLN)
 #' model for response times according to van der Linden (2006) or the 3PLN according
 #' to Klein Entink et al. (2009). If the speed sensitivity parameter \code{phi}
-#' in the 3PLN equals \code{1}, the model reduces tot the 2PLN, yet with a
+#' in the 3PLN equals \code{1}, the model reduces to the 2PLN, yet with a
 #' different parameterization for the item specific residual variance \code{sdEpsi}
 #' compared to van der Linden (2006).
 #'
@@ -42,52 +42,52 @@
 #'
 #'@examples
 #'# expected RT for a single item (van der Linden model)
-#'get_mean_2PLN(lambda = 3.8, zeta = 0, sdEpsi = 0.3)
-#'get_var_2PLN(lambda = 3.8, zeta = 0, sdEpsi = 0.3)
+#'getMean2PLN(lambda = 3.8, zeta = 0, sdEpsi = 0.3)
+#'getVar2PLN(lambda = 3.8, zeta = 0, sdEpsi = 0.3)
 #'
 #'# expected RT for multiple items (van der Linden model)
-#'get_mean_2PLN(lambda = c(4.1, 3.8, 3.5), zeta = 0,
+#'getMean2PLN(lambda = c(4.1, 3.8, 3.5), zeta = 0,
 #'                    sdEpsi = c(0.3, 0.4, 0.2))
-#'get_var_2PLN(lambda = c(4.1, 3.8, 3.5), zeta = 0,
+#'getVar2PLN(lambda = c(4.1, 3.8, 3.5), zeta = 0,
 #'                    sdEpsi = c(0.3, 0.4, 0.2))
 #'
 #'# expected RT for multiple items and multiple spped levels (Klein Entink model)
-#'get_mean_3PLN(lambda = c(3.7, 4.1, 3.8), phi = c(1.1, 0.8, 0.5),
+#'getMean3PLN(lambda = c(3.7, 4.1, 3.8), phi = c(1.1, 0.8, 0.5),
 #'                     zeta = c(-1, 0, 1), sdEpsi = c(0.3, 0.4, 0.2))
-#'get_var_3PLN(lambda = c(3.7, 4.1, 3.8), phi = c(1.1, 0.8, 0.5),
+#'getVar3PLN(lambda = c(3.7, 4.1, 3.8), phi = c(1.1, 0.8, 0.5),
 #'                     zeta = c(-1, 0, 1), sdEpsi = c(0.3, 0.4, 0.2))
 #'
-#' @describeIn get_mean_3PLN Calculate mean 3PLN
+#' @describeIn getMean3PLN Calculate mean 3PLN
 #'@export
-get_mean_3PLN <- function(lambda, phi = rep(1, length(lambda)), zeta, sdEpsi) {
+getMean3PLN <- function(lambda, phi = rep(1, length(lambda)), zeta, sdEpsi) {
   check_RT_params_input(lambda = lambda, phi = phi, zeta = zeta, sdEpsi = sdEpsi)
 
   cumulants <- get_cumulant_3PLN(zeta, lambda, phi, sdEpsi)
   return(cumulants[[1]])
 }
 
-#' @describeIn get_mean_3PLN Calculate mean 2PLN
+#' @describeIn getMean3PLN Calculate mean 2PLN
 #'@export
-get_mean_2PLN <- function(lambda, zeta, sdEpsi) {
-  get_mean_3PLN(lambda = lambda,
+getMean2PLN <- function(lambda, zeta, sdEpsi) {
+  getMean3PLN(lambda = lambda,
                 phi = rep(1, length(lambda)),
                 zeta = zeta,
                 sdEpsi = sdEpsi)
 }
 
-#' @describeIn get_mean_3PLN Calculate variance 3PLN
+#' @describeIn getMean3PLN Calculate variance 3PLN
 #'@export
-get_var_3PLN <- function(lambda, phi = rep(1, length(lambda)), zeta, sdEpsi) {
+getVar3PLN <- function(lambda, phi = rep(1, length(lambda)), zeta, sdEpsi) {
   check_RT_params_input(lambda = lambda, phi = phi, zeta = zeta, sdEpsi = sdEpsi)
 
   cumulants <- get_cumulant_3PLN(zeta, lambda, phi, sdEpsi)
   return(cumulants[[2]])
 }
 
-#' @describeIn get_mean_3PLN Calculate variance 2PLN
+#' @describeIn getMean3PLN Calculate variance 2PLN
 #'@export
-get_var_2PLN <- function(lambda, phi = rep(1, length(lambda)), zeta, sdEpsi) {
-  get_var_3PLN(lambda = lambda,
+getVar2PLN <- function(lambda, zeta, sdEpsi) {
+  getVar3PLN(lambda = lambda,
                 phi = rep(1, length(lambda)),
                 zeta = zeta,
                 sdEpsi = sdEpsi)
