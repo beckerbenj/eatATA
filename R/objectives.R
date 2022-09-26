@@ -110,7 +110,7 @@ maximinObjective <- function(nForms, itemValues, allowedDeviation,
 #'@references Xiao Luo (2020). Automated Test Assembly with Mixed-Integer Programming:
 #'The Effects of Modeling Approaches and Solvers.
 #'\emph{Journal of Educational Measurement}, 57(4), 547-565.
-#'\url{https://onlinelibrary.wiley.com/doi/10.1111/jedm.12262}
+#'\doi{10.1111/jedm.12262}
 #'
 #'@export
 cappedMaximinObjective <- function(nForms, itemValues, weight = 1,

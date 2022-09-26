@@ -1,7 +1,7 @@
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/eatATA)](https://CRAN.R-project.org/package=eatATA)
 [![R-CMD-check](https://github.com/beckerbenj/eatATA/workflows/R-CMD-check/badge.svg)](https://github.com/beckerbenj/eatATA/actions)
-[![Codecov test coverage](https://codecov.io/gh/beckerbenj/eatATA/branch/master/graph/badge.svg)](https://codecov.io/gh/beckerbenj/eatATA?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/beckerbenj/eatATA/branch/master/graph/badge.svg)](https://app.codecov.io/gh/beckerbenj/eatATA?branch=master)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/eatATA?color=blue)](https://cran.r-project.org/package=eatATA)
 <!-- badges: end -->
 

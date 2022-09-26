@@ -1,10 +1,8 @@
 ## Test environments
 * local windows x86_64-w64-mingw32, R 4.1.0
-* OS X (on Github Action), release
-* ubuntu 16.04 (on Github Action), oldrel, release, devel
-* windows (on Github Action), release 
 * r-hub: windows-x86_64-devel, ubuntu-gcc-release, fedora-clang-devel
-
+* win-builder: windows-release
+* macOS builder: M1-release
 
 ## R CMD check results
 

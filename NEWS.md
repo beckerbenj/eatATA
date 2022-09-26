@@ -1,4 +1,4 @@
-# eatATA 1.0.0.9000
+# eatATA 1.1.0.
 * `getMean2PLN()` and `getMean2PLN()` for calculating the mean of the two- 
 and three-parameter log-normal response time distributions, based on a set of 
 parameters.
