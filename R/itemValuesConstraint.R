@@ -78,3 +78,6 @@ itemValuesConstraint <- function(nForms, itemValues,
                      info_text = info_text,
                      itemIDs = itemIDs)
 }
+
+#' @import mathjaxr
+NULL
