@@ -23,8 +23,8 @@ These functions have been deprecated. See \code{\link{getMean3PLN}} or \code{\li
 }
 \section{Functions}{
 \itemize{
-\item \code{calculateExpectedRT}: Calculate mean 3PLN
+\item \code{calculateExpectedRT()}: Calculate mean 3PLN
 
-\item \code{calculateExpectedRTvar}: Calculate mean 2PLN
+\item \code{calculateExpectedRTvar()}: Calculate mean 2PLN
+
 }}
-

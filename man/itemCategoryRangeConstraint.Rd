@@ -91,13 +91,13 @@ from those \code{targetValues}.
 }
 \section{Functions}{
 \itemize{
-\item \code{itemCategoryMinConstraint}: constrain minimum value
+\item \code{itemCategoryMinConstraint()}: constrain minimum value
 
-\item \code{itemCategoryMaxConstraint}: constrain maximum value
+\item \code{itemCategoryMaxConstraint()}: constrain maximum value
 
-\item \code{itemCategoryDeviationConstraint}: constrain the distance form the \code{targetValues}
+\item \code{itemCategoryDeviationConstraint()}: constrain the distance form the \code{targetValues}
+
 }}
-
 \examples{
 ## constraints to make sure that there are at least 2 and maximally 4
 ##  items of each item type in each test form

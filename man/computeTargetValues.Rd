@@ -74,11 +74,11 @@ factor (see examples).
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: compute target values
+\item \code{computeTargetValues(default)}: compute target values
 
-\item \code{factor}: compute target frequencies for item categories
+\item \code{computeTargetValues(factor)}: compute target frequencies for item categories
+
 }}
-
 \examples{
 ## Assume an item pool with 50 items with random item information values (iif) for
 ## a given ability value.

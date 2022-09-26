@@ -86,13 +86,13 @@ and a maximal allowed deviation (i.e., \code{allowedDeviation}) from that \code{
 }
 \section{Functions}{
 \itemize{
-\item \code{itemValuesMinConstraint}: constrain minimum value
+\item \code{itemValuesMinConstraint()}: constrain minimum value
 
-\item \code{itemValuesMaxConstraint}: constrain maximum value
+\item \code{itemValuesMaxConstraint()}: constrain maximum value
 
-\item \code{itemValuesDeviationConstraint}: constrain the distance form the \code{targetValue}
+\item \code{itemValuesDeviationConstraint()}: constrain the distance form the \code{targetValue}
+
 }}
-
 \examples{
 ## constraints to make sure that the sum of the item values (1:10) is between
 ## 4 and 6

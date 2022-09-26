@@ -49,15 +49,15 @@ first introduced by van der Linden (2011).
 }
 \section{Functions}{
 \itemize{
-\item \code{getMean3PLN}: Calculate mean 3PLN
+\item \code{getMean3PLN()}: Calculate mean 3PLN
 
-\item \code{getMean2PLN}: Calculate mean 2PLN
+\item \code{getMean2PLN()}: Calculate mean 2PLN
 
-\item \code{getVar3PLN}: Calculate variance 3PLN
+\item \code{getVar3PLN()}: Calculate variance 3PLN
 
-\item \code{getVar2PLN}: Calculate variance 2PLN
+\item \code{getVar2PLN()}: Calculate variance 2PLN
+
 }}
-
 \examples{
 # expected RT for a single item (van der Linden model)
 getMean2PLN(lambda = 3.8, zeta = 0, sdEpsi = 0.3)

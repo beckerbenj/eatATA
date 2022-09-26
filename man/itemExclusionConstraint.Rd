@@ -44,11 +44,11 @@ Item tuples can, for example, be created by the function \code{\link{itemTuples}
 }
 \section{Functions}{
 \itemize{
-\item \code{itemExclusionConstraint}: item pair exclusion constraints
+\item \code{itemExclusionConstraint()}: item pair exclusion constraints
 
-\item \code{itemInclusionConstraint}: item pair inclusion constraints
+\item \code{itemInclusionConstraint()}: item pair inclusion constraints
+
 }}
-
 \examples{
 ## Simple Exclusion Example
 # item-IDs
