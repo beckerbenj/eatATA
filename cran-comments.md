@@ -9,7 +9,7 @@
 0 errors | 0 warnings | 2 notes
 
 * Suggests or Enhances not in mainstream repositories: 'gurobi'
-* Package which this enhances but not available for checking: 'gurobi'
+* Status 503 for the following DOI: 10.1111/jedm.12262
 
 
 ## Downstream dependencies
