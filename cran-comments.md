@@ -2,7 +2,7 @@
 * local windows x86_64-w64-mingw32, R 4.1.0
 * r-hub: windows-x86_64-devel, ubuntu-gcc-release, fedora-clang-devel
 * win-builder: windows-release
-* macOS builder: M1-release
+* macOS builder: OS X-release
 
 ## R CMD check results
 
