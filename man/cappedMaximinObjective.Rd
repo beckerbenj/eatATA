@@ -2,7 +2,7 @@
 % Please edit documentation in R/objectives.R
 \name{cappedMaximinObjective}
 \alias{cappedMaximinObjective}
-\title{CappedMaximin Constraint.}
+\title{Capped Maximin Constraint.}
 \usage{
 cappedMaximinObjective(
   nForms,

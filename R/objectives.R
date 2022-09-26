@@ -89,7 +89,7 @@ maximinObjective <- function(nForms, itemValues, allowedDeviation,
 }
 
 
-#' CappedMaximin Constraint.
+#' Capped Maximin Constraint.
 #'
 #' Create \code{maximin}-constraints related to an item parameter/value. That is, the created
 #' constraints can be used to maximize the minimal sum of the

@@ -5,9 +5,9 @@ parameters.
 * `getMar2PLN()` and `getVar2PLN()` for calculating the variance of the two- 
 and three-parameter log-normal response time distributions, based on a set of 
 parameters
-* bugfix in `inspectSolution()` (works with `tibbles` now)
-* bugfix in `itemValuesConstraint()` (works with negative `itemValues` now)
-* bugfix in `itemTuples()` (#1)
+* bug fix in `inspectSolution()` (works with `tibbles` now)
+* bug fix in `itemValuesConstraint()` (works with negative `itemValues` now)
+* bug fix in `itemTuples()` (#1)
 
 # eatATA 1.0.0
 
