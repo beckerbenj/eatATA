@@ -164,18 +164,18 @@ test_that("useSolver returns errors", {
 
 
 
-fun <- function(x){
-  for(i in seq_len(x)){
-    Sys.sleep(.5)
-    cat(i)
-  }
-}
-call <- substitute(fun(6))
+# fun <- function(x){
+#   for(i in seq_len(x)){
+#     Sys.sleep(.5)
+#     cat(i)
+#   }
+# }
+# call <- substitute(fun(6))
 
-test_that("eval_with_time_limit works", {
-  expect_equal(eval_call_with_time_limit(call, elapsed = .5, on_time_out = mean, x = c(1:3)),
-               2)
-  expect_error(out <- eval_call_with_time_limit(call, elapsed = .5), "reached elapsed time limit")
-  expect_equal(eval_call_with_time_limit(call, elapsed = .5, on_time_out = "OK"), "OK")
-})
+# test_that("eval_with_time_limit works", {
+#   expect_equal(eval_call_with_time_limit(call, elapsed = .5, on_time_out = mean, x = c(1:3)),
+#                2)
+#   expect_error(out <- eval_call_with_time_limit(call, elapsed = .5), "reached elapsed time limit")
+#   expect_equal(eval_call_with_time_limit(call, elapsed = .5, on_time_out = "OK"), "OK")
+# })
 
