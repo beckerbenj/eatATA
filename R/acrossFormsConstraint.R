@@ -23,7 +23,7 @@
 #' ## constraints to make sure that accross test form 1 and 3, only 4 items
 #' ##  of items 1:10 appear. Note that the constraint should be used in
 #' ##  in combination with constraining item overlap between the forms.
-#' combineConstraints(
+#' constr1 <- combineConstraints(
 #'   acrossFormsConstraint(nForms = 3,
 #'                         operator = "=", targetValue = 4,
 #'                         whichForms = c(1, 3),
@@ -34,7 +34,7 @@
 #'                     )
 #'
 #' ## or alternatively
-#' combineConstraints(
+#' constr2 <- combineConstraints(
 #'   acrossFormsConstraint(nForms = 3, nItems = 20,
 #'                         operator = "=", targetValue = 4,
 #'                         whichForms = c(1, 3),
