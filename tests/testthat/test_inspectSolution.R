@@ -9,10 +9,12 @@ usage <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=",
                              targetValue = 1, itemIDs = items$ID)
 perForm <- itemsPerFormConstraint(nForms = 2, nItems = 10, operator = "=",
                                   targetValue = 5, itemIDs = items$ID)
+anchorForm <- itemUsageConstraint(nForms = 2, nItems = 10, operator = "=",
+                                  formValues = c(1, 0), targetValue = 1, itemIDs = items$ID, whichItems = seq(1, 10, by = 2))
 target <- minimaxObjective(nForms = 2, itemValues = items$itemValues,
                                targetValue = 0, itemIDs = items$ID)
 
-suppressMessages(sol <- useSolver(allConstraints = list(usage, perForm, target),
+suppressMessages(sol <- useSolver(allConstraints = list(usage, perForm, target, anchorForm),
                  solver = "lpSolve", formNames = "block"))
 
 suppressMessages(sol_empty <- useSolver(allConstraints = list(target),
@@ -24,7 +26,7 @@ test_that("inspect solution", {
 
   expect_equal(length(out), 2)
   expect_equal(names(out), paste0("block_", 1:2))
-  expect_equal(out[[1]]$ID, c(paste0("item_", c(1, 3, 5, 8, 10)), NA))
+  expect_equal(out[[1]]$ID, c(paste0("item_", c(1, 3, 5, 7, 9)), NA))
   expect_equal(dim(out[[1]]), c(6, 3))
 })
 
@@ -34,7 +36,7 @@ test_that("inspect solution complete items data.frame", {
 
   expect_equal(length(out), 2)
   expect_equal(names(out), paste0("block_", 1:2))
-  expect_equal(out[[1]]$ID, paste0("item_", c(1, 3, 5, 8, 10)))
+  expect_equal(out[[1]]$ID, paste0("item_", c(1, 3, 5, 7, 9)))
   expect_equal(dim(out[[1]]), c(5, 3))
 })
 
