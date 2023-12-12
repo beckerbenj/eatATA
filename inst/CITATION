@@ -1,7 +1,5 @@
-citHeader("To cite eatATA in publications use:")
-
-citEntry(
-  entry    = "Article",
+bibentry(
+  "Article",
   title    = "Automated Test Assembly in R: The eatATA Package",
   author   = c(person("Benjamin", "Becker"),
                 person("Dries", "Debeer"),
@@ -12,8 +10,5 @@ citEntry(
   volume   = "3",
   number   = "2",
   pages    = "96--112",
-  url      = "https://www.mdpi.com/2624-8611/3/2/10",
-  textVersion = paste(
-
-  )
+  url      = "https://doi.org/10.3390/psych3020010 ",
 )
