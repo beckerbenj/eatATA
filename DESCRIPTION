@@ -1,7 +1,7 @@
 Package: eatATA
 Type: Package
 Title: Create Constraints for Small Test Assembly Problems
-Version: 1.1.1
+Version: 1.1.2
 Authors@R: c(
     person("Benjamin", "Becker", email = "b.becker@iqb.hu-berlin.de", role = c("aut", "cre")),
     person("Dries", "Debeer", email = "dries.debeer@kuleuven.be", role = c("aut")))
@@ -20,7 +20,7 @@ Imports:
     Rglpk,
     mathjaxr,
     lpSolve
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Suggests: 
     testthat (>= 2.1.0),
     covr,

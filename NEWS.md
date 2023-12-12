@@ -1,3 +1,8 @@
+# eatATA 1.1.2
+
+* internal testing fix (non-deterministic optimization problem with deterministic tests)
+
+
 # eatATA 1.1.1
 
 * internal testing fix
