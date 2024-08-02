@@ -1,3 +1,5 @@
+# eatATA <img src="man/figures/logo.svg" align="right" height="139" alt="" />
+
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/eatATA)](https://CRAN.R-project.org/package=eatATA)
 [![R-CMD-check](https://github.com/beckerbenj/eatATA/workflows/R-CMD-check/badge.svg)](https://github.com/beckerbenj/eatATA/actions)
