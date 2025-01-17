@@ -13,7 +13,7 @@ License: GPL
 URL: https://github.com/beckerbenj/eatATA, https://beckerbenj.github.io/eatATA/
 Encoding: UTF-8
 LazyData: true
-Depends: R (>= 3.5.0)
+Depends: R (>= 3.6.0)
 Imports: 
     Matrix,
     methods,
