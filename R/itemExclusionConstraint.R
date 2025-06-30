@@ -6,10 +6,12 @@
 #' Create constraints that prohibit that item pairs occur in the same test forms (exclusions) or
 #' force item pairs to be in the same test forms (inclusions).
 #'
-#' Item tuples can, for example, be created by the function \code{\link{itemTuples}}.
+#' Item tuples can, for example, be created by the functions \code{\link{itemTuples}},
+#' \code{\link{matrixExclusionTuples}} and \code{\link{stemInclusionTuples}}.
 #'
 #'@inheritParams itemValuesConstraint
-#'@param itemTuples \code{data.frame} with two columns, containing tuples with item IDs which should be in test forms inclusively or exclusively.
+#'@param itemTuples \code{data.frame} or \code{matrix} with two columns,
+#'containing tuples with item IDs indicating, which items should be in test forms inclusively or exclusively.
 #'@param itemIDs Character vector of item IDs in correct ordering.
 #'
 #'@return An object of class \code{"constraint"}.
@@ -51,8 +53,8 @@ itemExclusionConstraint <- function(nForms, itemTuples, itemIDs,
                                     info_text = NULL) {
   check_item_identifiers(new_idents = unique(unlist(itemTuples)), ident_col = itemIDs)
 
-  itemTuples <- itemTuples[itemTuples[, 1] %in% itemIDs, ]
-  itemTuples <- itemTuples[itemTuples[, 2] %in% itemIDs, ]
+  itemTuples <- itemTuples[itemTuples[, 1] %in% itemIDs, , drop = FALSE]
+  itemTuples <- itemTuples[itemTuples[, 2] %in% itemIDs, , drop = FALSE]
 
   nItems <- length(itemIDs)
   id_df <- data.frame(no = seq(nItems), ID = itemIDs)

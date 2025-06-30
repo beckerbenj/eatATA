@@ -1,11 +1,18 @@
 
-
 test_that("item exclusion constraint", {
   tupl <- data.frame(i1 = c("I1", "I2"), i2 = c("I2", "I3"))
   out <- itemExclusionConstraint(nForms = 2, itemTuples = tupl, itemIDs = paste0("I", 1:3))
   expect_equal(out$A_binary[1, ], c(1, 1, 0, 0, 0, 0))
   expect_equal(out$A_binary[4, ], c(0, 0, 0, 0, 1, 1))
 
+  out2 <- itemExclusionConstraint(nForms = 2, itemTuples = tupl[1, ], itemIDs = paste0("I", 1:3))
+  expect_equal(out2$A_binary[1, ], c(1, 1, 0, 0, 0, 0))
+  expect_equal(out2$A_binary[2, ], c(0, 0, 0, 1, 1, 0))
+
+  # with matrix
+  out3 <- itemExclusionConstraint(nForms = 2, itemTuples = as.matrix(tupl[1, ]), itemIDs = paste0("I", 1:3))
+  expect_equal(out2$A_binary[1, ], c(1, 1, 0, 0, 0, 0))
+  expect_equal(out2$A_binary[2, ], c(0, 0, 0, 1, 1, 0))
 })
 
 test_that("warning for exclusions on non existant items", {

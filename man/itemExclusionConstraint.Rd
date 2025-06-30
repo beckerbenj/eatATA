@@ -24,7 +24,8 @@ itemInclusionConstraint(
 \arguments{
 \item{nForms}{Number of forms to be created.}
 
-\item{itemTuples}{\code{data.frame} with two columns, containing tuples with item IDs which should be in test forms inclusively or exclusively.}
+\item{itemTuples}{\code{data.frame} or \code{matrix} with two columns,
+containing tuples with item IDs indicating, which items should be in test forms inclusively or exclusively.}
 
 \item{itemIDs}{Character vector of item IDs in correct ordering.}
 
@@ -40,7 +41,8 @@ Create constraints that prohibit that item pairs occur in the same test forms (e
 force item pairs to be in the same test forms (inclusions).
 }
 \details{
-Item tuples can, for example, be created by the function \code{\link{itemTuples}}.
+Item tuples can, for example, be created by the functions \code{\link{itemTuples}},
+\code{\link{matrixExclusionTuples}} and \code{\link{stemInclusionTuples}}.
 }
 \section{Functions}{
 \itemize{
