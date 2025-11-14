@@ -1,0 +1,193 @@
+# eatATA
+
+# eatATA
+
+## Overview
+
+`eatATA` provides a small `R` interface to mathematical optimization
+solvers specialized on solving simple automated test assembly problems
+(`ATA`). Internally, sparse matrices are used via the `Matrix` package.
+Currently supported solvers are `GLPK`, `lpSolve`, `Symphony`, and
+`Gurobi`. See below for a list of implemented features and feature to
+come.
+
+## Installation
+
+``` r
+# Install eatATA from CRAN via
+install.packages("eatATA")
+
+# Install development version from GitHub via
+remotes::install_github("beckerbenj/eatATA", build_vignettes = TRUE, dependencies = TRUE)
+```
+
+## Documentation
+
+An extensive tutorial paper including a variety of use cases has been
+published here: <https://doi.org/10.3390/psych3020010>. Additionally, a
+set of vignettes describing the current functionality can be found on
+[CRAN](https://CRAN.R-project.org/package=eatATA/).
+
+## Implemented Features
+
+`eatATA` is suitable for the automated test assembly of fixed linear
+test forms or multi-stage testing modules. For example, the following
+types of constraints can be set via `eatATA`:
+
+- no item overlap between test forms
+
+- complete item pool depletion
+
+- categorical and numerical constraints across test forms
+
+- excluding items from being together in the same booklet (item
+  exclusions)
+
+- force items to be in the same test form (item inclusions)
+
+- force a set of items to be included in the test forms
+
+- various optimization constraints
+
+## Outlook
+
+Features that might be implemented in the future:
+
+- taking into account hierarchical stimulus-item structures
+
+- adopting the `ROI` framework to access a larger number of solvers
+
+If you wish to contribute to the package, please send an email to
+<b.becker@iqb.hu-berlin.de>.
+
+# Package index
+
+## All functions
+
+- [`acrossFormsConstraint()`](https://beckerbenj.github.io/eatATA/reference/acrossFormsConstraint.md)
+  : Constrain the sum of item values across multiple forms.
+
+- [`analyzeBlockExclusion()`](https://beckerbenj.github.io/eatATA/reference/analyzeBlockExclusion.md)
+  : Analyze block exclusiveness
+
+- [`analyzeComplexBlockExclusion()`](https://beckerbenj.github.io/eatATA/reference/analyzeComplexBlockExclusion.md)
+  : Analyze complex block exclusiveness
+
+- [`appendSolution()`](https://beckerbenj.github.io/eatATA/reference/appendSolution.md)
+  :
+
+  Append a `useSolver` output
+
+- [`autoItemValuesMinMaxConstraint()`](https://beckerbenj.github.io/eatATA/reference/autoItemValuesMinMaxConstraint.md)
+  : Create single value constraints with minimum and maximum.
+
+- [`calculateIIF()`](https://beckerbenj.github.io/eatATA/reference/calculateIIF.md)
+  : Calculate Item Information Function
+
+- [`cappedMaximinObjective()`](https://beckerbenj.github.io/eatATA/reference/cappedMaximinObjective.md)
+  : Capped Maximin Constraint.
+
+- [`combineConstraints()`](https://beckerbenj.github.io/eatATA/reference/combineConstraints.md)
+  : Combine constraints
+
+- [`computeTargetValues()`](https://beckerbenj.github.io/eatATA/reference/computeTargetValues.md)
+  : Compute target values based on the item pool.
+
+- [`depletePoolConstraint()`](https://beckerbenj.github.io/eatATA/reference/depletePoolConstraint.md)
+  : Use complete item pool.
+
+- [`dummiesToFactor()`](https://beckerbenj.github.io/eatATA/reference/dummiesToFactor.md)
+  : Convert dummy variables to factor.
+
+- [`getMean3PLN()`](https://beckerbenj.github.io/eatATA/reference/getMean3PLN.md)
+  [`getMean2PLN()`](https://beckerbenj.github.io/eatATA/reference/getMean3PLN.md)
+  [`getVar3PLN()`](https://beckerbenj.github.io/eatATA/reference/getMean3PLN.md)
+  [`getVar2PLN()`](https://beckerbenj.github.io/eatATA/reference/getMean3PLN.md)
+  : Calculate Cumulants Lognormal Response Time Distribution
+
+- [`calculateExpectedRT()`](https://beckerbenj.github.io/eatATA/reference/get_mean_3PLN.md)
+  [`calculateExpectedRTvar()`](https://beckerbenj.github.io/eatATA/reference/get_mean_3PLN.md)
+  : Calculate Cumulants Lognormal Response Time Distribution
+
+- [`inspectSolution()`](https://beckerbenj.github.io/eatATA/reference/inspectSolution.md)
+  :
+
+  Inspect a `useSolver` output
+
+- [`itemCategoryConstraint()`](https://beckerbenj.github.io/eatATA/reference/itemCategoryConstraint.md)
+  : Create item category constraints.
+
+- [`itemCategoryRangeConstraint()`](https://beckerbenj.github.io/eatATA/reference/itemCategoryRangeConstraint.md)
+  [`itemCategoryMinConstraint()`](https://beckerbenj.github.io/eatATA/reference/itemCategoryRangeConstraint.md)
+  [`itemCategoryMaxConstraint()`](https://beckerbenj.github.io/eatATA/reference/itemCategoryRangeConstraint.md)
+  [`itemCategoryDeviationConstraint()`](https://beckerbenj.github.io/eatATA/reference/itemCategoryRangeConstraint.md)
+  : Create item category constraints with minimum and maximum.
+
+- [`itemExclusionConstraint()`](https://beckerbenj.github.io/eatATA/reference/itemExclusionConstraint.md)
+  [`itemInclusionConstraint()`](https://beckerbenj.github.io/eatATA/reference/itemExclusionConstraint.md)
+  : Create item inclusion or exclusion constraints.
+
+- [`itemTuples()`](https://beckerbenj.github.io/eatATA/reference/itemTuples.md)
+  : Create item tuples.
+
+- [`itemUsageConstraint()`](https://beckerbenj.github.io/eatATA/reference/itemUsageConstraint.md)
+  : Create item usage constraints.
+
+- [`itemValuesConstraint()`](https://beckerbenj.github.io/eatATA/reference/itemValuesConstraint.md)
+  : Constrain the sum of item values per form.
+
+- [`itemValuesRangeConstraint()`](https://beckerbenj.github.io/eatATA/reference/itemValuesRangeConstraint.md)
+  [`itemValuesMinConstraint()`](https://beckerbenj.github.io/eatATA/reference/itemValuesRangeConstraint.md)
+  [`itemValuesMaxConstraint()`](https://beckerbenj.github.io/eatATA/reference/itemValuesRangeConstraint.md)
+  [`itemValuesDeviationConstraint()`](https://beckerbenj.github.io/eatATA/reference/itemValuesRangeConstraint.md)
+  : Create single value constraints with minimum and maximum.
+
+- [`itemsPerFormConstraint()`](https://beckerbenj.github.io/eatATA/reference/itemsPerFormConstraint.md)
+  : Create number of items per test form constraints.
+
+- [`items_diao`](https://beckerbenj.github.io/eatATA/reference/items_diao.md)
+  : Small simulated item pool example.
+
+- [`items_lsa`](https://beckerbenj.github.io/eatATA/reference/items_lsa.md)
+  : Simulated item pool example.
+
+- [`items_mini`](https://beckerbenj.github.io/eatATA/reference/items_mini.md)
+  : Small simulated item pool example.
+
+- [`items_pilot`](https://beckerbenj.github.io/eatATA/reference/items_pilot.md)
+  : Small simulated item pool example.
+
+- [`items_vera`](https://beckerbenj.github.io/eatATA/reference/items_vera.md)
+  : Small artificial item pool example.
+
+- [`matrixExclusionTuples()`](https://beckerbenj.github.io/eatATA/reference/matrixExclusionTuples.md)
+  : Create item exclusion tuples from matrix.
+
+- [`maxObjective()`](https://beckerbenj.github.io/eatATA/reference/maxObjective.md)
+  : Max Constraint.
+
+- [`maximinObjective()`](https://beckerbenj.github.io/eatATA/reference/maximinObjective.md)
+  : Maximin Constraint.
+
+- [`minObjective()`](https://beckerbenj.github.io/eatATA/reference/minObjective.md)
+  : Min Constraint.
+
+- [`minimaxObjective()`](https://beckerbenj.github.io/eatATA/reference/minimaxObjective.md)
+  : Minimax Constraint.
+
+- [`stemInclusionTuples()`](https://beckerbenj.github.io/eatATA/reference/stemInclusionTuples.md)
+  : Create item inclusion tuples from item stem.
+
+- [`useSolver()`](https://beckerbenj.github.io/eatATA/reference/useSolver.md)
+  : Use a solver for a list of constraints.
+
+# Articles
+
+### All vignettes
+
+- [Typical Use of \`eatATA\`: a Minimal
+  Example](https://beckerbenj.github.io/eatATA/articles/minimal_example.md):
+- [Overview of \`eatATA\`
+  Functionality](https://beckerbenj.github.io/eatATA/articles/overview.md):
+- [Typical Use of \`eatATA\`: a Pilot Study
+  Example](https://beckerbenj.github.io/eatATA/articles/use_case_pilot_study.md):
