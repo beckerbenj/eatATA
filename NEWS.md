@@ -1,3 +1,9 @@
+# eatATA 1.1.2.9000
+
+* `itemExclusionConstraint()`: Fix bug with one-row matrix input (#6)
+* documentation fixes
+
+
 # eatATA 1.1.2
 
 * internal testing fix (non-deterministic optimization problem with deterministic tests)

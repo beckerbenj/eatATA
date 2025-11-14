@@ -61,7 +61,7 @@ the \code{itemValues} per test form, respectively}
 
 \item{min}{the minimal sum of the \code{itemValues} per test form}
 
-\item{max}{the minimal sum of the \code{itemValues} per test form}
+\item{max}{the maximal sum of the \code{itemValues} per test form}
 
 \item{targetValue}{the target test form value.}
 

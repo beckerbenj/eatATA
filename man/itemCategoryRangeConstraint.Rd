@@ -61,7 +61,7 @@ maximum frequency of the items from each level/category \code{itemCategories}}
 
 \item{min}{the minimal sum of the \code{itemValues} per test form}
 
-\item{max}{the minimal sum of the \code{itemValues} per test form}
+\item{max}{the maximal sum of the \code{itemValues} per test form}
 
 \item{targetValues}{an integer vector representing the target number per category.
 The order of the target values should correspond with the order of the levels
@@ -103,11 +103,12 @@ from those \code{targetValues}.
 ##  items of each item type in each test form
 nItems <- 30
 item_type <- factor(sample(1:3, size = nItems, replace = TRUE))
-itemCategoryRangeConstraint(2, item_type, range = cbind(min = rep(2, 3), max = rep(4, 3)))
+itemCategoryRangeConstraint(2, item_type,
+                            range = cbind(min = rep(2, 3), max = rep(4, 3)))
 
 ## or alternatively
 itemCategoryDeviationConstraint(2, item_type,
-targetValues = rep(3, 3),
-allowedDeviation = rep(4, 3))
+                                targetValues = rep(3, 3),
+                                allowedDeviation = rep(4, 3))
 
 }

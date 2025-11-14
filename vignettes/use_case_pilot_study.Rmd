@@ -154,7 +154,7 @@ Items5 <- autoItemValuesMinMaxConstraint(nForms = nForms, itemValues = items$dif
                                allowedDeviation = 1, itemIDs = items$item)
 ```
 
-To implement item exclusion constraints, two function can be used: `itemExclusionTuples()` and `itemExclusionConstraint()`. When item exclusions are supplied as a single character string for each item, with item identifiers separated by `", "`, they should be transformed first.
+To implement item exclusion constraints, two function can be used: `itemTuples()` and `itemExclusionConstraint()`. When item exclusions are supplied as a single character string for each item, with item identifiers separated by `", "`, they should be transformed first.
 
 ```{r exclusion demo}
 # item exclusions variable

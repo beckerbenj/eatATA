@@ -26,12 +26,13 @@
 #' ##  items of each item type in each test form
 #' nItems <- 30
 #' item_type <- factor(sample(1:3, size = nItems, replace = TRUE))
-#' itemCategoryRangeConstraint(2, item_type, range = cbind(min = rep(2, 3), max = rep(4, 3)))
+#' itemCategoryRangeConstraint(2, item_type,
+#'                             range = cbind(min = rep(2, 3), max = rep(4, 3)))
 #'
 #' ## or alternatively
 #' itemCategoryDeviationConstraint(2, item_type,
-#' targetValues = rep(3, 3),
-#' allowedDeviation = rep(4, 3))
+#'                                 targetValues = rep(3, 3),
+#'                                 allowedDeviation = rep(4, 3))
 #'
 #' @export
 itemCategoryRangeConstraint <- function(nForms, itemCategories, range,

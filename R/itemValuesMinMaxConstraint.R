@@ -11,7 +11,7 @@
 #'
 #' @inheritParams itemValuesConstraint
 #' @param min the minimal sum of the \code{itemValues} per test form
-#' @param max the minimal sum of the \code{itemValues} per test form
+#' @param max the maximal sum of the \code{itemValues} per test form
 #' @param range a vector with two values, the the minimal and the maximum sum of
 #' the \code{itemValues} per test form, respectively
 #' @param  allowedDeviation the maximum allowed deviation from the \code{targetValue}
