@@ -11,7 +11,7 @@ item values (itemValues) per test form and the chosen targetValue."><meta proper
 
     <a class="navbar-brand me-2" href="../index.html">eatATA</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -105,6 +105,7 @@ item values (<code>itemValues</code>) per test form and the chosen <code>targetV
 <span class="r-in"><span><span class="fu">minimaxObjective</span><span class="op">(</span>nForms <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>                 itemValues <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                 targetValue <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Argument 'itemIDs' is missing. 'itemIDs' will be generated automatically.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $A_binary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 x 20 sparse Matrix of class "dgCMatrix"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                     </span>
@@ -141,11 +142,11 @@ item values (<code>itemValues</code>) per test form and the chosen <code>targetV
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"sense")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "min"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"info")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   rowNr formNr itemNr         constraint</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1      1     NA minimax_lowerBound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     2      2     NA minimax_lowerBound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     3      1     NA minimax_upperBound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     4      2     NA minimax_upperBound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   rowNr formNr itemNr                constraint</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1      1     NA rep(-2:2, 2)=0_lowerBound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     2      2     NA rep(-2:2, 2)=0_lowerBound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     3      1     NA rep(-2:2, 2)=0_upperBound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     4      2     NA rep(-2:2, 2)=0_upperBound</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"itemIDs")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "it01" "it02" "it03" "it04" "it05" "it06" "it07" "it08" "it09" "it10"</span>
 <span class="r-in"><span></span></span>

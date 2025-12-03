@@ -66,6 +66,7 @@ An object of class `"constraint"`.
 #   target value of 0
 maximinObjective(nForms = 2, itemValues = rep(-2:2, 2),
                  allowedDeviation = 1)
+#> Warning: Argument 'itemIDs' is missing. 'itemIDs' will be generated automatically.
 #> $A_binary
 #> 4 x 20 sparse Matrix of class "dgCMatrix"
 #>                                                     
@@ -102,11 +103,11 @@ maximinObjective(nForms = 2, itemValues = rep(-2:2, 2),
 #> attr(,"sense")
 #> [1] "max"
 #> attr(,"info")
-#>   rowNr formNr itemNr         constraint
-#> 1     1      1     NA maximin_lowerBound
-#> 2     2      2     NA maximin_lowerBound
-#> 3     3      1     NA maximin_upperBound
-#> 4     4      2     NA maximin_upperBound
+#>   rowNr formNr itemNr                constraint
+#> 1     1      1     NA rep(-2:2, 2)=0_lowerBound
+#> 2     2      2     NA rep(-2:2, 2)=0_lowerBound
+#> 3     3      1     NA rep(-2:2, 2)=0_upperBound
+#> 4     4      2     NA rep(-2:2, 2)=0_upperBound
 #> attr(,"itemIDs")
 #>  [1] "it01" "it02" "it03" "it04" "it05" "it06" "it07" "it08" "it09" "it10"
 ```

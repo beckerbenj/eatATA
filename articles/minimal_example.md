@@ -65,6 +65,9 @@ function.
 ``` r
 testInfo <- maxObjective(nForms = 1, itemValues = items_mini$IIF,
                           itemIDs = items_mini$item)
+#> Warning in check_nItems_itemValues_itemIDs(nItems = nItems, itemIDs = itemIDs,
+#> : 'itemValues' has rows and columns, only the values in the first column are
+#> used.
 ```
 
 ## Constraints

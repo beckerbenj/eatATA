@@ -1,5 +1,11 @@
 # Changelog
 
+## eatATA 1.1.2.9001
+
+- input checks for objective constraint functions
+- additional input checks for `itemValues` and `targetValue` (no NA,
+  must be integer, correct dimensions)
+
 ## eatATA 1.1.2.9000
 
 - [`itemExclusionConstraint()`](https://beckerbenj.github.io/eatATA/reference/itemExclusionConstraint.md):

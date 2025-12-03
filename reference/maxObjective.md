@@ -58,6 +58,7 @@ An object of class `"constraint"`.
 ``` r
 # constraint that maximizes the sum of the itemValues
 maxObjective(nForms = 1, itemValues = rep(-2:2, 2))
+#> Warning: Argument 'itemIDs' is missing. 'itemIDs' will be generated automatically.
 #> $A_binary
 #> 1 x 10 sparse Matrix of class "dgCMatrix"
 #>                             
@@ -88,8 +89,8 @@ maxObjective(nForms = 1, itemValues = rep(-2:2, 2))
 #> attr(,"sense")
 #> [1] "max"
 #> attr(,"info")
-#>   rowNr formNr itemNr constraint
-#> 1     1      1     NA        max
+#>   rowNr formNr itemNr     constraint
+#> 1     1      1     NA rep(-2:2, 2)=0
 #> attr(,"itemIDs")
 #>  [1] "it01" "it02" "it03" "it04" "it05" "it06" "it07" "it08" "it09" "it10"
 ```
