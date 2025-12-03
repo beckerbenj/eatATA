@@ -65,6 +65,48 @@ test_that("cappedMaximinObjective works", {
 })
 
 
+test_that("objective constraints return errors or warnings", {
+  expect_error(minimaxObjective(nForms = c(2, 4), itemValues = 1:10, targetValue = 2,
+                                itemIDs = 1:10),
+               "'nForms' should be a vector of length 1.")
+  expect_error(minimaxObjective(nForms = c(2, 4), itemValues = 1:10, targetValue = 2,
+                                itemIDs = 1:4),
+               "The length of 'itemIDs' and 'itemValues' should correspond.")
 
+
+  items <- data.frame(numeric = 1:10, numeric_na = c(NA, 1:9), character = letters[1:10])
+
+  expect_error(minimaxObjective(nForms = 2, itemValues = items, targetValue = 2,
+                                itemIDs = 1:10),
+               "'itemValues' has rows and columns, it should be a vector.")
+  expect_warning(minimaxObjective(nForms = 2, itemValues = items[1], targetValue = 2,
+                                  itemIDs = 1:10),
+                 "'itemValues' has rows and columns, only the values in the first column are used.")
+  expect_warning(minimaxObjective(nForms = 2, itemValues = items[,1, drop = FALSE],
+                                  targetValue = 2, itemIDs = 1:10),
+                 "'itemValues' has rows and columns, only the values in the first column are used.")
+
+  # items2 <- tibble::as_tibble(items)
+  # expect_error(minimaxObjective(nForms = 2, itemValues = items2, targetValue = 2,
+  #                               itemIDs = 1:10),
+  #              "'itemValues' has rows and columns, it should be a vector.")
+
+
+
+
+  expect_error(minimaxObjective(nForms = 2, itemValues = 1:10, targetValue = NA,
+                                itemIDs = 1:10),
+               "'targetValue' should be a numeric vector.")
+
+  expect_error(minimaxObjective(nForms = 2, itemValues = items[,3], targetValue = 2,
+                                  itemIDs = 1:10),
+                 "'itemValues' should be a numeric vector.")
+  expect_error(minimaxObjective(nForms = 2, itemValues = items[,2], targetValue = 2,
+                                  itemIDs = 1:10),
+                 "'itemValues' should not contain NA values.")
+  expect_error(minimaxObjective(nForms = 2, itemValues = items[,1], targetValue = as.numeric(NA),
+                                itemIDs = 1:10),
+               "'targetValue' should not contain NA values.")
+})
 
 

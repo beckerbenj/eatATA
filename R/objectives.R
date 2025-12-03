@@ -21,6 +21,22 @@ minimaxObjective <- function(nForms, itemValues, targetValue, weight = 1,
                               whichForms = seq_len(nForms), info_text = NULL,
                               itemIDs = names(itemValues)){
 
+  # Do checks
+  check_out <- do_checks_eatATA(
+    nItems = NULL,
+    itemIDs = itemIDs,
+    itemValues = itemValues,
+    operator = "=",  # just for checking
+    nForms = nForms,
+    targetValue = targetValue,
+    info_text = info_text,
+    whichItems = NULL,
+    itemValuesName = deparse(substitute(itemValues)))
+
+  itemIDs <- check_out$itemIDs
+  itemValues <- check_out$itemValues
+  info_text <- check_out$info_text
+
   # choose info_text for info
   if(is.null(info_text)) info_text <- 'minimax'
 
@@ -69,11 +85,28 @@ maximinObjective <- function(nForms, itemValues, allowedDeviation,
   if(length(allowedDeviation) > 1) stop("'allowedDeviation' should have length 1.")
   if(allowedDeviation <= 0) stop("'allowedDeviation' should be a positive value.")
 
+  targetValue <- 0 # set to 0
+  # Do checks
+  check_out <- do_checks_eatATA(
+    nItems = NULL,
+    itemIDs = itemIDs,
+    itemValues = itemValues,
+    operator = "=",  # just for checking
+    nForms = nForms,
+    targetValue = targetValue, # set to 0 for checking
+    info_text = info_text,
+    whichItems = NULL,
+    itemValuesName = deparse(substitute(itemValues)))
+
+  itemIDs <- check_out$itemIDs
+  itemValues <- check_out$itemValues
+  info_text <- check_out$info_text
+
   # choose info_text for info
   if(is.null(info_text)) info_text <- 'maximin'
 
   lowerBound <- makeFormConstraint(nForms, itemValues, realVar = -weight,
-                                   operator = ">=", targetValue = 0,
+                                   operator = ">=", targetValue = targetValue,
                                    whichForms, sense = "max", c_real = 1,
                                    info_text = paste0(info_text, "_lowerBound"),
                                    itemIDs = itemIDs)
@@ -117,19 +150,35 @@ cappedMaximinObjective <- function(nForms, itemValues, weight = 1,
                                     whichForms = seq_len(nForms), info_text = NULL,
                                     itemIDs = names(itemValues)){
 
+  targetValue <- 0 # set to 0
+  # Do checks
+  check_out <- do_checks_eatATA(
+    nItems = NULL,
+    itemIDs = itemIDs,
+    itemValues = itemValues,
+    operator = "=",  # just for checking
+    nForms = nForms,
+    targetValue = targetValue,
+    info_text = info_text,
+    whichItems = NULL,
+    itemValuesName = deparse(substitute(itemValues)))
+
+  itemIDs <- check_out$itemIDs
+  itemValues <- check_out$itemValues
+  info_text <- check_out$info_text
 
   # choose info_text for info
   if(is.null(info_text)) info_text <- 'cappedMaximin'
 
   lowerBound <- makeFormConstraint(nForms, itemValues, realVar = c(-weight, 0),
-                                   operator = ">=", targetValue = 0,
+                                   operator = ">=", targetValue = targetValue,
                                    whichForms, sense = "max", c_real = c(1, -1),
                                    info_text = paste0(info_text, "_lowerBound"),
                                    itemIDs = itemIDs)
 
 
   upperBound <- makeFormConstraint(nForms, itemValues, realVar = c(-weight, -weight),
-                                   operator = "<=", targetValue = 0,
+                                   operator = "<=", targetValue = targetValue,
                                    whichForms, sense = NULL, c_real = c(1, -1),
                                    info_text = paste0(info_text, "_upperBound"),
                                    itemIDs = itemIDs)
@@ -161,11 +210,28 @@ maxObjective <- function(nForms, itemValues, weight = 1,
                           whichForms = seq_len(nForms), info_text = NULL,
                           itemIDs = names(itemValues)){
 
+  targetValue <- 0 # set to 0
+  # Do checks
+  check_out <- do_checks_eatATA(
+    nItems = NULL,
+    itemIDs = itemIDs,
+    itemValues = itemValues,
+    operator = "=",  # just for checking
+    nForms = nForms,
+    targetValue = 0, # set to 0 for checking
+    info_text = info_text,
+    whichItems = NULL,
+    itemValuesName = deparse(substitute(itemValues)))
+
+  itemIDs <- check_out$itemIDs
+  itemValues <- check_out$itemValues
+  info_text <- check_out$info_text
+
   # choose info_text for info
   if(is.null(info_text)) info_text <- 'max'
 
   makeFormConstraint(nForms = nForms, itemValues, realVar = -weight,
-                     operator = ">=", targetValue = 0, sense = "max",
+                     operator = ">=", targetValue = targetValue, sense = "max",
                      c_real = 1, whichForms = whichForms,
                      info_text = info_text,
                      itemIDs = itemIDs)
@@ -193,11 +259,28 @@ minObjective <- function(nForms, itemValues, weight = 1,
                           whichForms = seq_len(nForms), info_text = NULL,
                           itemIDs = names(itemValues)){
 
+  targetValue <- 0 # set to 0
+  # Do checks
+  check_out <- do_checks_eatATA(
+    nItems = NULL,
+    itemIDs = itemIDs,
+    itemValues = itemValues,
+    operator = "=",  # just for checking
+    nForms = nForms,
+    targetValue = targetValue,
+    info_text = info_text,
+    whichItems = NULL,
+    itemValuesName = deparse(substitute(itemValues)))
+
+  itemIDs <- check_out$itemIDs
+  itemValues <- check_out$itemValues
+  info_text <- check_out$info_text
+
   # choose info_text for info
   if(is.null(info_text)) info_text <- 'min'
 
   makeFormConstraint(nForms = nForms, itemValues, realVar = -weight,
-                     operator = "<=", targetValue = 0, sense = "min",
+                     operator = "<=", targetValue = targetValue, sense = "min",
                      c_real = 1, whichForms = whichForms,
                      info_text = info_text,
                      itemIDs = itemIDs)

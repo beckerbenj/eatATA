@@ -3,9 +3,26 @@ check_nItems_itemValues_itemIDs <- function(nItems = NULL,
                                             itemIDs = NULL,
                                             itemValues = NULL) {
 
-
+#browser()
   # if not NULL, itemValues and itemIDs should be of same length
   if(!is.null(itemValues)){
+    dims <- dim(itemValues)
+    if(!is.null(dims)){
+      # what if data.frames or matrixes are used in itemValues
+      if(length(dims) > 2)  stop("'itemValues' should be a vector.")
+      if(dims[1] == 1) {
+        itemValues <- itemValues[1, , drop = TRUE]
+        warning("'itemValues' has rows and columns, only the values in the first row are used.")
+      } else if(dims[2] == 1){
+        itemValues <- itemValues[, 1, drop = TRUE]
+        warning("'itemValues' has rows and columns, only the values in the first column are used.")
+      } else {
+        stop("'itemValues' has rows and columns, it should be a vector.")
+      }
+    }
+    check_type(itemValues = itemValues)
+    check_NA(itemValues = itemValues)
+
     nItemValues <- length(itemValues)
     if(is.null(nItems)) nItems <- nItemValues
     if(nItemValues != nItems)
@@ -113,7 +130,34 @@ check_length <- function(..., length = 1, stop = TRUE,
   return(invisible(OK))
 }
 
+# check NA
+check_NA <- function(..., stop = TRUE,
+                         envir = parent.frame()) {
 
+
+  # get arguments to test
+  args <- as.list(match.call(expand.dots = TRUE))[-1]
+  if(!is.null(names(args)))
+    args <- args[!names(args) %in% formalArgs(check_NA)]
+
+  whichNoName <- which(names(args) == "")
+  for(argIndex in whichNoName) {
+    names(args)[whichNoName] <- as.character(args[whichNoName])
+  }
+
+  # which are OK
+  OK <- sapply(args, function(arg) {
+    if(is.language(arg)) arg <- eval(arg, envir = envir)
+    !any(is.na(arg))
+  })
+
+  # error message
+  if(any(!OK) & stop) stop(
+    paste0("'",
+           paste(names(args)[!OK], collapse = "', '"),
+           "' should not contain NA values."))
+  return(invisible(OK))
+}
 
 
 
@@ -148,6 +192,10 @@ do_checks_eatATA <- function(nItems,
                                                itemValues = itemValues)
   check_length(nForms = nForms, targetValue = targetValue,
                envir = envir)
+  check_type(nForms = nForms, targetValue = targetValue,
+             envir = envir)
+  check_NA(nForms = nForms, targetValue = targetValue,
+             envir = envir)
   if(testFormValues) check_length(formValues, length = nForms)
   operator <- match.arg(operator, c("<=", "=", ">="))
   info_text <- check_info_text(info_text, itemValuesName, operator, targetValue)

@@ -60,7 +60,6 @@ itemValuesConstraint <- function(nForms, itemValues,
     whichItems = NULL,
     itemValuesName = deparse(substitute(itemValues)))
 
-  nItems <- check_out$nItems
   itemIDs <- check_out$itemIDs
   itemValues <- check_out$itemValues
   operator <- check_out$operator
