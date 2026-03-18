@@ -27,8 +27,9 @@
 analyzeComplexBlockExclusion <- function(solverOut_list, items_list, idCol, exclusionTuples_list){
   ## to do: implement input checks
   #browser()
-
-
+  items_list <- lapply(items_list, as.data.frame) # turns tibbles/dt into df
+  exclusionTuples_list <- lapply(exclusionTuples_list, as.data.frame)
+  #items <- as.data.frame(items)
 
   ### restructure all in one big object
   processedObj <- Map(function(solverOut, items){

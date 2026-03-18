@@ -32,6 +32,8 @@
 #'
 #'@export
 appendSolution <- function(solverOut, items, idCol){
+  items <- as.data.frame(items) # turns tibbles/dt into df
+
   if(!identical(nrow(solverOut$item_matrix), nrow(items))) stop("'items' and the solution in 'solverOut' have different numbers of rows.")
   if(is.character(idCol)){
     if(!idCol %in% names(items)) stop("'idCol' is not a column in 'items'.")

@@ -25,6 +25,8 @@
 #'
 #'@export
 itemTuples <- function(items, idCol = "ID", infoCol, sepPattern = ", ") {
+  items <- as.data.frame(items) # turns tibbles/dt into df
+
   if(is.character(idCol) && !idCol %in% names(items)) stop("'idCol' is not a column in 'items'.")
   if(is.character(infoCol) && !infoCol %in% names(items)) stop("'infoCol' is not a column in 'items'.")
 

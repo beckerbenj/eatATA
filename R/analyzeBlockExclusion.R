@@ -48,7 +48,7 @@
 analyzeBlockExclusion <- function(solverOut, items, idCol, exclusionTuples, formName = "form"){
   ## input validation
   if(!is.data.frame(items)) stop("'items' must be a data.frame.")
-  items <- as.data.frame(items)
+  items <- as.data.frame(items) # turns tibbles/dt into df
   if(is.character(idCol)){
     if(!idCol %in% names(items)) stop("'idCol' is not a column in 'items'.")
   } else {
@@ -56,7 +56,7 @@ analyzeBlockExclusion <- function(solverOut, items, idCol, exclusionTuples, form
     idCol <- names(items)[idCol]
   }
   if(!(is.data.frame(exclusionTuples) || is.matrix(exclusionTuples))) stop("'exclusionTuples' must be a data.frame or matrix.")
-  if(is.data.frame(exclusionTuples)){exclusionTuples <- as.data.frame(exclusionTuples)}
+  if(is.data.frame(exclusionTuples)){exclusionTuples <- as.data.frame(exclusionTuples)} # turns tibbles/dt into df
   if(ncol(exclusionTuples) != 2) stop("'exclusionTuples' must have two columns.")
   check_solverOut(solverOut)
   check_solution_true(solverOut)

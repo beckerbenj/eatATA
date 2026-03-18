@@ -26,6 +26,7 @@
 stemInclusionTuples <- function(items, idCol = "ID", stemCol) {
   if(is.character(idCol) && !idCol %in% names(items)) stop("'idCol' is not a column in 'items'.")
   if(is.character(stemCol) && !stemCol %in% names(items)) stop("'stemCol' is not a column in 'items'.")
+  items <- as.data.frame(items) # turns tibbles/dt into df
 
   incl_str <- data.frame(ID = items[, idCol], incl = NA, stringsAsFactors = FALSE)
   for(ro in seq(nrow(items))) {
