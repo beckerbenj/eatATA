@@ -4,7 +4,8 @@ Title: Create Constraints for Small Test Assembly Problems
 Version: 1.1.2.9001
 Authors@R: c(
     person("Benjamin", "Becker", email = "b.becker@iqb.hu-berlin.de", role = c("aut", "cre")),
-    person("Dries", "Debeer", email = "dries.debeer@kuleuven.be", role = c("aut")))
+    person("Dries", "Debeer", email = "dries.debeer@kuleuven.be", role = c("aut")),
+    person("Grewers", "Edna", email = "edna.grewers@hu-berlin.de", role = c("ctb")))
 Description: Provides simple functions to create constraints for small test assembly problems 
     (e.g. van der Linden (2005, ISBN: 978-0-387-29054-6)) using sparse matrices. Currently, 
     'GLPK', 'lpSolve', 'Symphony', and 'Gurobi' are supported as solvers. The 'gurobi' package is not available from 
@@ -19,7 +20,8 @@ Imports:
     methods,
     Rglpk,
     mathjaxr,
-    lpSolve
+    lpSolve,
+    checkmate
 RoxygenNote: 7.3.2
 Suggests: 
     testthat (>= 2.1.0),
