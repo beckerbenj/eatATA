@@ -19,6 +19,22 @@ suppressMessages(sol <- useSolver(allConstraints = list(usage, excl, target, per
 #load("tests/testthat/helper_BlockExclusions.RData")
 load("helper_BlockExclusions.RData")
 
+test_data <- readRDS("N:/eatPackages/eatATA/tests/testthat/helper_testDataFrames.RDS")
+
+test_that("turn tibbles and data tables into data frames", {
+  tibble <- test_data[[2]]
+  data_table <- test_data[[3]]
+
+  items_t <- as.data.frame(tibble) # turns tibbles into df
+  expect_equal(items_t[1,1], "items1")
+  expect_equal(items_t[,1], c("items1", "items2", "items3", "items4"))
+
+  items_dt <- as.data.frame(data_table) # turns dt into df
+  expect_equal(items_dt[1,1], "items1")
+  expect_equal(items_dt[,1], c("items1", "items2", "items3", "items4"))
+})
+
+
 test_that("analyze block exclusions", {
   out <- analyzeBlockExclusion(sol, items = items_small, idCol = "ID", exclusionTuples)
 
