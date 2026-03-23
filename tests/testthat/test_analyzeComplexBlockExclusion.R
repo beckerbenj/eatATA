@@ -40,3 +40,23 @@ test_that("analyze block exclusions", {
   expect_equal(as.character(out[2, ]), c("block_2", "block_4"))
   expect_equal(as.character(out[3, ]), c("block_3", "block_4"))
 })
+
+
+test_data <- readRDS("N:/eatPackages/eatATA/tests/testthat/helper_testDataFrames.RDS")
+
+test_that("turn tibbles and data tables into data frames", {
+  tibble <- test_data[[2]]
+  items_list <- list(tibble, tibble)
+
+  items_list <- lapply(items_list, as.data.frame) # turns tibbles/dt into df
+  expect_equal(items_list[[1]][1,1], "items1")
+  expect_equal(items_list[[1]][,1], c("items1", "items2", "items3", "items4"))
+
+  data_table <- test_data[[3]]
+  items_list <- list(data_table, data_table)
+
+  items_list <- lapply(items_list, as.data.frame) # turns tibbles/dt into df
+  expect_equal(items_list[[1]][1,1], "items1")
+  expect_equal(items_list[[1]][,1], c("items1", "items2", "items3", "items4"))
+})
+

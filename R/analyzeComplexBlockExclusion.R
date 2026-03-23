@@ -27,8 +27,15 @@
 analyzeComplexBlockExclusion <- function(solverOut_list, items_list, idCol, exclusionTuples_list){
   ## to do: implement input checks
   #browser()
+  checkmate::assert_list(items_list)
+  lapply(items_list, checkmate::test_data_frame)
   items_list <- lapply(items_list, as.data.frame) # turns tibbles/dt into df
-  exclusionTuples_list <- lapply(exclusionTuples_list, as.data.frame)
+
+  checkmate::assert_list(exclusionTuples_list)
+  if(!(unique(sapply(exclusionTuples_list, checkmate::test_data_frame)) || unique(sapply(exclusionTuples_list, checkmate::test_matrix)))) stop("'exclusionTuples' must be a data.frame or matrix.")
+  if(unique(sapply(exclusionTuples_list, is.data.frame))){
+    exclusionTuples_list <- lapply(exclusionTuples_list, as.data.frame) # turns tibbles/dt into df
+  }
   #items <- as.data.frame(items)
 
   ### restructure all in one big object
