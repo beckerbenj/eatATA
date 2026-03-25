@@ -89,5 +89,43 @@ test_that("all items have identical number of tuples", {
   expect_equal(as.character(out[2, ]), c("item3", "item4"))
 })
 
+test_that("function works as intended with tibbles or data tables input instead of 'items' data frames", {
+  # tibbles
+  items_tibble <- tibble::tibble(ID = c("item1", "item2", "item3", "item4"),
+                      exclusions = c("item2, item3", NA, NA, NA),
+                      stringsAsFactors = FALSE)
+
+  out <- itemTuples(items = items_tibble, idCol = "ID", infoCol = "exclusions",
+                    sepPattern = ", ")
+
+  expect_equal(dim(out), c(2, 2))
+  expect_equal(as.character(out[1, ]), c("item1", "item2"))
+  expect_equal(as.character(out[2, ]), c("item1", "item3"))
+
+  # data tables
+  items_dt <- data.table::data.table(ID = c("item1", "item2", "item3", "item4"),
+                      exclusions = c("item2, item3", NA, NA, NA),
+                      stringsAsFactors = FALSE)
+
+  out <- itemTuples(items = items_dt, idCol = "ID", infoCol = "exclusions",
+                    sepPattern = ", ")
+
+  expect_equal(dim(out), c(2, 2))
+  expect_equal(as.character(out[1, ]), c("item1", "item2"))
+  expect_equal(as.character(out[2, ]), c("item1", "item3"))
+})
 
 
+
+test_that("item tuples", {
+  items <- data.frame(ID = c("item1", "item2", "item3", "item4"),
+                      exclusions = c("item2, item3", NA, NA, NA),
+                      stringsAsFactors = FALSE)
+
+  out <- itemTuples(items = items, idCol = "ID", infoCol = "exclusions",
+                    sepPattern = ", ")
+
+  expect_equal(dim(out), c(2, 2))
+  expect_equal(as.character(out[1, ]), c("item1", "item2"))
+  expect_equal(as.character(out[2, ]), c("item1", "item3"))
+})
