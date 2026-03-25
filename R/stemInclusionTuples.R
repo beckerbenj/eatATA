@@ -24,6 +24,8 @@
 #'
 #'@export
 stemInclusionTuples <- function(items, idCol = "ID", stemCol) {
+  # input validation
+  checkmate::assert_data_frame(items)
   if(is.character(idCol) && !idCol %in% names(items)) stop("'idCol' is not a column in 'items'.")
   if(is.character(stemCol) && !stemCol %in% names(items)) stop("'stemCol' is not a column in 'items'.")
   items <- as.data.frame(items) # turns tibbles/dt into df

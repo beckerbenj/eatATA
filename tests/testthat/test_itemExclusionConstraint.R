@@ -66,4 +66,47 @@ test_that("warning for inclusions on non existant items", {
   expect_equal(out$A_binary[2, ], c(0, 0, 0, 1, -1, 0))
 })
 
+test_that("exclusion function works as intended with tibbles or data tables input instead of 'itemTuples' data frames", {
+  # tibbles
+  tupl_tibble <- tibble::tibble(i1 = c("I1", "I2"), i2 = c("I2", "I3"))
+  out <- itemExclusionConstraint(nForms = 2, itemTuples = tupl_tibble, itemIDs = paste0("I", 1:3))
+  expect_equal(out$A_binary[1, ], c(1, 1, 0, 0, 0, 0))
+  expect_equal(out$A_binary[4, ], c(0, 0, 0, 0, 1, 1))
+
+  out2 <- itemExclusionConstraint(nForms = 2, itemTuples = tupl_tibble[1, ], itemIDs = paste0("I", 1:3))
+  expect_equal(out2$A_binary[1, ], c(1, 1, 0, 0, 0, 0))
+  expect_equal(out2$A_binary[2, ], c(0, 0, 0, 1, 1, 0))
+  # with matrix (tibbles)
+  out3 <- itemExclusionConstraint(nForms = 2, itemTuples = as.matrix(tupl_tibble[1, ]), itemIDs = paste0("I", 1:3))
+  expect_equal(out2$A_binary[1, ], c(1, 1, 0, 0, 0, 0))
+  expect_equal(out2$A_binary[2, ], c(0, 0, 0, 1, 1, 0))
+  # data tables
+  tupl_dt <- data.table::data.table(i1 = c("I1", "I2"), i2 = c("I2", "I3"))
+  out <- itemExclusionConstraint(nForms = 2, itemTuples = tupl_dt, itemIDs = paste0("I", 1:3))
+  expect_equal(out$A_binary[1, ], c(1, 1, 0, 0, 0, 0))
+  expect_equal(out$A_binary[4, ], c(0, 0, 0, 0, 1, 1))
+
+  out2 <- itemExclusionConstraint(nForms = 2, itemTuples = tupl_dt[1, ], itemIDs = paste0("I", 1:3))
+  expect_equal(out2$A_binary[1, ], c(1, 1, 0, 0, 0, 0))
+  expect_equal(out2$A_binary[2, ], c(0, 0, 0, 1, 1, 0))
+  # with matrix (data tables)
+  out3 <- itemExclusionConstraint(nForms = 2, itemTuples = as.matrix(tupl_dt[1, ]), itemIDs = paste0("I", 1:3))
+  expect_equal(out2$A_binary[1, ], c(1, 1, 0, 0, 0, 0))
+  expect_equal(out2$A_binary[2, ], c(0, 0, 0, 1, 1, 0))
+})
+
+test_that("inclusion function works as intended with tibbles or data tables input instead of 'itemTuples' data frames", {
+  # tibbles
+  tupl_tibble <- tibble::tibble(i1 = c("I1", "I2"), i2 = c("I2", "I3"))
+  out <- itemInclusionConstraint(nForms = 2, itemTuples = tupl_tibble, itemIDs = paste0("I", 1:3))
+  expect_equal(out$A_binary[1, ], c(1, -1, 0, 0, 0, 0))
+  expect_equal(out$A_binary[4, ], c(0, 0, 0, 0, 1, -1))
+
+  # data tables
+  tupl_dt <- data.table::data.table(i1 = c("I1", "I2"), i2 = c("I2", "I3"), stringsAsFactors = FALSE)
+  out <- itemInclusionConstraint(nForms = 2, itemTuples = tupl_dt, itemIDs = paste0("I", 1:3))
+  expect_equal(out$A_binary[1, ], c(1, -1, 0, 0, 0, 0))
+  expect_equal(out$A_binary[4, ], c(0, 0, 0, 0, 1, -1))
+})
+
 

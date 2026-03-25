@@ -1,10 +1,24 @@
 items1 <- data.frame(ID = paste0("item", 1:4), itemValues = c(-2, -4, 2, 4), stringsAsFactors = FALSE)
 items2 <- data.frame(ID = paste0("item", 5:8), itemValues = c(-2, -4, 2, 4), stringsAsFactors = FALSE)
 
+items1_tibble <- tibble::tibble(ID = paste0("item", 1:4), itemValues = c(-2, -4, 2, 4))
+items2_tibble <- tibble::tibble(ID = paste0("item", 5:8), itemValues = c(-2, -4, 2, 4))
+items1_dt <- data.table::data.table(ID = paste0("item", 1:4), itemValues = c(-2, -4, 2, 4), stringsAsFactors = FALSE)
+items2_dt <- data.table::data.table(ID = paste0("item", 5:8), itemValues = c(-2, -4, 2, 4), stringsAsFactors = FALSE)
+
 suppressWarnings(exclusionTuples1 <- data.frame(v1 = c("item1", "item3"),
                               v2 = c("item2", "item5"), stringsAsFactors = FALSE))
 suppressWarnings(exclusionTuples2 <- data.frame(v1 = c("item5", "item6"),
                                v2 = c("item3", "item7"), stringsAsFactors = FALSE))
+
+suppressWarnings(exclusionTuples1_tibble <- tibble::tibble(v1 = c("item1", "item3"),
+                                                v2 = c("item2", "item5")))
+suppressWarnings(exclusionTuples2_tibble <- tibble::tibble(v1 = c("item5", "item6"),
+                                                v2 = c("item3", "item7")))
+suppressWarnings(exclusionTuples1_dt <- data.table::data.table(v1 = c("item1", "item3"),
+                                                v2 = c("item2", "item5"), stringsAsFactors = FALSE))
+suppressWarnings(exclusionTuples2_dt <- data.table::data.table(v1 = c("item5", "item6"),
+                                                v2 = c("item3", "item7"), stringsAsFactors = FALSE))
 
 suppressWarnings(excl1 <- itemExclusionConstraint(nForms = 2, exclusionTuples1, itemIDs = items1$ID))
 suppressWarnings(excl2 <- itemExclusionConstraint(nForms = 2, exclusionTuples2, itemIDs = items2$ID))
@@ -41,22 +55,52 @@ test_that("analyze block exclusions", {
   expect_equal(as.character(out[3, ]), c("block_3", "block_4"))
 })
 
+test_that("function works as intended with tibbles or data tables input instead of 'items' data frames", {
+  # tibbles
+  out <- analyzeComplexBlockExclusion(solverOut_list = list(sol1, sol2),
+                                      items_list = list(items1_tibble, items2_tibble),
+                                      idCol = 1,
+                                      exclusionTuples_list = list(exclusionTuples1, exclusionTuples2))
 
-test_data <- readRDS("N:/eatPackages/eatATA/tests/testthat/helper_testDataFrames.RDS")
+  expect_equal(names(out), c("Name 1", "Name 2"))
+  expect_equal(dim(out), c(3, 2))
+  expect_equal(as.character(out[1, ]), c("block_1", "block_2"))
+  expect_equal(as.character(out[2, ]), c("block_2", "block_4"))
+  expect_equal(as.character(out[3, ]), c("block_3", "block_4"))
+  # data tables
+  out <- analyzeComplexBlockExclusion(solverOut_list = list(sol1, sol2),
+                                      items_list = list(items1_dt, items2_dt),
+                                      idCol = 1,
+                                      exclusionTuples_list = list(exclusionTuples1, exclusionTuples2))
 
-test_that("turn tibbles and data tables into data frames", {
-  tibble <- test_data[[2]]
-  items_list <- list(tibble, tibble)
-
-  items_list <- lapply(items_list, as.data.frame) # turns tibbles/dt into df
-  expect_equal(items_list[[1]][1,1], "items1")
-  expect_equal(items_list[[1]][,1], c("items1", "items2", "items3", "items4"))
-
-  data_table <- test_data[[3]]
-  items_list <- list(data_table, data_table)
-
-  items_list <- lapply(items_list, as.data.frame) # turns tibbles/dt into df
-  expect_equal(items_list[[1]][1,1], "items1")
-  expect_equal(items_list[[1]][,1], c("items1", "items2", "items3", "items4"))
+  expect_equal(names(out), c("Name 1", "Name 2"))
+  expect_equal(dim(out), c(3, 2))
+  expect_equal(as.character(out[1, ]), c("block_1", "block_2"))
+  expect_equal(as.character(out[2, ]), c("block_2", "block_4"))
+  expect_equal(as.character(out[3, ]), c("block_3", "block_4"))
 })
 
+test_that("function works as intended with tibbles or data tables input instead of 'exclusionTuples' data frames", {
+  # tibbles
+  out <- analyzeComplexBlockExclusion(solverOut_list = list(sol1, sol2),
+                                      items_list = list(items1, items2),
+                                      idCol = 1,
+                                      exclusionTuples_list = list(exclusionTuples1_tibble, exclusionTuples2_tibble))
+
+  expect_equal(names(out), c("Name 1", "Name 2"))
+  expect_equal(dim(out), c(3, 2))
+  expect_equal(as.character(out[1, ]), c("block_1", "block_2"))
+  expect_equal(as.character(out[2, ]), c("block_2", "block_4"))
+  expect_equal(as.character(out[3, ]), c("block_3", "block_4"))
+  # data tables
+  out <- analyzeComplexBlockExclusion(solverOut_list = list(sol1, sol2),
+                                      items_list = list(items1, items2),
+                                      idCol = 1,
+                                      exclusionTuples_list = list(exclusionTuples1_dt, exclusionTuples2_dt))
+
+  expect_equal(names(out), c("Name 1", "Name 2"))
+  expect_equal(dim(out), c(3, 2))
+  expect_equal(as.character(out[1, ]), c("block_1", "block_2"))
+  expect_equal(as.character(out[2, ]), c("block_2", "block_4"))
+  expect_equal(as.character(out[3, ]), c("block_3", "block_4"))
+})
