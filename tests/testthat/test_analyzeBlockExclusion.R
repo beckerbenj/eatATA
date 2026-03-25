@@ -3,6 +3,11 @@
 items_small <- data.frame(ID = paste0("item", 1:6),
                           itemValues = c(-4, -4, -2, -2, 20, 20), stringsAsFactors = FALSE)
 
+items_tibble <- tibble::tibble(ID = paste0("item", 1:6),
+                               itemValues = c(-4, -4, -2, -2, 20, 20), stringsAsFactors = FALSE)
+items_data_table <- data.table::data.table(ID = paste0("item", 1:6),
+                                           itemValues = c(-4, -4, -2, -2, 20, 20), stringsAsFactors = FALSE)
+
 exclusionTuples <- data.frame(v1 = c("item1", "item3"),
                               v2 = c("item2", "item4"), stringsAsFactors = FALSE)
 exclusionTuples_mat <- as.matrix(exclusionTuples)
@@ -19,19 +24,21 @@ suppressMessages(sol <- useSolver(allConstraints = list(usage, excl, target, per
 #load("tests/testthat/helper_BlockExclusions.RData")
 load("helper_BlockExclusions.RData")
 
-test_data <- readRDS("N:/eatPackages/eatATA/tests/testthat/helper_testDataFrames.RDS")
+test_that("function works as intended with tibbles or data tables input instead of data frames", {
+  # tibbles
+  out <- analyzeBlockExclusion(sol, items = items_tibble, idCol = "ID", exclusionTuples)
 
-test_that("turn tibbles and data tables into data frames", {
-  tibble <- test_data[[2]]
-  data_table <- test_data[[3]]
+  expect_equal(names(out), c("Name 1", "Name 2"))
+  expect_equal(dim(out), c(2, 2))
+  expect_equal(as.character(out[2, ]), c("block_1", "block_2"))
+  expect_equal(as.character(out[1, ]), c("block_1", "block_3"))
+  # data tables
+  out <- analyzeBlockExclusion(sol, items = items_data_table, idCol = "ID", exclusionTuples)
 
-  items_t <- as.data.frame(tibble) # turns tibbles into df
-  expect_equal(items_t[1,1], "items1")
-  expect_equal(items_t[,1], c("items1", "items2", "items3", "items4"))
-
-  items_dt <- as.data.frame(data_table) # turns dt into df
-  expect_equal(items_dt[1,1], "items1")
-  expect_equal(items_dt[,1], c("items1", "items2", "items3", "items4"))
+  expect_equal(names(out), c("Name 1", "Name 2"))
+  expect_equal(dim(out), c(2, 2))
+  expect_equal(as.character(out[2, ]), c("block_1", "block_2"))
+  expect_equal(as.character(out[1, ]), c("block_1", "block_3"))
 })
 
 
