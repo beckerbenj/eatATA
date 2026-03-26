@@ -36,7 +36,6 @@ analyzeComplexBlockExclusion <- function(solverOut_list, items_list, idCol, excl
   if(unique(sapply(exclusionTuples_list, is.data.frame))){
     exclusionTuples_list <- lapply(exclusionTuples_list, as.data.frame) # turns tibbles/dt into df
   }
-  #items <- as.data.frame(items)
 
   ### restructure all in one big object
   processedObj <- Map(function(solverOut, items){
