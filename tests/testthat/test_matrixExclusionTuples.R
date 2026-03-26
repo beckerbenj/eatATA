@@ -8,26 +8,7 @@ rownames(exclDF) <- colnames(exclDF) <- paste0("item_", 1:4)
 exclDF3 <- exclDF2 <- exclDF1 <- exclDF
 exclMatr <- as.matrix(exclDF)
 
-exclDF_tibble <- tibble::tibble(a = c(0, 1, 0, 0),
-                                b = c(1, 0, 0, 1),
-                                c = c(0, 0, 0, 0),
-                                d = c(0, 1, 0, 0))
-rownames(exclDF_tibble) <- colnames(exclDF_tibble) <- paste0("item_", 1:4)
-exclDF3_t <- exclDF2_t <- exclDF1_t <- exclDF_tibble
-exclMatr_tibble <- as.matrix(exclDF_tibble)
-
-exclDF_dt <- data.table::data.table(c(0, 1, 0, 0),
-                                    c(1, 0, 0, 1),
-                                    c(0, 0, 0, 0),
-                                    c(0, 1, 0, 0))
-rownames(exclDF_dt) <- colnames(exclDF_dt) <- paste0("item_", 1:4)
-exclDF3_dt <- exclDF2_dt <- exclDF1_dt <- exclDF_dt
-
-exclDF_dt_ <- as.data.frame(exclDF_dt)
-rownames(exclDF_dt_) <- rownames(exclDF_dt)
-exclMatr_dt <- as.matrix(exclDF_dt_)
-
-
+load("helper_test_matrixExclusionTuples.RData")
 
 test_that("matrixExclusionTuples errors", {
   rownames(exclDF1)[1] <- "item_x"
@@ -54,24 +35,24 @@ test_that("matrixExclusionTuples works", {
 
 test_that("function works as intended with tibbles or data tables input instead of 'exclMatrix' data frames", {
   # tibbles
-  out <- matrixExclusionTuples(exclDF_tibble)
+  out <- matrixExclusionTuples(matrixEclusionT$exclDF_tibble)
   colnames(out) <- NULL
   expect_equal(dim(out), c(2, 2))
   expect_equal(out[1, ], c("item_1", "item_2"))
   expect_equal(out[2, ], c("item_2", "item_4"))
 
-  out2 <- matrixExclusionTuples(exclMatr_tibble)
+  out2 <- matrixExclusionTuples(matrixEclusionT$exclMatr_tibble)
   colnames(out2) <- NULL
   expect_equal(out, out2)
 
   # data tables
-  out <- matrixExclusionTuples(exclDF_dt)
+  out <- matrixExclusionTuples(matrixEclusionT$exclDF_dt)
   colnames(out) <- NULL
   expect_equal(dim(out), c(2, 2))
   expect_equal(out[1, ], c("item_1", "item_2"))
   expect_equal(out[2, ], c("item_2", "item_4"))
 
-  out2 <- matrixExclusionTuples(exclMatr_dt)
+  out2 <- matrixExclusionTuples(matrixEclusionT$exclMatr_dt)
   colnames(out2) <- NULL
   expect_equal(out, out2)
 })

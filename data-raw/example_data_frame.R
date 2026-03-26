@@ -41,8 +41,7 @@ analyzeCBE <- list(items1_tibble = items1_tibble, items2_tibble = items2_tibble,
                    exclusionTuples1_dt = exclusionTuples1_dt, exclusionTuples2_dt = exclusionTuples2_dt)
 
 save(analyzeCBE, file = "N:/eatPackages/eatATA/tests/testthat/helper_test_analyzeCBE.RData")
-load("N:/eatPackages/eatATA/tests/testthat/helper_test_analyzeCBE.RData")
-
+#load("N:/eatPackages/eatATA/tests/testthat/helper_test_analyzeCBE.RData")
 
 #' `dummiesToFactor`
 
@@ -55,6 +54,30 @@ load("N:/eatPackages/eatATA/tests/testthat/helper_test_analyzeCBE.RData")
 
 #' `matrixExclusionTuples`
 
+exclDF_tibble <- tibble::tibble(a = c(0, 1, 0, 0),
+                                b = c(1, 0, 0, 1),
+                                c = c(0, 0, 0, 0),
+                                d = c(0, 1, 0, 0))
+rownames(exclDF_tibble) <- colnames(exclDF_tibble) <- paste0("item_", 1:4)
+exclDF3_t <- exclDF2_t <- exclDF1_t <- exclDF_tibble
+exclMatr_tibble <- as.matrix(exclDF_tibble)
+
+exclDF_dt <- data.table::data.table(c(0, 1, 0, 0),
+                                    c(1, 0, 0, 1),
+                                    c(0, 0, 0, 0),
+                                    c(0, 1, 0, 0))
+rownames(exclDF_dt) <- colnames(exclDF_dt) <- paste0("item_", 1:4)
+exclDF3_dt <- exclDF2_dt <- exclDF1_dt <- exclDF_dt
+exclDF_dt_ <- as.data.frame(exclDF_dt)
+rownames(exclDF_dt_) <- rownames(exclDF_dt)
+exclMatr_dt <- as.matrix(exclDF_dt_)
+
+matrixEclusionT <- list(exclDF_tibble = exclDF_tibble, exclMatr_tibble = exclMatr_tibble,
+                        exclDF_dt = exclDF_dt, exclMatr_dt = exclMatr_dt)
+
+save(matrixEclusionT, file = "N:/eatPackages/eatATA/tests/testthat/helper_test_matrixExclusionTuples.RData")
+#load("N:/eatPackages/eatATA/tests/testthat/helper_test_matrixExclusionTuples.RData")
+
 #' `stemInclusionTuples`
 
 #' `inspectSolution`
@@ -66,27 +89,3 @@ load("N:/eatPackages/eatATA/tests/testthat/helper_test_analyzeCBE.RData")
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-test_data <- list(items_df, items_tibble, items_data_table)
-
-saveRDS(test_data, "N:/eatPackages/eatATA/tests/testthat/helper_testDataFrames.RDS")
-
-### example tuples (should be data frame or matrix ###)
-#tuples <- itemTuples(items = df, idCol = "ID", infoCol = "exclusions",
-#                     sepPattern = ", ")
-
-#assert_data_frame(tuples)
-#assert_matrix(tuples)
