@@ -20,6 +20,7 @@ suppressMessages(sol <- useSolver(allConstraints = list(usage, perForm, target, 
 suppressMessages(sol_empty <- useSolver(allConstraints = list(target),
                                   solver = "lpSolve"))
 
+load("helper_inspectSolution.RData")
 
 test_that("inspect solution", {
   out <- inspectSolution(sol, items = items, idCol = "ID")
@@ -58,4 +59,22 @@ test_that("errors", {
   expect_error(inspectSolution(sol_empty, items = items2, idCol = "ID", colNames = names(items)),
                "'items' and the solution in 'solverOut' have different sets of itemIDs.")
 
+})
+
+test_that("function works as intended with tibbles or data tables input instead of 'items' data frames", {
+  # tibbles
+  out <- inspectSolution(sol, items = items_tibble, idCol = "ID")
+
+  expect_equal(length(out), 2)
+  expect_equal(names(out), paste0("block_", 1:2))
+  expect_equal(out[[1]]$ID, c(paste0("item_", c(1, 3, 5, 7, 9)), NA))
+  expect_equal(dim(out[[1]]), c(6, 3))
+
+  # data tables
+  out <- inspectSolution(sol, items = items_dt, idCol = "ID")
+
+  expect_equal(length(out), 2)
+  expect_equal(names(out), paste0("block_", 1:2))
+  expect_equal(out[[1]]$ID, c(paste0("item_", c(1, 3, 5, 7, 9)), NA))
+  expect_equal(dim(out[[1]]), c(6, 3))
 })

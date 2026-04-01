@@ -22,6 +22,7 @@
 #'@export
 dummiesToFactor <- function(dat, dummies, facVar, nameEmptyCategory = "_none_") {
   if(!is.data.frame(dat)) stop("'dat' needs to be a data.frame.")
+  dat <- as.data.frame(dat) # turns tibbles/dt into df
   if(!is.character(dummies)) stop("'dummies' needs to be a character vector.")
   if(!all(dummies %in% names(dat))) stop("All 'dummies' have to be columns in 'dat'.")
   if(!is.character(facVar) || length(facVar) != 1) stop("'facVar' needs to be a character vector of length 1.")

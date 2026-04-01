@@ -19,6 +19,7 @@ suppressMessages(sol <- useSolver(allConstraints = list(usage, perForm, target, 
 suppressMessages(sol_empty <- useSolver(allConstraints = list(target),
                                   solver = "lpSolve"))
 
+load("helper_appendSolution.RData")
 
 test_that("append solution", {
   out <- appendSolution(sol, items = items, idCol = "ID")
@@ -42,4 +43,34 @@ test_that("errors", {
   expect_error(appendSolution(sol_empty, items = items2, idCol = "ID"),
                "'items' and the solution in 'solverOut' have different sets of itemIDs.")
 
+})
+
+test_that("function works as intended with tibbles or data tables input instead of 'items' data frames", {
+  # tibbles
+  out <- appendSolution(sol, items = items_tibble, idCol = "ID")
+
+  expect_equal(dim(out), c(10, 4))
+  expect_equal(names(out), c(names(items), paste0("block_", 1:2)))
+  expect_equal(out$ID, paste0("item_", 1:10))
+  expect_equal(rownames(out), as.character(1:10))
+
+  out <- appendSolution(sol, items = items_tibble, idCol = 1)
+
+  expect_equal(dim(out), c(10, 4))
+  expect_equal(names(out), c(names(items), paste0("block_", 1:2)))
+  expect_equal(out$ID, paste0("item_", 1:10))
+
+  # data tables
+  out <- appendSolution(sol, items = items_dt, idCol = "ID")
+
+  expect_equal(dim(out), c(10, 4))
+  expect_equal(names(out), c(names(items), paste0("block_", 1:2)))
+  expect_equal(out$ID, paste0("item_", 1:10))
+  expect_equal(rownames(out), as.character(1:10))
+
+  out <- appendSolution(sol, items = items_dt, idCol = 1)
+
+  expect_equal(dim(out), c(10, 4))
+  expect_equal(names(out), c(names(items), paste0("block_", 1:2)))
+  expect_equal(out$ID, paste0("item_", 1:10))
 })

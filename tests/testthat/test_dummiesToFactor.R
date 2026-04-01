@@ -9,6 +9,8 @@ tdat3 <- data.frame(ID = 1:3, d1=c(1, 1, 0), d2 = c(0, 1, 0), d3 = c(0, 0, 1))
 
 tdat_w <- data.frame(ID = 1:3, d1=c(1, 0, 0), d2 = c(0, 1, 0), d3 = c(0, 0, 0))
 
+load("helper_dummiesToFactor.RData")
+
 test_that("Errors dummiesToFactor", {
   expect_error(dummiesToFactor(1, dummies = "a", facVar = "b"), "'dat' needs to be a data.frame.")
   expect_error(dummiesToFactor(tdat, dummies = 1, facVar = "b"), "'dummies' needs to be a character vector.")
@@ -42,4 +44,23 @@ test_that("dummiesToFactor", {
   expect_equal(out$newFac, factor(c("d1", "d2", "_none_")))
 
   expect_equal(w, "For these rows, there is no dummy variable equal to 1: 3\nA '_none_ 'category is created for these rows.")
+})
+
+test_that("function works as intended with tibbles or data tables input instead of data frames", {
+  # tibbles
+  out <- dummiesToFactor(tdat_tibble, c("d1", "d2", "d3"), "newFac")
+  expect_equal(names(out)[5], "newFac")
+  expect_equal(out$newFac, factor(c("d1", "d2", "d3")))
+
+  out2 <- dummiesToFactor(tdat_m_tibble, c("d1", "d2", "d3"), "newFac")
+  expect_equal(names(out2)[5], "newFac")
+  expect_equal(out2$newFac, factor(c("d1", "d2", "d3")))
+  # data tables
+  out <- dummiesToFactor(tdat_dt, c("d1", "d2", "d3"), "newFac")
+  expect_equal(names(out)[5], "newFac")
+  expect_equal(out$newFac, factor(c("d1", "d2", "d3")))
+
+  out2 <- dummiesToFactor(tdat_m_dt, c("d1", "d2", "d3"), "newFac")
+  expect_equal(names(out2)[5], "newFac")
+  expect_equal(out2$newFac, factor(c("d1", "d2", "d3")))
 })

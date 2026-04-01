@@ -37,6 +37,8 @@
 #'
 #'@export
 inspectSolution <- function(solverOut, items, idCol, colNames = names(items), colSums = TRUE){
+  items <- as.data.frame(items) # turns tibbles/dt into df
+
   illegal_names <- colNames[!colNames %in% names(items)]
   if(length(illegal_names) > 0) stop("The following 'colNames' are not columns in 'items': ",
                                      paste(illegal_names, collapse = ", "))

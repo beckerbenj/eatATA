@@ -26,6 +26,11 @@
 #'@export
 matrixExclusionTuples <- function(exclMatrix) {
   if(!is.data.frame(exclMatrix) && !is.matrix(exclMatrix)) stop("'exclMatrix' needs to be a matrix or data.frame.")
+  if(is.data.frame(exclMatrix)){
+    old_rownames <- rownames(exclMatrix)
+    exclMatrix <- as.data.frame(exclMatrix) # turns tibbles/dt into df
+    rownames(exclMatrix) <- old_rownames # tibbles drop rownames when converted to data.frame; restore for matrix logic
+    }
   if(!identical(colnames(exclMatrix), rownames(exclMatrix))) stop("'exclMatrix' needs to have symmetrical row and column names.")
 
   exclMatrix <- as.matrix(exclMatrix)
