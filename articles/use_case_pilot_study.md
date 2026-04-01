@@ -96,9 +96,11 @@ function throws an error and cannot be used.
 ``` r
 # clean data set (categorical dummy variables must contain only 0 and 1)
 items <- dummiesToFactor(items, dummies = c("MC", "CMC", "short_answer", "open"), facVar = "itemFormat")
-#> Error in dummiesToFactor(items, dummies = c("MC", "CMC", "short_answer", : All values in the 'dummies' columns have to be 0, 1 or NA.
+#> Error in `dummiesToFactor()`:
+#> ! All values in the 'dummies' columns have to be 0, 1 or NA.
 items <- dummiesToFactor(items, dummies = paste0("diff_", 1:5), facVar = "itemDiff")
-#> Error in dummiesToFactor(items, dummies = paste0("diff_", 1:5), facVar = "itemDiff"): All values in the 'dummies' columns have to be 0, 1 or NA.
+#> Error in `dummiesToFactor()`:
+#> ! All values in the 'dummies' columns have to be 0, 1 or NA.
 items[c(24, 33, 37, 47, 48, 54, 76), ]
 #>       item       exclusions time subitems MC CMC short_answer open diff_1
 #> 24 item_23             <NA>  3.5        2  1   1           NA   NA     NA
