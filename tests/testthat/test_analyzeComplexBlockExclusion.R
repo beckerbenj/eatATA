@@ -27,7 +27,7 @@ target2 <- minimaxObjective(nForms = 2, itemValues = items2$itemValues,
 #save(sol1, sol2, file = "tests/testthat/helper_complexBlockExclusions.RData")
 #load("tests/testthat/helper_complexBlockExclusions.RData")
 load("helper_complexBlockExclusions.RData")
-load("helper_test_analyzeCBE.RData")
+load("helper_analyzeComplexBlockExclusion.RData")
 
 test_that("analyze block exclusions", {
   out <- analyzeComplexBlockExclusion(solverOut_list = list(sol1, sol2),
@@ -45,7 +45,7 @@ test_that("analyze block exclusions", {
 test_that("function works as intended with tibbles or data tables input instead of 'items' data frames", {
   # tibbles
   out <- analyzeComplexBlockExclusion(solverOut_list = list(sol1, sol2),
-                                      items_list = list(analyzeCBE$items1_tibble, analyzeCBE$items2_tibble),
+                                      items_list = list(items1_tibble, items2_tibble),
                                       idCol = 1,
                                       exclusionTuples_list = list(exclusionTuples1, exclusionTuples2))
 
@@ -56,7 +56,7 @@ test_that("function works as intended with tibbles or data tables input instead 
   expect_equal(as.character(out[3, ]), c("block_3", "block_4"))
   # data tables
   out <- analyzeComplexBlockExclusion(solverOut_list = list(sol1, sol2),
-                                      items_list = list(analyzeCBE$items1_dt, analyzeCBE$items2_dt),
+                                      items_list = list(items1_dt, items2_dt),
                                       idCol = 1,
                                       exclusionTuples_list = list(exclusionTuples1, exclusionTuples2))
 
@@ -72,7 +72,7 @@ test_that("function works as intended with tibbles or data tables input instead 
   out <- analyzeComplexBlockExclusion(solverOut_list = list(sol1, sol2),
                                       items_list = list(items1, items2),
                                       idCol = 1,
-                                      exclusionTuples_list = list(analyzeCBE$exclusionTuples1_tibble, analyzeCBE$exclusionTuples2_tibble))
+                                      exclusionTuples_list = list(exclusionTuples1_tibble, exclusionTuples2_tibble))
 
   expect_equal(names(out), c("Name 1", "Name 2"))
   expect_equal(dim(out), c(3, 2))
@@ -83,7 +83,7 @@ test_that("function works as intended with tibbles or data tables input instead 
   out <- analyzeComplexBlockExclusion(solverOut_list = list(sol1, sol2),
                                       items_list = list(items1, items2),
                                       idCol = 1,
-                                      exclusionTuples_list = list(analyzeCBE$exclusionTuples1_dt, analyzeCBE$exclusionTuples2_dt))
+                                      exclusionTuples_list = list(exclusionTuples1_dt, exclusionTuples2_dt))
 
   expect_equal(names(out), c("Name 1", "Name 2"))
   expect_equal(dim(out), c(3, 2))

@@ -19,7 +19,7 @@ suppressMessages(sol <- useSolver(allConstraints = list(usage, excl, target, per
 #save(sol, file = "tests/testthat/helper_BlockExclusions.RData")
 #load("tests/testthat/helper_BlockExclusions.RData")
 load("helper_BlockExclusions.RData")
-load("helper_test_analyzeBE.RData")
+load("helper_analyzeBlockExclusion.RData")
 
 test_that("analyze block exclusions", {
   out <- analyzeBlockExclusion(sol, items = items_small, idCol = "ID", exclusionTuples)
@@ -76,14 +76,14 @@ test_that("block exclusions without item pool depletion", {
 
 test_that("function works as intended with tibbles or data tables input instead of 'items' data frames", {
   # tibbles
-  out <- analyzeBlockExclusion(sol, items = analyzeBE$items_tibble, idCol = "ID", exclusionTuples)
+  out <- analyzeBlockExclusion(sol, items = items_tibble, idCol = "ID", exclusionTuples)
 
   expect_equal(names(out), c("Name 1", "Name 2"))
   expect_equal(dim(out), c(2, 2))
   expect_equal(as.character(out[2, ]), c("block_1", "block_2"))
   expect_equal(as.character(out[1, ]), c("block_1", "block_3"))
   # data tables
-  out <- analyzeBlockExclusion(sol, items = analyzeBE$items_dt, idCol = "ID", exclusionTuples)
+  out <- analyzeBlockExclusion(sol, items = items_dt, idCol = "ID", exclusionTuples)
 
   expect_equal(names(out), c("Name 1", "Name 2"))
   expect_equal(dim(out), c(2, 2))
@@ -93,14 +93,14 @@ test_that("function works as intended with tibbles or data tables input instead 
 
 test_that("function works as intended with tibbles or data tables input instead of 'exclusionTuples' data frames", {
   # tibbles
-  out <- analyzeBlockExclusion(sol, items = items_small, idCol = "ID", analyzeBE$exclusionTuples_tibble)
+  out <- analyzeBlockExclusion(sol, items = items_small, idCol = "ID", exclusionTuples_tibble)
 
   expect_equal(names(out), c("Name 1", "Name 2"))
   expect_equal(dim(out), c(2, 2))
   expect_equal(as.character(out[2, ]), c("block_1", "block_2"))
   expect_equal(as.character(out[1, ]), c("block_1", "block_3"))
   # data tables
-  out <- analyzeBlockExclusion(sol, items = items_small, idCol = "ID", analyzeBE$exclusionTuples_dt)
+  out <- analyzeBlockExclusion(sol, items = items_small, idCol = "ID", exclusionTuples_dt)
 
   expect_equal(names(out), c("Name 1", "Name 2"))
   expect_equal(dim(out), c(2, 2))

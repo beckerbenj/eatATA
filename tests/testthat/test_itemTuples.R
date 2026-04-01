@@ -1,4 +1,4 @@
-load("helper_test_itemTuples.RData")
+load("helper_itemTuples.RData")
 
 test_that("input checks, errors", {
   expect_error(itemTuples(items = items_mini, idCol = "id", infoCol = "format", sepPattern = ", "),
@@ -105,7 +105,7 @@ test_that("item tuples", {
 
 test_that("function works as intended with tibbles or data tables input instead of 'items' data frames", {
   # tibbles
-  out <- itemTuples(items = item_tuples$items_tibble, idCol = "ID", infoCol = "exclusions",
+  out <- itemTuples(items = items_tibble, idCol = "ID", infoCol = "exclusions",
                     sepPattern = ", ")
 
   expect_equal(dim(out), c(2, 2))
@@ -113,7 +113,7 @@ test_that("function works as intended with tibbles or data tables input instead 
   expect_equal(as.character(out[2, ]), c("item1", "item3"))
 
   # data tables
-  out <- itemTuples(items = item_tuples$items_dt, idCol = "ID", infoCol = "exclusions",
+  out <- itemTuples(items = items_dt, idCol = "ID", infoCol = "exclusions",
                     sepPattern = ", ")
 
   expect_equal(dim(out), c(2, 2))

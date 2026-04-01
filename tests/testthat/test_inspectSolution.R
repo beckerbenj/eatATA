@@ -20,7 +20,7 @@ suppressMessages(sol <- useSolver(allConstraints = list(usage, perForm, target, 
 suppressMessages(sol_empty <- useSolver(allConstraints = list(target),
                                   solver = "lpSolve"))
 
-load("helper_test_inspectSolution.RData")
+load("helper_inspectSolution.RData")
 
 test_that("inspect solution", {
   out <- inspectSolution(sol, items = items, idCol = "ID")
@@ -63,7 +63,7 @@ test_that("errors", {
 
 test_that("function works as intended with tibbles or data tables input instead of 'items' data frames", {
   # tibbles
-  out <- inspectSolution(sol, items = inspect_solution$items_tibble, idCol = "ID")
+  out <- inspectSolution(sol, items = items_tibble, idCol = "ID")
 
   expect_equal(length(out), 2)
   expect_equal(names(out), paste0("block_", 1:2))
@@ -71,7 +71,7 @@ test_that("function works as intended with tibbles or data tables input instead 
   expect_equal(dim(out[[1]]), c(6, 3))
 
   # data tables
-  out <- inspectSolution(sol, items = inspect_solution$items_dt, idCol = "ID")
+  out <- inspectSolution(sol, items = items_dt, idCol = "ID")
 
   expect_equal(length(out), 2)
   expect_equal(names(out), paste0("block_", 1:2))

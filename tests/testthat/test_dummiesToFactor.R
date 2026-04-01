@@ -9,7 +9,7 @@ tdat3 <- data.frame(ID = 1:3, d1=c(1, 1, 0), d2 = c(0, 1, 0), d3 = c(0, 0, 1))
 
 tdat_w <- data.frame(ID = 1:3, d1=c(1, 0, 0), d2 = c(0, 1, 0), d3 = c(0, 0, 0))
 
-load("helper_test_dummiesToFactor.RData")
+load("helper_dummiesToFactor.RData")
 
 test_that("Errors dummiesToFactor", {
   expect_error(dummiesToFactor(1, dummies = "a", facVar = "b"), "'dat' needs to be a data.frame.")
@@ -48,19 +48,19 @@ test_that("dummiesToFactor", {
 
 test_that("function works as intended with tibbles or data tables input instead of data frames", {
   # tibbles
-  out <- dummiesToFactor(dummiesToFact$tdat_tibble, c("d1", "d2", "d3"), "newFac")
+  out <- dummiesToFactor(tdat_tibble, c("d1", "d2", "d3"), "newFac")
   expect_equal(names(out)[5], "newFac")
   expect_equal(out$newFac, factor(c("d1", "d2", "d3")))
 
-  out2 <- dummiesToFactor(dummiesToFact$tdat_m_tibble, c("d1", "d2", "d3"), "newFac")
+  out2 <- dummiesToFactor(tdat_m_tibble, c("d1", "d2", "d3"), "newFac")
   expect_equal(names(out2)[5], "newFac")
   expect_equal(out2$newFac, factor(c("d1", "d2", "d3")))
   # data tables
-  out <- dummiesToFactor(dummiesToFact$tdat_dt, c("d1", "d2", "d3"), "newFac")
+  out <- dummiesToFactor(tdat_dt, c("d1", "d2", "d3"), "newFac")
   expect_equal(names(out)[5], "newFac")
   expect_equal(out$newFac, factor(c("d1", "d2", "d3")))
 
-  out2 <- dummiesToFactor(dummiesToFact$tdat_m_dt, c("d1", "d2", "d3"), "newFac")
+  out2 <- dummiesToFactor(tdat_m_dt, c("d1", "d2", "d3"), "newFac")
   expect_equal(names(out2)[5], "newFac")
   expect_equal(out2$newFac, factor(c("d1", "d2", "d3")))
 })
