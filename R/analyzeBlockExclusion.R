@@ -47,12 +47,16 @@
 #'@export
 analyzeBlockExclusion <- function(solverOut, items, idCol, exclusionTuples, formName = "form"){
   ## input validation
+  checkmate::assert_character(formName, len = 1)
   if(!is.data.frame(items)) stop("'items' must be a data.frame.")
   items <- as.data.frame(items) # turns tibbles/dt into df
+  checkmate::assert_vector(idCol, len = 1)
   if(is.character(idCol)){
     if(!idCol %in% names(items)) stop("'idCol' is not a column in 'items'.")
+    #checkmate::assert_subset(idCol, choices = colnames(items))
   } else {
     if(!idCol %in% seq_len(dim(items)[2])) stop("'idCol' is not a column number in 'items'.")
+    #checkmate::assert_subset(idCol, choices = seq_len(dim(items)[2]))
     idCol <- names(items)[idCol]
   }
   if(!(is.data.frame(exclusionTuples) || is.matrix(exclusionTuples))) stop("'exclusionTuples' must be a data.frame or matrix.")

@@ -2,14 +2,17 @@
 check_nItems_itemValues_itemIDs <- function(nItems = NULL,
                                             itemIDs = NULL,
                                             itemValues = NULL) {
+  # input validation
+  checkmate::assert_vector(itemValues, null.ok = TRUE,)
+  checkmate::assert_numeric(nItems, len = 1, null.ok = TRUE)
 
 #browser()
   # if not NULL, itemValues and itemIDs should be of same length
   if(!is.null(itemValues)){
     dims <- dim(itemValues)
     if(!is.null(dims)){
-      # what if data.frames or matrixes are used in itemValues
-      if(length(dims) > 2)  stop("'itemValues' should be a vector.")
+      # what if data.frames or matrices are used in itemValues
+      #if(length(dims) > 2)  stop("'itemValues' should be a vector.")
       if(dims[1] == 1) {
         itemValues <- itemValues[1, , drop = TRUE]
         warning("'itemValues' has rows and columns, only the values in the first row are used.")
@@ -46,7 +49,7 @@ check_nItems_itemValues_itemIDs <- function(nItems = NULL,
     }
   }
 
-  # if not NULL, nItems should a numeric of lenght 1
+  # if not NULL, nItems should a numeric of length 1
   if(!is.null(nItems)) {
     check_type(nItems = nItems)
     check_length(nItems = nItems)
@@ -187,6 +190,7 @@ do_checks_eatATA <- function(nItems,
                              whichItems,
                              testFormValues = FALSE,
                              envir = parent.frame()){
+  # input validation
   item_info <- check_nItems_itemValues_itemIDs(nItems = nItems,
                                                itemIDs = itemIDs,
                                                itemValues = itemValues)

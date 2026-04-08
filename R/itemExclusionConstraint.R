@@ -51,6 +51,8 @@
 itemExclusionConstraint <- function(nForms, itemTuples, itemIDs,
                                     whichForms = seq_len(nForms),
                                     info_text = NULL) {
+  # input validation
+  checkmate::assert_character(itemIDs)
   if(!(is.data.frame(itemTuples) || is.matrix(itemTuples))) stop("'itemTuples' must be a data.frame or matrix.")
   if(is.data.frame(itemTuples)){itemTuples <- as.data.frame(itemTuples)} # turns tibbles/dt into df
 
@@ -80,6 +82,8 @@ itemExclusionConstraint <- function(nForms, itemTuples, itemIDs,
 itemInclusionConstraint <- function(nForms, itemTuples, itemIDs,
                                     whichForms = seq_len(nForms),
                                     info_text = NULL) {
+  # input validation
+  checkmate::assert_character(itemIDs)
   if(!(is.data.frame(itemTuples) || is.matrix(itemTuples))) stop("'itemTuples' must be a data.frame or matrix.")
   if(is.data.frame(itemTuples)){itemTuples <- as.data.frame(itemTuples)} # turns tibbles/dt into df
 

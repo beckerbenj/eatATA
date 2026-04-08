@@ -21,16 +21,17 @@
 #'
 #'@export
 dummiesToFactor <- function(dat, dummies, facVar, nameEmptyCategory = "_none_") {
-  if(!is.data.frame(dat)) stop("'dat' needs to be a data.frame.")
+  # input validation
+  checkmate::assert_data_frame(dat, types = "numeric")
   dat <- as.data.frame(dat) # turns tibbles/dt into df
+
   if(!is.character(dummies)) stop("'dummies' needs to be a character vector.")
   if(!all(dummies %in% names(dat))) stop("All 'dummies' have to be columns in 'dat'.")
+
   if(!is.character(facVar) || length(facVar) != 1) stop("'facVar' needs to be a character vector of length 1.")
   if(!is.character(nameEmptyCategory) || length(nameEmptyCategory) != 1) stop("'nameEmptyCategory' needs to be a character vector of length 1.")
   if(facVar %in% names(dat)) stop("'facVar' is an existing column in 'dat'.")
   if(nameEmptyCategory %in% dummies) stop("'nameEmptyCategory' is an existing category in 'dummies'.")
-
-  if(!is.character(nameEmptyCategory) || length(nameEmptyCategory) != 1) stop("'nameEmptyCategory' needs to be a character vector of length 1.")
 
   dummie_dat <- dat[, dummies, drop = FALSE]
   if(!all(unlist(dummie_dat) %in% c(0, 1, NA))) stop("All values in the 'dummies' columns have to be 0, 1 or NA.")
