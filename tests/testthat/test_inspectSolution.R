@@ -53,12 +53,11 @@ test_that("errors", {
   expect_error(inspectSolution(sol_empty, items = items, idCol = "ID2", colNames = names(items)),
                "'idCol' is not a column in 'items'.")
   expect_error(inspectSolution(sol_empty, items = mtcars, idCol = "ID", colNames = names(items)),
-               "The following 'colNames' are not columns in 'items': ID, itemValues")
+               "Assertion on 'colNames' failed: Must be a subset of {'mpg','cyl','disp','hp','drat','wt','qsec','vs','am','gear','carb'}, but has additional elements {'ID','itemValues','format'}.")
   items2 <- items
   items2[1, "ID"] <- "item_15"
   expect_error(inspectSolution(sol_empty, items = items2, idCol = "ID", colNames = names(items)),
                "'items' and the solution in 'solverOut' have different sets of itemIDs.")
-
 })
 
 test_that("function works as intended with tibbles or data tables input instead of 'items' data frames", {

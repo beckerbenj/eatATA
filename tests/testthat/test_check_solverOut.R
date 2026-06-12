@@ -4,10 +4,10 @@ load("helper_BlockExclusions.RData")
 test_that("check_solverOut checks correctly", {
   sol2 <- sol3 <- sol4 <- sol5 <- sol
 
-  expect_error(check_solverOut(1), "'solverOut' must be a list.")
-  expect_error(check_solverOut(sol[1:3]), "'solverOut' must be of length 4.")
+  expect_error(check_solverOut(1), "Assertion on 'solverOut' failed: Must be of type 'list', not 'double'.")
+  expect_error(check_solverOut(sol[1:3]), "Assertion on 'solverOut' failed: Must have length 4, but has length 3.")
   names(sol2)[1] <- "other"
-  expect_error(check_solverOut(sol2), "'solverOut' must contain the elements 'solution_found', 'solution', 'solution_status' and 'item_matrix'.")
+  expect_error(check_solverOut(sol2), "Assertion on 'names(solverOut)' failed: Must be a subset of \\{'solution_found','solution','solution_status','item_matrix'\\}, but has additional elements \\{'other'\\}.")
   sol3$solution_found <- as.character(sol3$solution_found)
   expect_error(check_solverOut(sol3), "'solverOut$solution_found' must be logical of length 1.", fixed = TRUE)
   sol4$solution_status <- TRUE
@@ -40,4 +40,3 @@ test_that("check_solution_true", {
                                   solver = "GLPK", verbose = FALSE))
   expect_error(check_solution_true(out))
 })
-

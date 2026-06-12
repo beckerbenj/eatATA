@@ -27,7 +27,6 @@
 itemTuples <- function(items, idCol = "ID", infoCol, sepPattern = ", ") {
   checkmate::assert_data_frame(items)
   items <- as.data.frame(items) # turns tibbles/dt into df
-  checkmate::assert_character(idCol)
   checkmate::assert_character(sepPattern, len = 1)
 
   if(is.character(idCol) && !idCol %in% names(items)) stop("'idCol' is not a column in 'items'.")
