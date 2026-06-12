@@ -12,7 +12,7 @@
 #' @inheritParams itemValuesConstraint
 #' @param min the minimal sum of the \code{itemValues} per test form
 #' @param max the maximal sum of the \code{itemValues} per test form
-#' @param range a vector with two values, the the minimal and the maximum sum of
+#' @param range a vector with two values, the minimal and the maximum sum of
 #' the \code{itemValues} per test form, respectively
 #' @param  allowedDeviation the maximum allowed deviation from the \code{targetValue}
 #' @param relative a logical expressing whether or not the \code{allowedDeviation}
@@ -34,6 +34,8 @@ itemValuesRangeConstraint <- function(nForms, itemValues, range,
                             whichForms = seq_len(nForms),
                             info_text = NULL,
                             itemIDs = names(itemValues)){
+  # input validation
+  checkmate::assert_numeric(range, len = 2)
 
   # min should be smaller than max
   if(range[2] < range[1]) stop("The first value of 'range' should be smaller than second value of 'range'.")
@@ -59,6 +61,9 @@ itemValuesMinConstraint <- function(nForms, itemValues, min,
                           whichForms = seq_len(nForms),
                           info_text = NULL,
                           itemIDs = names(itemValues)){
+  # input validation
+  checkmate::assert_numeric(min, len = 1)
+
   # choose info_text for info
   if(is.null(info_text)) info_text <- deparse(substitute(itemValues))
 
@@ -75,6 +80,8 @@ itemValuesMaxConstraint <- function(nForms, itemValues, max,
                           whichForms = seq_len(nForms),
                           info_text = NULL,
                           itemIDs = names(itemValues)){
+    # input validation
+  checkmate::assert_numeric(max, len = 1)
   # choose info_text for info
   if(is.null(info_text)) info_text <- deparse(substitute(itemValues))
 
@@ -93,6 +100,9 @@ itemValuesDeviationConstraint <- function(nForms, itemValues,
                                 whichForms = seq_len(nForms),
                                 info_text = NULL,
                                 itemIDs = names(itemValues)){
+  # input validation
+  checkmate::assert_numeric(allowedDeviation)
+  checkmate::assert_logical(relative, len = 1)
 
   # if relative == TRUE, compute the absolute allowed Deviation
   allowedDeviation <- 'if'(relative, targetValue * allowedDeviation, allowedDeviation)

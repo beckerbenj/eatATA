@@ -22,7 +22,7 @@
 #'@export
 dummiesToFactor <- function(dat, dummies, facVar, nameEmptyCategory = "_none_") {
   # input validation
-  checkmate::assert_data_frame(dat, types = "numeric")
+  checkmate::assert_data_frame(dat) # types = "numeric"
   dat <- as.data.frame(dat) # turns tibbles/dt into df
 
   if(!is.character(dummies)) stop("'dummies' needs to be a character vector.")
