@@ -20,6 +20,8 @@
 minimaxObjective <- function(nForms, itemValues, targetValue, weight = 1,
                               whichForms = seq_len(nForms), info_text = NULL,
                               itemIDs = names(itemValues)){
+  # input validation
+  checkmate::assert_numeric(weight, len = 1)
 
   # Do checks
   check_out <- do_checks_eatATA(
@@ -80,6 +82,8 @@ minimaxObjective <- function(nForms, itemValues, targetValue, weight = 1,
 maximinObjective <- function(nForms, itemValues, allowedDeviation,
                               weight = 1, whichForms = seq_len(nForms), info_text = NULL,
                               itemIDs = names(itemValues)){
+  # input validation
+  checkmate::assert_numeric(allowedDeviation)
 
   # check allowed deviation
   if(length(allowedDeviation) > 1) stop("'allowedDeviation' should have length 1.")
@@ -149,6 +153,8 @@ maximinObjective <- function(nForms, itemValues, allowedDeviation,
 cappedMaximinObjective <- function(nForms, itemValues, weight = 1,
                                     whichForms = seq_len(nForms), info_text = NULL,
                                     itemIDs = names(itemValues)){
+  # input validation
+  checkmate::assert_numeric(weight, len = 1)
 
   targetValue <- 0 # set to 0
   # Do checks
@@ -209,6 +215,8 @@ cappedMaximinObjective <- function(nForms, itemValues, weight = 1,
 maxObjective <- function(nForms, itemValues, weight = 1,
                           whichForms = seq_len(nForms), info_text = NULL,
                           itemIDs = names(itemValues)){
+  # input validation
+  checkmate::assert_numeric(weight, len = 1)
 
   targetValue <- 0 # set to 0
   # Do checks
@@ -258,6 +266,8 @@ maxObjective <- function(nForms, itemValues, weight = 1,
 minObjective <- function(nForms, itemValues, weight = 1,
                           whichForms = seq_len(nForms), info_text = NULL,
                           itemIDs = names(itemValues)){
+  # input validation
+  checkmate::assert_numeric(weight, len = 1)
 
   targetValue <- 0 # set to 0
   # Do checks

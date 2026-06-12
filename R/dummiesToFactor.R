@@ -22,14 +22,14 @@
 #'@export
 dummiesToFactor <- function(dat, dummies, facVar, nameEmptyCategory = "_none_") {
   # input validation
-  checkmate::assert_data_frame(dat) # types = "numeric"
+  checkmate::assert_data_frame(dat)
   dat <- as.data.frame(dat) # turns tibbles/dt into df
 
   if(!is.character(dummies)) stop("'dummies' needs to be a character vector.")
   if(!all(dummies %in% names(dat))) stop("All 'dummies' have to be columns in 'dat'.")
 
-  if(!is.character(facVar) || length(facVar) != 1) stop("'facVar' needs to be a character vector of length 1.")
-  if(!is.character(nameEmptyCategory) || length(nameEmptyCategory) != 1) stop("'nameEmptyCategory' needs to be a character vector of length 1.")
+  checkmate::assert_character(facVar, len = 1)
+  checkmate::assert_character(nameEmptyCategory, len = 1)
   if(facVar %in% names(dat)) stop("'facVar' is an existing column in 'dat'.")
   if(nameEmptyCategory %in% dummies) stop("'nameEmptyCategory' is an existing category in 'dummies'.")
 

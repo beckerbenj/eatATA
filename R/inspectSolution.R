@@ -47,7 +47,6 @@ inspectSolution <- function(solverOut, items, idCol, colNames = names(items), co
   #                                   paste(illegal_names, collapse = ", "))
   if(!identical(nrow(solverOut$item_matrix), nrow(items))) stop("'items' and the solution in 'solverOut' have different numbers of rows.")
 
-  checkmate::assert_vector(idCol, len = 1)
   if(is.character(idCol)){
     if(!idCol %in% names(items)) stop("'idCol' is not a column in 'items'.")
   } else {
