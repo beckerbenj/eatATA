@@ -52,9 +52,9 @@ analyzeBlockExclusion <- function(solverOut, items, idCol, exclusionTuples, form
   items <- as.data.frame(items) # turns tibbles/dt into df
   checkmate::assert_vector(idCol, len = 1)
   if(is.character(idCol)){
-    checkmate::assert_subset(idCol, choices = names(items))
+    if(!idCol %in% names(items)) stop("'idCol' is not a column in 'items'.")
   } else {
-    checkmate::assert_subset(idCol, choices = seq_len(dim(items)[2]))
+    if(!idCol %in% seq_len(dim(items)[2])) stop("'idCol' is not a column number in 'items'.")
     idCol <- names(items)[idCol]
   }
   if(!(is.data.frame(exclusionTuples) || is.matrix(exclusionTuples))) stop("'exclusionTuples' must be a data.frame or matrix.")
