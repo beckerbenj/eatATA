@@ -11,7 +11,7 @@ check_nItems_itemValues_itemIDs <- function(nItems = NULL,
     dims <- dim(itemValues)
     if(!is.null(dims)){
       # what if data.frames or matrices are used in itemValues
-      #if(length(dims) > 2)  stop("'itemValues' should be a vector.")
+      if(length(dims) > 2)  stop("'itemValues' should be a vector.")
       if(dims[1] == 1) {
         itemValues <- itemValues[1, , drop = TRUE]
         warning("'itemValues' has rows and columns, only the values in the first row are used.")
