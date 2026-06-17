@@ -39,7 +39,7 @@ test_that("check_nItems_itemValues_itemIDs works", {
   expect_error(check_nItems_itemValues_itemIDs(nItems = 1:2),
                "Assertion on 'nItems' failed: Must have length 1, but has length 2.")
   expect_error(check_nItems_itemValues_itemIDs(nItems = "a"),
-               "Assertion on 'nItems' failed: Must be of type 'numeric' (or 'NULL'), not 'character'.")
+               "Assertion on 'nItems' failed: Must be of type 'numeric' (or 'NULL'), not 'character'.", fixed = TRUE)
   expect_error(check_nItems_itemValues_itemIDs(NULL),
                "Impossible to infer the number of items in the pool. Specify either 'itemIDs' or 'nItems' or 'itemValues'")
   expect_error(check_nItems_itemValues_itemIDs(2, "item1"),
@@ -49,7 +49,7 @@ test_that("check_nItems_itemValues_itemIDs works", {
   expect_error(check_nItems_itemValues_itemIDs(NULL, "item1", 1:2),
                "The length of 'itemIDs' and 'itemValues' should correspond.")
   expect_error(check_nItems_itemValues_itemIDs(mtcars),
-               "Assertion on 'nItems' failed: Must be of type 'numeric' (or 'NULL'), not 'data.frame'.")
+               "Assertion on 'nItems' failed: Must be of type 'numeric' (or 'NULL'), not 'data.frame'.", fixed = TRUE)
   expect_error(check_nItems_itemValues_itemIDs(NULL, c(1, 1)),
                "There are duplicate values in 'itemIDs'.")
 
@@ -61,7 +61,6 @@ test_that("check_nItems_itemValues_itemIDs works", {
 
   expect_equal(out1[1:2], out2[1:2])
 })
-
 
 
 test_that("whichItemstoNumeric", {

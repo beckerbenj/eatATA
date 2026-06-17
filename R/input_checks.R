@@ -3,7 +3,6 @@ check_nItems_itemValues_itemIDs <- function(nItems = NULL,
                                             itemIDs = NULL,
                                             itemValues = NULL) {
   # input validation
-  checkmate::assert_vector(itemValues, null.ok = TRUE,)
   checkmate::assert_numeric(nItems, len = 1, null.ok = TRUE)
 
 #browser()
