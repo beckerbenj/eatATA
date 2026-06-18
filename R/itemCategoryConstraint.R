@@ -29,8 +29,7 @@ itemCategoryConstraint <- function(nForms, itemCategories,
                                    whichForms = seq_len(nForms),
                                    info_text = NULL,
                                    itemIDs = names(itemCategories)){
-
-  operator <- match.arg(operator)
+    operator <- match.arg(operator)
 
   # itemCategories should be a factor
   if(!is.factor(itemCategories)) stop("'itemCategories' should be a factor.")
@@ -39,6 +38,7 @@ itemCategoryConstraint <- function(nForms, itemCategories,
   if(!is.null(itemIDs) && length(itemCategories) != length(itemIDs)) stop("The length of 'itemCategories' and 'itemIDs' should be identical.")
 
   # the number of levels should be equal to the number of targetValues
+  checkmate::assert_numeric(targetValues)
   levels <- levels(itemCategories)
   nLevels <- nlevels(itemCategories)
   if(nLevels != length(targetValues)) stop("The number of 'targetValues' should correspond with the number of levels in 'itemCategories'.")

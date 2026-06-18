@@ -12,20 +12,19 @@ tdat_w <- data.frame(ID = 1:3, d1=c(1, 0, 0), d2 = c(0, 1, 0), d3 = c(0, 0, 0))
 load("helper_dummiesToFactor.RData")
 
 test_that("Errors dummiesToFactor", {
-  expect_error(dummiesToFactor(1, dummies = "a", facVar = "b"), "'dat' needs to be a data.frame.")
+  expect_error(dummiesToFactor(1, dummies = "a", facVar = "b"), "Assertion on 'dat' failed: Must be of type 'data.frame', not 'double'.")
   expect_error(dummiesToFactor(tdat, dummies = 1, facVar = "b"), "'dummies' needs to be a character vector.")
-  expect_error(dummiesToFactor(tdat, dummies = "d1", facVar = 1), "'facVar' needs to be a character vector of length 1.")
-  expect_error(dummiesToFactor(tdat, dummies = "d1", facVar = "newFact", nameEmptyCategory = 1), "'nameEmptyCategory' needs to be a character vector of length 1.")
-  expect_error(dummiesToFactor(tdat, dummies = "d1", facVar = "newFact", nameEmptyCategory = c("a", "b")), "'nameEmptyCategory' needs to be a character vector of length 1.")
+  expect_error(dummiesToFactor(tdat, dummies = "d1", facVar = 1), "Assertion on 'facVar' failed: Must be of type 'character', not 'double'.")
+  expect_error(dummiesToFactor(tdat, dummies = "d1", facVar = "newFact", nameEmptyCategory = 1), "Assertion on 'nameEmptyCategory' failed: Must be of type 'character', not 'double'.")
+  expect_error(dummiesToFactor(tdat, dummies = "d1", facVar = "newFact", nameEmptyCategory = c("a", "b")), "Assertion on 'nameEmptyCategory' failed: Must have length 1, but has length 2.")
   expect_error(dummiesToFactor(tdat, dummies = "d1", facVar = c("b", "h")),
-               "'facVar' needs to be a character vector of length 1.")
+               "Assertion on 'facVar' failed: Must have length 1, but has length 2.")
   expect_error(dummiesToFactor(tdat, dummies = "d1", facVar = "ID"), "'facVar' is an existing column in 'dat'.")
   expect_error(dummiesToFactor(tdat2, dummies = c("d1", "d2", "d3"), facVar = "newFact"),
                "All values in the 'dummies' columns have to be 0, 1 or NA.")
   expect_error(dummiesToFactor(tdat3, dummies = c("d1", "d2", "d3"), facVar = "newFact"),
                "For these rows, more than 1 dummy variable is 1: 2")
 })
-
 
 test_that("dummiesToFactor", {
   out <- dummiesToFactor(tdat, c("d1", "d2", "d3"), "newFac")

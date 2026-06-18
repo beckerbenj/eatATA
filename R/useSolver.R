@@ -51,6 +51,11 @@ useSolver <- function(allConstraints,
                       timeLimit = Inf,
                       formNames = NULL,
                       ...){
+  # input validation
+  checkmate::assert_list(allConstraints)
+  checkmate::assert_character(solver)
+  checkmate::assert_numeric(timeLimit, len = 1)
+  checkmate::assert_character(formNames, null.ok = TRUE)
 
   # make sure solver is correct
   solver <- match.arg(solver)

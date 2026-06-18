@@ -87,6 +87,9 @@ computeTargetValues <- function(itemValues, nForms, testLength = NULL,
 #' @export
 computeTargetValues.default <- function(itemValues, nForms, testLength = NULL,
                                         allowedDeviation = NULL, relative = FALSE) {
+  # input validation
+  checkmate::assert_numeric(allowedDeviation, null.ok = TRUE)
+  checkmate::assert_logical(relative, len = 1)
 
   target <- 'if'(is.null(testLength),
                  sum(itemValues) / nForms,
@@ -108,6 +111,9 @@ computeTargetValues.default <- function(itemValues, nForms, testLength = NULL,
 #' @export
 computeTargetValues.factor <- function(itemValues, nForms, testLength = NULL,
                                        allowedDeviation = NULL, relative = FALSE) {
+  # input validation
+  checkmate::assert_numeric(allowedDeviation, null.ok = TRUE)
+  checkmate::assert_logical(relative, len = 1)
 
   # the number of levels should be equal to the number of 'allowedDeviations'
   levels <- levels(itemValues)

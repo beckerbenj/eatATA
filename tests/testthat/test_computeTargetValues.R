@@ -11,19 +11,16 @@ test_that("computeTargetValues works", {
                sum(itemValues)/2 * c(min = .9, max = 1.1))
 })
 
-
-
 test_that("computeTargetValues works for item categories", {
   expect_equal(computeTargetValues(factor(itemValues), 2),
                matrix(10, ncol = 2, nrow = 4, dimnames = list(1:4, c("min", "max"))))
   expect_equal(computeTargetValues(factor(itemValues), 3),
                matrix(rep(c(6, 7), each = 4), ncol = 2, nrow = 4, dimnames = list(1:4, c("min", "max"))))
-  expect_equal(computeTargetValues(factor(itemValues), 2, allowedDeviation = rep(1, 4))               ,
+  expect_equal(computeTargetValues(factor(itemValues), 2, allowedDeviation = rep(1, 4)),
                matrix(rep(c(9, 11), each = 4), ncol = 2, nrow = 4, dimnames = list(1:4, c("min", "max"))))
   expect_equal(computeTargetValues(factor(itemValues), 2, allowedDeviation = rep(.29, 4), relative = TRUE),
                computeTargetValues(factor(itemValues), 2, allowedDeviation = rep(.29, 4), relative = TRUE))
 })
-
 
 test_that("computeTargetValues returns errors", {
   expect_error(computeTargetValues(itemValues, 2, allowedDeviation = 1.1, relative = TRUE),

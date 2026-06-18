@@ -39,7 +39,7 @@ itemCategoryRangeConstraint <- function(nForms, itemCategories, range,
                               whichForms = seq_len(nForms),
                               info_text = NULL,
                               itemIDs = names(itemCategories)){
-
+  # input validation
   if(!is.matrix(range) || dim(range)[1] != nlevels(itemCategories) || dim(range)[2] != 2) stop("'range' should be a matrix with two columns (minimum and maximum frequencies) and the number of rows equal to the number of levels in 'itemCategories'.")
   range <- as.matrix(range, ncol = 2)
 

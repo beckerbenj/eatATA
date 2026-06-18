@@ -58,7 +58,6 @@ test_that("errors", {
   items2[1, "ID"] <- "item_15"
   expect_error(inspectSolution(sol_empty, items = items2, idCol = "ID", colNames = names(items)),
                "'items' and the solution in 'solverOut' have different sets of itemIDs.")
-
 })
 
 test_that("function works as intended with tibbles or data tables input instead of 'items' data frames", {

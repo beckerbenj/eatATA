@@ -32,6 +32,9 @@
 #'
 #'@export
 appendSolution <- function(solverOut, items, idCol){
+  # input validation
+  checkmate::assert_vector(idCol, len = 1)
+  checkmate::assert_data_frame(items)
   items <- as.data.frame(items) # turns tibbles/dt into df
 
   if(!identical(nrow(solverOut$item_matrix), nrow(items))) stop("'items' and the solution in 'solverOut' have different numbers of rows.")

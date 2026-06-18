@@ -37,12 +37,15 @@
 #'
 #'@export
 inspectSolution <- function(solverOut, items, idCol, colNames = names(items), colSums = TRUE){
+  # input validation
+  checkmate::assert_logical(colSums, len = 1)
+  checkmate::assert_data_frame(items)
   items <- as.data.frame(items) # turns tibbles/dt into df
-
   illegal_names <- colNames[!colNames %in% names(items)]
   if(length(illegal_names) > 0) stop("The following 'colNames' are not columns in 'items': ",
                                      paste(illegal_names, collapse = ", "))
   if(!identical(nrow(solverOut$item_matrix), nrow(items))) stop("'items' and the solution in 'solverOut' have different numbers of rows.")
+
   if(is.character(idCol)){
     if(!idCol %in% names(items)) stop("'idCol' is not a column in 'items'.")
   } else {

@@ -15,6 +15,7 @@
 #'
 #'@export
 combineConstraints <- function(..., message = TRUE){
+  checkmate::assert_logical(message, len = 1)
 
   dots <- list(...)
   dots <- 'if'(length(dots) == 1 && !inherits(dots[[1]], "constraint"), dots[[1]], dots)

@@ -23,6 +23,8 @@
 #' @export
 autoItemValuesMinMaxConstraint <- function(nForms, itemValues, testLength = NULL, allowedDeviation = NULL,
                                  relative = FALSE, verbose = TRUE, itemIDs = NULL){
+  # input validation
+  checkmate::assert_logical(verbose, len = 1)
 
   # compute the minimum and maximum values
   min_max <- computeTargetValues(itemValues, nForms, testLength = testLength,

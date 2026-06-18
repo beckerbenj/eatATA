@@ -25,6 +25,7 @@
 #'
 #'@export
 matrixExclusionTuples <- function(exclMatrix) {
+  # input validation
   if(!is.data.frame(exclMatrix) && !is.matrix(exclMatrix)) stop("'exclMatrix' needs to be a matrix or data.frame.")
   if(is.data.frame(exclMatrix)){
     old_rownames <- rownames(exclMatrix)

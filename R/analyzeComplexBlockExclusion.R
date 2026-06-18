@@ -25,8 +25,8 @@
 #'
 #'@export
 analyzeComplexBlockExclusion <- function(solverOut_list, items_list, idCol, exclusionTuples_list){
-  ## to do: implement input checks
-  #browser()
+  ## input validation
+  checkmate::assert_vector(idCol, len = 1)
   checkmate::assert_list(items_list)
   items_list <- lapply(items_list, checkmate::assert_data_frame) # turns tibbles/dt into df
 
@@ -35,6 +35,8 @@ analyzeComplexBlockExclusion <- function(solverOut_list, items_list, idCol, excl
   if(all(sapply(exclusionTuples_list, is.data.frame))){
     exclusionTuples_list <- lapply(exclusionTuples_list, as.data.frame) # turns tibbles/dt into df
   }
+  lapply(solverOut_list, check_solverOut)
+  lapply(solverOut_list, check_solution_true)
 
   ### restructure all in one big object
   processedObj <- Map(function(solverOut, items){
