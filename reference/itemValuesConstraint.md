@@ -71,10 +71,10 @@ the above inequality constraint is repeated for every test form \\f\\ in
 decision variables with length \\I \times F\\, where \\F\\ is `nForms`.
 The binary decision variables \\x\_{if}\\ are defined as:
 
-|                      |                              |                                              |
-|----------------------|------------------------------|----------------------------------------------|
+|  |  |  |
+|----|----|----|
 | \\\\\\\\\\\\\\\\\\\\ | \\x\_{if} = 1\\,\\\\\\\\\\\\ | if item \\i\\ is assigned to form \\f\\, and |
-| \\\\\\\\\\\\\\\\\\\\ | \\x\_{if} = 0\\,\\\\\\\\\\\\ | otherwise.                                   |
+| \\\\\\\\\\\\\\\\\\\\ | \\x\_{if} = 0\\,\\\\\\\\\\\\ | otherwise. |
 
 ## Examples
 

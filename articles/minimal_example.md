@@ -15,6 +15,7 @@ Functionality](https://beckerbenj.github.io/eatATA/articles/overview.md).
 The `eatATA` package can be installed from `CRAN`.
 
 ``` r
+
 install.packages("eatATA")
 ```
 
@@ -28,6 +29,7 @@ calculate the `IIF` at medium ability and append it to the item pool
 using the `calculateIFF()` function.
 
 ``` r
+
 # loading eatATA
 library(eatATA)
 
@@ -53,7 +55,7 @@ In Table 1 you can see the first five items of the item pool.
 |    4 | mc     | 29.874 |      0.729 | 0.5033924 |
 |    5 | mc     | 23.134 |     -0.489 | 0.6108816 |
 
-Table 1. First 5 Items of the Item Pool
+Table 1. First 5 Items of the Item Pool {.table}
 
 ## Objective Function
 
@@ -63,6 +65,7 @@ at medium ability. For this, we use the
 function.
 
 ``` r
+
 testInfo <- maxObjective(nForms = 1, itemValues = items_mini$IIF,
                           itemIDs = items_mini$item)
 #> Warning in check_nItems_itemValues_itemIDs(nItems = nItems, itemIDs = itemIDs,
@@ -76,6 +79,7 @@ Our further, fixed constraints are defined as additional constraint
 objects.
 
 ``` r
+
 itemNumber <- itemsPerFormConstraint(nForms = 1, operator = "=", 
                                      targetValue = 10, 
                                      itemIDs = items_mini$item)
@@ -96,6 +100,7 @@ Alternatively, we could determine the appropriate test time based on the
 item pool using the `autoItemValuesMinMax()` function.
 
 ``` r
+
 testTime2 <- autoItemValuesMinMaxConstraint(nForms = 1, 
                                 itemValues = items_mini$time,
                                 testLength = 10, 
@@ -115,6 +120,7 @@ end. As a default solver, we recommend `GLPK`, which is automatically
 installed alongside this package.
 
 ``` r
+
 solver_out <- useSolver(list(itemNumber, itemUsage, testTime, testInfo),
                         solver = "GLPK")
 #> GLPK Simplex Optimizer 5.0
@@ -147,6 +153,7 @@ function an additional row is created that calculates the column sums
 for all numeric variables.
 
 ``` r
+
 inspectSolution(solver_out, items = items_mini, idCol = "item")
 #> $form_1
 #>     item format      time  difficulty   theta=0
@@ -164,6 +171,7 @@ inspectSolution(solver_out, items = items_mini, idCol = "item")
 ```
 
 ``` r
+
 appendSolution(solver_out, items = items_mini, idCol = "item")
 #>    item format     time  difficulty    theta=0 form_1
 #> 1     1     mc 27.78586 -1.88090278 0.10900318      0

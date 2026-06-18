@@ -14,6 +14,7 @@ come.
 ## Installation
 
 ``` r
+
 # Install eatATA from CRAN via
 install.packages("eatATA")
 

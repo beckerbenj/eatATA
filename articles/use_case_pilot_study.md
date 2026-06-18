@@ -15,12 +15,14 @@ Functionality](https://beckerbenj.github.io/eatATA/articles/overview.md).
 The `eatATA` package can be installed from `CRAN`.
 
 ``` r
+
 install.packages("eatATA")
 ```
 
 First, `eatATA` is loaded into the `R` session.
 
 ``` r
+
 # loading eatATA
 library(eatATA)
 ```
@@ -42,6 +44,7 @@ that the item pool can also be directly accessed in the package via
 `items`; see `?items` for more information.)
 
 ``` r
+
 items_path <- system.file("extdata", "items.xlsx", package = "eatATA")
 
 items <- as.data.frame(readxl::read_excel(path = items_path), stringsAsFactors = FALSE)
@@ -56,6 +59,7 @@ indicates which items are too similar and should not be in the same
 booklet with the item in that row..
 
 ``` r
+
 head(items)
 #>      item                exclusions time subitems MC CMC short_answer open
 #> 1 item_00          item_01, item_06  1.0        1 NA  NA            1   NA
@@ -94,6 +98,7 @@ example, the
 function throws an error and cannot be used.
 
 ``` r
+
 # clean data set (categorical dummy variables must contain only 0 and 1)
 items <- dummiesToFactor(items, dummies = c("MC", "CMC", "short_answer", "open"), facVar = "itemFormat")
 #> Error in `dummiesToFactor()`:
@@ -131,6 +136,7 @@ for further information on the different treatment of factors and
 numerical variables.)
 
 ``` r
+
 # make new factor with three levels: "MC", "open" and "else"
 items <- dummiesToFactor(items, dummies = c("MC", "open"), facVar = "MC_open_none")
 #> Warning in dummiesToFactor(items, dummies = c("MC", "open"), facVar = "MC_open_none"): For these rows, there is no dummy variable equal to 1: 1, 2, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 17, 20, 21, 25, 28, 29, 30, 32, 33, 34, 36, 37, 38, 39, 40, 41, 44, 45, 46, 47, 48, 50, 54, 55, 58, 60, 65, 67, 68, 69, 70, 72, 74, 76, 77, 79, 80
@@ -177,6 +183,7 @@ the number of test forms or booklets to be created (`nForms`) and the
 number of items in the item pool (`nItems`).
 
 ``` r
+
 # set up fixed variables
 nItems <- nrow(items)  # number of items
 nForms <- 14           # number of blocks
@@ -195,6 +202,7 @@ example, we specify 10 minutes as the target response time `time` for
 all booklets.
 
 ``` r
+
 # optimize average time
 av_time <- minimaxObjective(nForms, itemValues = items$time, targetValue = 10,
                              itemIDs = items$item)
@@ -209,6 +217,7 @@ To achieve this, the `operator` argument should be set to `"="`, meaning
 that every item should be used exactly once in the booklet assembly.
 
 ``` r
+
 itemOverlap <- itemUsageConstraint(nForms, targetValue = 1, 
                                    operator = "=", itemIDs = items$item) 
 ```
@@ -231,6 +240,7 @@ or factors. Hence, for numeric values, we specify
 or the resulting allowed value range on booklet level.
 
 ``` r
+
 # item formats
 mc_openItems <- autoItemValuesMinMaxConstraint(nForms = nForms, itemValues = items$MC_open_none, 
                                      itemIDs = items$item)
@@ -275,6 +285,7 @@ item, with item identifiers separated by `", "`, they should be
 transformed first.
 
 ``` r
+
 # item exclusions variable
 items$exclusions[1:5]
 #> [1] "item_01, item_06"          "item_00, item_06"         
@@ -289,6 +300,7 @@ These *tuples* can be used directly with the
 function.
 
 ``` r
+
 # item exclusions
 exclusionTuples <- itemTuples(items, idCol = "item", 
                                        infoCol = "exclusions", sepPattern = ", ")
@@ -303,6 +315,7 @@ since this is not required in this example, we will not use these
 constraints in the final `ATA` constraints.
 
 ``` r
+
 # number of items per test form
 min_Nitems <- floor(nItems / nForms) - 3
 noItems <- itemsPerFormConstraint(nForms = nForms, operator = ">=", 
@@ -315,6 +328,7 @@ Before calling the optimization algorithm the specified constraints are
 collected in a `list`.
 
 ``` r
+
 # Prepare constraints
 constr_list <- list(itemOverlap, mc_openItems, cmcItems, saItems, 
                       Items1, Items2, Items3, Items4, Items5, 
@@ -333,6 +347,7 @@ seconds. Note that the computation times might depend on the solver you
 have selected.
 
 ``` r
+
 # Optimization
 solver_raw <- useSolver(constr_list, nForms = nForms, nItems = nItems, 
                         itemIDs = items$item, solver = "GLPK", timeLimit = 10)
@@ -378,6 +393,7 @@ function. It allows us to inspect the assembled item blocks at a first
 glance, including some column sums.
 
 ``` r
+
 out_list <- inspectSolution(solver_raw, items = items, idCol = "item", colSums = TRUE,
                             colNames = c("time", "subitems", 
                                          "MC", "CMC", "short_answer", "open",
@@ -413,6 +429,7 @@ item exclusions. The
 function can be used to obtain tuples with booklet exclusions.
 
 ``` r
+
 analyzeBlockExclusion(solverOut = solver_raw, item = items, idCol = "item", 
                       exclusionTuples = exclusionTuples)
 #>     Name 1  Name 2
@@ -463,6 +480,7 @@ function. The function simply merges the new variables containing the
 solution to the test assembly problem to the original item pool.
 
 ``` r
+
 out_df <- appendSolution(solver_raw, items = items, idCol = "item")
 ```
 
@@ -471,6 +489,7 @@ Finally, when the solution should be exported as an `excel` file
 package, which has to be installed from `Github`.
 
 ``` r
+
 devtools::install_github("beckerbenj/eatAnalysis")
 
 eatAnalysis::write_xlsx(out_df, filePath = "example_excel.xlsx",

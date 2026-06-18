@@ -19,6 +19,7 @@ Example](https://beckerbenj.github.io/eatATA/articles/use_case_pilot_study.md).
 The `eatATA` package can be installed from `CRAN`.
 
 ``` r
+
 install.packages("eatATA")
 ```
 
@@ -33,6 +34,7 @@ process can be found
 [here](https://CRAN.R-project.org/package=prioritizr/vignettes/gurobi_installation_guide.html).
 
 ``` r
+
 # loading eatATA
 library(eatATA)
 ```
