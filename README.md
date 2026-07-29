@@ -7,9 +7,6 @@
 [![](http://cranlogs.r-pkg.org/badges/grand-total/eatATA?color=blue)](https://cran.r-project.org/package=eatATA)
 <!-- badges: end -->
 
-
-# eatATA
-
 ## Overview
 
 `eatATA` provides a small `R` interface to mathematical optimization solvers specialized on solving simple automated test assembly problems (`ATA`). Internally, sparse matrices are used via the `Matrix` package. Currently supported solvers are `GLPK`, `lpSolve`, `Symphony`, and `Gurobi`. See below for a list of implemented features and feature to come.
