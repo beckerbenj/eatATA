@@ -1,7 +1,5 @@
 # eatATA
 
-# eatATA
-
 ## Overview
 
 `eatATA` provides a small `R` interface to mathematical optimization
